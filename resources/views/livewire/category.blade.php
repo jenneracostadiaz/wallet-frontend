@@ -3,6 +3,7 @@
         :name="'Categories'"
         :placeholder="'Search categories...'"
         :icon="'🤖'"
+        :showStoreBy="false"
     />
 
     <div class="flex flex-col gap-4 items-end py-4 px-4 mt-4">

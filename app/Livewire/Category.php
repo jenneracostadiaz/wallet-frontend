@@ -21,6 +21,7 @@ class Category extends Component
     public string $icon = '';
     public $parent;
     public $categoryId = 0;
+    public $search = '';
 
     public function resetFields(): void
     {
@@ -80,10 +81,20 @@ class Category extends Component
     #[Layout('layouts.app')]
     public function render(): View
     {
+        $query = CategoryModel::query()
+            ->where('parent_id', null);
+
+        if ($this->search) {
+            $query->where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('subcategories', function ($query) {
+                        $query->where('name', 'like', '%' . $this->search . '%');
+                    });
+            });
+        }
+
         return view('livewire.category', [
-            'categories' => CategoryModel::query()
-                ->where('parent_id', null)
-                ->paginate(20),
+            'categories' => $query->paginate(20),
         ]);
     }
 }
