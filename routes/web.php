@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Category;
 use App\Livewire\Label;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,5 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/labels', Label::class)->name('labels');
+    Route::get('/categories', Category::class)->name('categories');
 });
