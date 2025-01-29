@@ -5,6 +5,18 @@
         :icon="'🤖'"
     />
 
+    <div class="flex flex-col gap-4 items-end py-4 px-4 mt-4">
+        @foreach ($categories as $category)
+            <x-category-item :id="$category->id" :icon="$category->icon" :name="$category->name"/>
+            @foreach ($category->subcategories as $subcategory)
+                <x-category-item :id="$subcategory->id" :icon="$subcategory->icon" :name="$subcategory->name"
+                                 :subItem="true"/>
+            @endforeach
+        @endforeach
+    </div>
+
+    {{ $categories->links() }}
+
     <x-modal :maxWidth="'lg'" wire:model="modal">
         <div class="px-8 py-6 flex flex-col justify-center items-center">
             <h2 class="text-xl font-semibold text-gray-200">{{__($nameModal)}}</h2>
@@ -24,6 +36,9 @@
                         <x-label for="parent" value="{{__('Parent Category')}}"/>
                         <x-select id="parent" wire:model="parent" class="font-mono">
                             <option selected>None--</option>
+                            @foreach($categories->where('id', '!=', $categoryId) as $category)
+                                <option value="{{$category->id}}">{{$category->icon}} {{$category->name}}</option>
+                            @endforeach
                         </x-select>
                         <x-input-error for="icon"/>
                     </div>

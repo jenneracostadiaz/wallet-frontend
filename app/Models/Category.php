@@ -10,12 +10,10 @@ class Category extends Model
 {
     protected $fillable = [
         'name',
-        'slug',
         'visibility',
-        'color',
         'icon',
-        'order_column',
         'parent_id',
+        'user_id',
     ];
 
     public function parent(): BelongsTo
