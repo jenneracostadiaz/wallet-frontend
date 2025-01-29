@@ -10,10 +10,14 @@ use Livewire\Component;
 class Category extends Component
 {
     public bool $modal = false;
+    public string $nameModal = 'Create new Category';
+    public bool $edit = false;
 
-    public function openModal(): void
+    public function openModal(?CategoryModel $category = null): void
     {
         $this->modal = true;
+        $this->nameModal = $category->getAttributes() ? 'Edit Category' : 'Create new Category';
+        $this->edit = (bool)$category->getAttributes();
     }
 
 
