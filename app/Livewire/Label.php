@@ -21,7 +21,7 @@ class Label extends Component
     public bool $edit = false;
 
     public $search = '';
-    public $storeBy = 'name';
+    public $storeBy = 'created_at';
 
     public function openModal(?LabelModel $label = null): void
     {
