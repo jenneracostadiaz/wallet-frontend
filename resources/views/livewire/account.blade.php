@@ -14,9 +14,7 @@
     </div>
 
     <x-modal :maxWidth="'lg'" wire:model="modal">
-
         <x-modal-content :name="$nameModal">
-
             <form wire:submit.prevent="{{$edit ? 'update' : 'save'}}" class="flex flex-col gap-4">
 
                 <div class="flex-1 flex flex-col space-y-2">

@@ -1,8 +1,3 @@
 <x-app-layout>
-
-
-    <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 bg-gray-800 text-gray-200 overflow-hidden shadow-xl sm:rounded-lg my-8">
-        asdasd
-    </div>
-
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-200 px-4">Dashboard</h1>
 </x-app-layout>
