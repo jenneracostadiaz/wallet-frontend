@@ -1,9 +1,4 @@
 <div>
-    @if (session()->has('message'))
-        <div class="bg-white shadow">
-            {{ session('message') }}
-        </div>
-    @endif
     <button wire:click="openModal" class="fixed bottom-0 left-0 w-full p-4 bg-teal-400 text-gray-700">
         <span class="text-xl">➕</span> <span class="text-lg">{{__('Add New Record')}}</span>
     </button>
@@ -138,6 +133,12 @@
                               type="submit">➕ {{__('Save')}}</x-button>
                 </div>
             </form>
+            @if (session()->has('message'))
+                <div
+                    class="text-xs {{session()->has('message_style') && session('message_style') == 'danger' ? 'text-red-400' : 'text-teal-400'}}">
+                    {{ session('message') }}
+                </div>
+            @endif
         </x-modal-content>
     </x-modal>
 </div>

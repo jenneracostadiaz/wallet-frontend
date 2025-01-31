@@ -87,6 +87,15 @@ class Create extends Component
                 default => $this->from_amount,
             };
 
+            $account = auth()->user()->accounts()->find($this->from_account);
+
+            if ($account->current_balance + $amount < 0) {
+                session()->flash('message', 'Error: The user does not have enough funds.');
+                session()->flash('message_style', 'danger');
+                DB::rollback();
+                return;
+            }
+
             auth()->user()->records()->create([
                 'type' => $this->selectType,
                 'account_id' => $this->from_account,
@@ -98,7 +107,6 @@ class Create extends Component
                 'time' => $this->time,
             ]);
 
-            $account = auth()->user()->accounts()->find($this->from_account);
             $account->current_balance += $amount;
             $account->save();
 
@@ -119,14 +127,18 @@ class Create extends Component
                 $account->save();
             }
 
+            session()->flash('message', 'Record created successfully.');
+            session()->flash('message_style', 'success');
+            
             $this->closeModal();
             $this->dispatch('refreshRecords');
-            session()->flash('message', 'Record created successfully.');
+
             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
             session()->flash('message', 'Record creation failed.');
+            session()->flash('message_style', 'danger');
         }
     }
 
