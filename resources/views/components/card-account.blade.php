@@ -1,4 +1,4 @@
-<div class="w-full py-4 px-8 gap-4 rounded-md shadow-lg bg-slate-700 border-l-4"
+<div class="w-full py-4 px-2 gap-4 rounded-md shadow-lg bg-slate-700 border-l-4"
      style="border-color: {{ $account->color }}">
     <div class="flex flex-row justify-between items-center gap-2">
         <span

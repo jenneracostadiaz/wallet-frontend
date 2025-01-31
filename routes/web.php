@@ -3,6 +3,7 @@
 use App\Livewire\Account;
 use App\Livewire\Category;
 use App\Livewire\Label;
+use App\Livewire\Payments;
 use App\Livewire\Receivables;
 use App\Livewire\Records;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,5 @@ Route::middleware([
     Route::get('/accounts', Account::class)->name('accounts');
     Route::get('/records', Records::class)->name('records');
     Route::get('/receivables', Receivables::class)->name('receivables');
+    Route::get('/payments', Payments::class)->name('payments');
 });
