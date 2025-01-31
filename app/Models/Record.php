@@ -19,6 +19,7 @@ class Record extends Model
         'transfer_id',
         'date',
         'time',
+        'payment_id',
     ];
 
     public function transfer(): BelongsTo
@@ -49,5 +50,10 @@ class Record extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class);
     }
 }

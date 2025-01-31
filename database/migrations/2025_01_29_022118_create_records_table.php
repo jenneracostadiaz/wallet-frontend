@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->foreignId('label_id')->nullable()->constrained('labels')->onDelete('cascade');
             $table->boolean('main_transfer')->default(false);
             $table->foreignId('transfer_id')->nullable()->constrained('records')->onDelete('cascade');
+            $table->foreignId('payment_id')->nullable()->constrained('payments')->onDelete('cascade');
             $table->date('date');
             $table->time('time')->nullable();
 
