@@ -56,19 +56,32 @@ class Create extends Component
 
     public function save(): void
     {
-//        dd($this->from_account, $this->from_amount, $this->from_currency, $this->to_account, $this->to_amount, $this->to_currency, $this->category, $this->label, $this->date, $this->time);
         DB::beginTransaction();
         try {
             auth()->user()->records()->create([
                 'type' => $this->selectType,
-                'account_id' => $this->to_account,
-                'amount' => $this->to_amount,
-                'currency_id' => $this->to_currency,
+                'account_id' => $this->from_account,
+                'amount' => $this->from_amount,
+                'currency_id' => $this->from_currency,
                 'category_id' => $this->category,
                 'label_id' => $this->label,
                 'date' => $this->date,
                 'time' => $this->time,
             ]);
+
+            if ($this->selectType === 'transfer') {
+                auth()->user()->records()->create([
+                    'type' => $this->selectType,
+                    'account_id' => $this->to_account,
+                    'amount' => $this->to_amount,
+                    'currency_id' => $this->to_currency,
+                    'category_id' => $this->category,
+                    'label_id' => $this->label,
+                    'date' => $this->date,
+                    'time' => $this->time,
+                ]);
+            }
+
             $this->closeModal();
             DB::commit();
 
