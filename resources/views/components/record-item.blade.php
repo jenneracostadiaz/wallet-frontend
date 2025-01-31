@@ -15,7 +15,6 @@
                 @endif
                 {{ $record->category->icon }}
                 {{ $record->category->name }}
-
             </p>
             <div class="text-[12px] text-slate-400">
                 Date: {{ \Carbon\Carbon::parse($record->date)->format('d/m/Y') }}

@@ -4,7 +4,7 @@
 
     <h2 class="text-2xl font-bold">{{__($name)}}</h2>
 
-    <div class="flex flex-col sm:flex-row flex-1 gap-4">
+    <div class="w-full flex flex-col sm:flex-row flex-1 justify-end gap-4">
 
         @if($showCreateButton)
             <button wire:click="openModal"

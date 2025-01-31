@@ -18,6 +18,8 @@ class Records extends Component
     public $filterDate;
     public $filterType;
 
+    public $perPage = 25;
+
     #[On('refreshRecords')]
     public function refreshRecords(): void
     {
@@ -70,7 +72,7 @@ class Records extends Component
                 ->when($this->filterType === 'transfer', fn($query) => $query->where('main_transfer', true))
                 ->orderBy('date', 'desc')
                 ->orderBy('time', 'desc')
-                ->paginate(25),
+                ->paginate($this->perPage),
             'accounts' => auth()->user()->accounts,
             'types' => ['expense', 'income', 'transfer'],
         ]);
