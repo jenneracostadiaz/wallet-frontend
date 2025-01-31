@@ -22,19 +22,21 @@ class Create extends Component
     public ?int $label;
     public $date;
     public $time;
+    public $to_accounts;
 
     public function resetFields(): void
     {
         $this->from_account = auth()->user()->accounts->first()->id ?? null;
         $this->from_amount = 0;
         $this->from_currency = 1;
-        $this->to_account = auth()->user()->accounts->first()->id ?? null;
+        $this->to_account = auth()->user()->accounts->skip(1)->first()->id ?? null;
         $this->to_amount = 0;
         $this->to_currency = 1;
         $this->category = auth()->user()->categories->first()->subcategories->first()->id ?? null;
         $this->label = auth()->user()->labels->first()->id ?? null;
         $this->date = now()->format('Y-m-d');
         $this->time = now()->format('H:i');
+        $this->to_accounts = auth()->user()->accounts->skip(1);
     }
 
     public function openModal(): void
@@ -52,6 +54,12 @@ class Create extends Component
     public function setType(string $type): void
     {
         $this->selectType = $type;
+    }
+
+    public function handleAccountChange(): void
+    {
+        $this->to_accounts = auth()->user()->accounts->where('id', '!=', $this->from_account);
+
     }
 
     public function save(): void

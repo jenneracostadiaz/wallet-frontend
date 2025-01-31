@@ -22,7 +22,7 @@
                     <div class="flex-1 flex flex-col gap-2">
                         <div class="flex flex-col gap-2">
                             <x-label value="{{__('From Account')}}"/>
-                            <x-select wire:model="from_account">
+                            <x-select wire:model="from_account" wire:change="handleAccountChange">
                                 @forelse($accounts as $account)
                                     <option value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
                                 @empty
@@ -60,8 +60,9 @@
                             <div class="flex flex-col gap-2">
                                 <x-label for="amount" value="{{__('To Account')}}"/>
                                 <x-select wire:model="to_account">
-                                    @foreach($accounts as $account)
-                                        <option value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
+                                    @foreach($to_accounts as $account)
+                                        <option
+                                            value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
                                     @endforeach
                                 </x-select>
                             </div>
