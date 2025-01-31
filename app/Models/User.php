@@ -90,4 +90,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Receivable::class);
     }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
