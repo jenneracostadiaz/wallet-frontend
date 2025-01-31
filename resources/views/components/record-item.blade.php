@@ -1,11 +1,11 @@
-<div class="w-full py-4 px-8 gap-4 rounded-md shadow-lg bg-slate-700 border-t-4 sm:border-l-4 sm:border-t-0
+<div class="w-full py-4 px-8 gap-4 rounded-md shadow-lg bg-slate-700 border-t-4 lg:border-l-4 lg:border-t-0
     {{ $record->type === 'income' ? 'border-green-500' : '' }}
     {{ $record->type === 'expense' ? 'border-red-500' : '' }}
     {{ $record->type === 'transfer' ? 'border-blue-500' : '' }}
 ">
-    <div class="flex flex-col gap-2 sm:flex-row justify-between items-center">
+    <div class="flex flex-col gap-2 lg:flex-row justify-between items-center">
         <div
-            class="relative flex flex-1 flex-col sm:flex-row items-center gap-1 text-sm font-medium text-gray-900 dark:text-white order-3 sm:order-1">
+            class="relative flex flex-1 flex-col lg:flex-row items-center gap-1 text-sm font-medium text-gray-900 dark:text-white order-3 lg:order-1">
             <p>
                 @if($record->category->parent)
                     <span class="font-bold">
@@ -16,22 +16,22 @@
                 {{ $record->category->icon }}
                 {{ $record->category->name }}
             </p>
-            <div class="sm:absolute top-4 text-[12px] text-slate-400">
+            <div class="lg:absolute top-4 text-[12px] text-slate-400">
                 Date: {{ \Carbon\Carbon::parse($record->date)->format('d/m/Y') }}
                 - Time: {{ \Carbon\Carbon::parse($record->time)->format('H:i') }}
             </div>
         </div>
         @if (isset($record->account))
-            <div class="flex flex-1 flex-col gap-1 order-1 sm:order-2">
+            <div class="flex flex-1 flex-col gap-1 order-1 lg:order-2">
                 {{ $record->account->icon }}
                 {{ $record->account->name }}
             </div>
         @else
-            <div class="flex flex-col gap-1 order-1 sm:order-2">
+            <div class="flex flex-col gap-1 order-1 lg:order-2">
             </div>
         @endif
-        <div class="flex-1 flex flex-col sm:flex-row items-center gap-2 relative order-2 sm:order-4">
-            <div class="block font-black text-md sm:text-sm
+        <div class="flex-1 flex flex-col lg:flex-row items-center gap-2 relative order-2 lg:order-4">
+            <div class="block font-black text-md lg:text-sm
                 {{ $record->type === 'income' ? 'text-green-500' : '' }}
                 {{ $record->type === 'expense' ? 'text-red-500' : '' }}
                 {{ $record->type === 'transfer' ? 'text-white' : '' }}
@@ -52,7 +52,7 @@
                 </div>
             @endif
         </div>
-        <div class="flex justify-end items-end gap-2 order-4 sm:order-5">
+        <div class="flex justify-end items-end gap-2 order-4 lg:order-5">
             @if($record->type != 'transfer')
                 <button type="button" wire:click="openModal({{ $record->id }})"
                         wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD {{$record->id}} to confirm|EDIT RECORD {{$record->id}}">

@@ -35,8 +35,11 @@
 
     <!-- Page Content -->
     <main
-        class="py-4 w-11/12 max-w-6xl mx-auto sm:px-6 lg:px-8 bg-gray-800 text-gray-200 overflow-hidden shadow-xl sm:rounded-lg">
-        {{ $slot }}
+        class="pt-10 pb-24">
+        <div
+            class="py-2 w-11/12 max-w-6xl mx-auto sm:px-6 lg:px-8 bg-gray-800 text-gray-200 overflow-hidden shadow-xl sm:rounded-lg">
+            {{ $slot }}
+        </div>
     </main>
 
     <livewire:records.create/>
