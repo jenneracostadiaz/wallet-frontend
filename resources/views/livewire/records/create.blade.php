@@ -36,13 +36,15 @@
                                 <x-label for="amount" value="{{__('Amount')}}"/>
                                 <div class="flex items-center gap-1">
                                     {{$selectType === 'expense' || $selectType === 'transfer' ? '➖' : '➕'}}
-                                    <x-input class="w-full" wire:model="from_amount" type="number" step="any" min="0"
+                                    <x-input class="w-full" wire:model="from_amount" wire:input="copyAmount"
+                                             type="number" step="any" min="0"
                                              placeholder="Ex. 1000"/>
                                 </div>
                             </div>
                             <div class="flex-1 flex flex-col gap-2">
                                 <x-label for="date" value="{{__('Currency')}}"/>
-                                <x-select class="w-full" wire:model="from_currency">
+                                <x-select class="w-full" wire:model="from_currency"
+                                          wire:change="handleCurrencyChange('from')">
                                     @foreach($currencies as $currency)
                                         <option
                                             value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>
@@ -77,7 +79,8 @@
                                 </div>
                                 <div class="flex-1 flex flex-col gap-2">
                                     <x-label for="date" value="{{__('Currency')}}"/>
-                                    <x-select class="w-full" wire:model="to_currency">
+                                    <x-select class="w-full" wire:model="to_currency"
+                                              wire:change="handleCurrencyChange('to')">
                                         @foreach($currencies as $currency)
                                             <option
                                                 value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>

@@ -62,6 +62,20 @@ class Create extends Component
 
     }
 
+    public function handleCurrencyChange($currency): void
+    {
+        if ($currency === 'from') {
+            $this->to_currency = $this->from_currency;
+        } else {
+            $this->from_currency = $this->to_currency;
+        }
+    }
+
+    public function copyAmount(): void
+    {
+        $this->to_amount = $this->from_amount;
+    }
+
     public function save(): void
     {
         DB::beginTransaction();
