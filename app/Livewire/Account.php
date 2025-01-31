@@ -6,6 +6,7 @@ use App\Models\Account as AccountModel;
 use App\Models\Currency;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -29,6 +30,12 @@ class Account extends Component
     public $search = '';
     public $storeBy = 'created_at';
 
+    #[On('refreshRecords')]
+    public function refreshRecords(): void
+    {
+        $this->render();
+    }
+
     public function resetFields(): void
     {
         $this->name = '';
@@ -37,7 +44,6 @@ class Account extends Component
         $this->icon = '';
         $this->starting_balance = 0;
         $this->currency = 1;
-
     }
 
     public function openModal(?AccountModel $account = null): void

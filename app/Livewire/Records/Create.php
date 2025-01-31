@@ -58,11 +58,17 @@ class Create extends Component
     {
         DB::beginTransaction();
         try {
-            
+
+            $amount = match ($this->selectType) {
+                'expense', 'transfer' => -abs($this->from_amount),
+                'income' => abs($this->from_amount),
+                default => $this->from_amount,
+            };
+
             auth()->user()->records()->create([
                 'type' => $this->selectType,
                 'account_id' => $this->from_account,
-                'amount' => $this->selectType === 'transfer' ? -$this->from_amount : $this->from_amount,
+                'amount' => $this->from_amount,
                 'currency_id' => $this->from_currency,
                 'category_id' => $this->category,
                 'label_id' => $this->label,
@@ -71,7 +77,7 @@ class Create extends Component
             ]);
 
             $account = auth()->user()->accounts()->find($this->from_account);
-            $account->current_balance += $this->selectType === 'transfer' ? -$this->from_amount : $this->from_amount;
+            $account->current_balance += $amount;
             $account->save();
 
             if ($this->selectType === 'transfer') {
