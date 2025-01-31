@@ -1,6 +1,6 @@
 @props(['name', 'showCreateButton' => true, 'showSearch' => true, 'showStoreBy' => true, 'placeholder' => 'Search', 'icon' => '', 'showAccounts' => false, 'accounts' => [], 'showDate' => false, 'showTypes' => false, 'types' => []])
 
-<div class="flex flex-col sm:flex-row gap-4 sm:gap-24 items-center py-4 px-4">
+<div class="flex flex-col sm:flex-row gap-4 sm:gap-24 items-center py-4">
 
     <h2 class="text-2xl font-bold">{{__($name)}}</h2>
 

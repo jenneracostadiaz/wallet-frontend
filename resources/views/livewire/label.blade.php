@@ -19,13 +19,13 @@
         <x-modal-content :name="$nameModal">
             <form wire:submit.prevent="{{$edit ? 'update' : 'save'}}" class="flex flex-col gap-4">
                 <div class="flex-1 flex flex-col space-y-2">
-                    <x-label for="name" value="{{__('Ex. Joe Done')}}"/>
-                    <x-input type="text" wire:model="name" placeholder="Name"/>
+                    <x-label for="name" value="{{__('Name')}}"/>
+                    <x-input type="text" wire:model="name" placeholder="{{__('Ex. Joe Done')}}"/>
                     <x-input-error for="name"/>
                 </div>
                 <div class="flex-1 flex flex-col space-y-2">
                     <x-label for="color" value="{{__('Color')}}"/>
-                    <x-input class="w-full" type="color" wire:model="color" placeholder="Color"/>
+                    <x-input class="w-full" type="color" wire:model="color" placeholder="{{__('Color')}}"/>
                     <x-input-error for="color"/>
                 </div>
                 <div class="flex gap-4 mt-2 items-center">
