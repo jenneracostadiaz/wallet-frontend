@@ -6,17 +6,20 @@ use App\Models\Currency;
 use App\Models\Record;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Create extends Component
 {
     public bool $modal = false;
     public string $selectType = 'expense';
+
+    #[Validate(['from_account' => 'required|numeric', 'amount' => 'required|numeric|min:0.01', 'from_currency' => 'required|numeric', 'to_account' => 'nullable|numeric', 'to_currency' => 'required|numeric', 'category' => 'nullable|numeric', 'label' => 'nullable|numeric', 'date' => 'required|date', 'time' => 'required|date_format:H:i'])]
     public ?int $from_account;
-    public int $from_amount;
+    
+    public $amount;
     public int $from_currency;
     public ?int $to_account;
-    public int $to_amount;
     public int $to_currency;
     public ?int $category;
     public $label;
@@ -27,10 +30,9 @@ class Create extends Component
     public function resetFields(): void
     {
         $this->from_account = auth()->user()->accounts->first()->id ?? null;
-        $this->from_amount = 0;
+        $this->amount = 0;
         $this->from_currency = 1;
         $this->to_account = auth()->user()->accounts->skip(1)->first()->id ?? null;
-        $this->to_amount = 0;
         $this->to_currency = 1;
         $this->category = auth()->user()->categories->first()->subcategories->first()->id ?? null;
         $this->label = null;
@@ -71,20 +73,15 @@ class Create extends Component
         }
     }
 
-    public function copyAmount(): void
-    {
-        $this->to_amount = $this->from_amount;
-    }
-
     public function save(): void
     {
         DB::beginTransaction();
         try {
-
+            $this->validate();
             $amount = match ($this->selectType) {
-                'expense', 'transfer' => -abs($this->from_amount),
-                'income' => abs($this->from_amount),
-                default => $this->from_amount,
+                'expense', 'transfer' => -abs($this->amount),
+                'income' => abs($this->amount),
+                default => $this->amount,
             };
 
             $account = auth()->user()->accounts()->find($this->from_account);
@@ -99,7 +96,7 @@ class Create extends Component
             auth()->user()->records()->create([
                 'type' => $this->selectType,
                 'account_id' => $this->from_account,
-                'amount' => $this->from_amount,
+                'amount' => $this->amount,
                 'currency_id' => $this->from_currency,
                 'category_id' => $this->category,
                 'label_id' => $this->label,
@@ -114,7 +111,7 @@ class Create extends Component
                 auth()->user()->records()->create([
                     'type' => $this->selectType,
                     'account_id' => $this->to_account,
-                    'amount' => $this->to_amount,
+                    'amount' => $this->amount,
                     'currency_id' => $this->to_currency,
                     'category_id' => $this->category,
                     'label_id' => $this->label,
@@ -123,13 +120,13 @@ class Create extends Component
                 ]);
 
                 $account = auth()->user()->accounts()->find($this->to_account);
-                $account->current_balance += $this->to_amount;
+                $account->current_balance += $this->amount;
                 $account->save();
             }
 
             session()->flash('message', 'Record created successfully.');
             session()->flash('message_style', 'success');
-            
+
             $this->closeModal();
             $this->dispatch('refreshRecords');
 

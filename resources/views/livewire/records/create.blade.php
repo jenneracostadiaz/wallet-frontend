@@ -28,16 +28,16 @@
 
                         <div class="flex justify-between gap-2">
                             <div class="flex-1 flex flex-col gap-2">
-                                <x-label for="amount" value="{{__('Amount')}}"/>
+                                <x-label value="{{__('Amount')}}"/>
                                 <div class="flex items-center gap-1">
                                     {{$selectType === 'expense' || $selectType === 'transfer' ? '➖' : '➕'}}
-                                    <x-input class="w-full" wire:model="from_amount" wire:input="copyAmount"
-                                             type="number" step="any" min="0"
-                                             placeholder="Ex. 1000"/>
+                                    <x-input class="w-full" x-ref="amountInput" x-on:input="handleInput"
+                                             wire:model="amount" type="text" step="0.01" min="0"
+                                             placeholder="Ex. 1000.00"/>
                                 </div>
                             </div>
                             <div class="flex-1 flex flex-col gap-2">
-                                <x-label for="date" value="{{__('Currency')}}"/>
+                                <x-label value="{{__('Currency')}}"/>
                                 <x-select class="w-full" wire:model="from_currency"
                                           wire:change="handleCurrencyChange('from')">
                                     @foreach($currencies as $currency)
@@ -55,7 +55,7 @@
                         </div>
                         <div class="flex-1 flex flex-col gap-2">
                             <div class="flex flex-col gap-2">
-                                <x-label for="amount" value="{{__('To Account')}}"/>
+                                <x-label value="{{__('To Account')}}"/>
                                 <x-select wire:model="to_account">
                                     @foreach($to_accounts as $account)
                                         <option
@@ -65,15 +65,16 @@
                             </div>
                             <div class="flex justify-between gap-2">
                                 <div class="flex-1 flex flex-col gap-2">
-                                    <x-label for="amount" value="{{__('Amount')}}"/>
+                                    <x-label value="{{__('Amount')}}"/>
                                     <div class="flex items-center gap-1">
                                         {{$selectType === 'expense' || $selectType === 'transfer' ? '➕' : '➖'}}
-                                        <x-input class="w-full" wire:model="to_amount" type="number" step="any" min="0"
-                                                 placeholder="Ex. 1000"/>
+                                        <x-input class="w-full" x-ref="amountInput" x-on:input="handleInput"
+                                                 wire:model="amount" type="text" step="0.01" min="0"
+                                                 placeholder="Ex. 1000.00"/>
                                     </div>
                                 </div>
                                 <div class="flex-1 flex flex-col gap-2">
-                                    <x-label for="date" value="{{__('Currency')}}"/>
+                                    <x-label value="{{__('Currency')}}"/>
                                     <x-select class="w-full" wire:model="to_currency"
                                               wire:change="handleCurrencyChange('to')">
                                         @foreach($currencies as $currency)
@@ -135,10 +136,19 @@
             </form>
             @if (session()->has('message'))
                 <div
-                    class="text-xs {{session()->has('message_style') && session('message_style') == 'danger' ? 'text-red-400' : 'text-teal-400'}}">
+                    class="text-sm {{session()->has('message_style') && session('message_style') == 'danger' ? 'text-red-400' : 'text-teal-400'}}">
                     {{ session('message') }}
                 </div>
             @endif
+
+            <x-input-error for="amount"/>
+            <x-input-error for="from_account"/>
+            <x-input-error for="to_account"/>
+            <x-input-error for="category"/>
+            <x-input-error for="label"/>
+            <x-input-error for="date"/>
+            <x-input-error for="time"/>
+
         </x-modal-content>
     </x-modal>
 </div>
