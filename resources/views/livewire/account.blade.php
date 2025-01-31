@@ -5,7 +5,7 @@
             :placeholder="'Search accounts...'"
             :icon="'💰️'"
         />
-        <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4">
+        <div class="grid grid-cols-1 gap-4 items-center py-4 px-4 mt-4">
             @foreach ($accounts as $account)
                 <x-account-item :account="$account"/>
             @endforeach
