@@ -58,16 +58,21 @@ class Create extends Component
     {
         DB::beginTransaction();
         try {
+            
             auth()->user()->records()->create([
                 'type' => $this->selectType,
                 'account_id' => $this->from_account,
-                'amount' => $this->from_amount,
+                'amount' => $this->selectType === 'transfer' ? -$this->from_amount : $this->from_amount,
                 'currency_id' => $this->from_currency,
                 'category_id' => $this->category,
                 'label_id' => $this->label,
                 'date' => $this->date,
                 'time' => $this->time,
             ]);
+
+            $account = auth()->user()->accounts()->find($this->from_account);
+            $account->current_balance += $this->selectType === 'transfer' ? -$this->from_amount : $this->from_amount;
+            $account->save();
 
             if ($this->selectType === 'transfer') {
                 auth()->user()->records()->create([
@@ -80,6 +85,10 @@ class Create extends Component
                     'date' => $this->date,
                     'time' => $this->time,
                 ]);
+
+                $account = auth()->user()->accounts()->find($this->to_account);
+                $account->current_balance += $this->to_amount;
+                $account->save();
             }
 
             $this->closeModal();
