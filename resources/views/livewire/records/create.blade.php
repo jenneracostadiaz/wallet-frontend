@@ -115,6 +115,7 @@
                     <div class="flex-1 flex flex-col gap-2">
                         <x-label value="{{__('Label')}}"/>
                         <x-select wire:model="label" class="w-full">
+                            <option>{{__('None--')}}</option>
                             @forelse($labels as $label)
                                 <option value="{{$label->id}}">{{$label->name}}</option>
                             @empty

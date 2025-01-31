@@ -19,7 +19,7 @@ class Create extends Component
     public int $to_amount;
     public int $to_currency;
     public ?int $category;
-    public ?int $label;
+    public $label;
     public $date;
     public $time;
     public $to_accounts;
@@ -33,7 +33,7 @@ class Create extends Component
         $this->to_amount = 0;
         $this->to_currency = 1;
         $this->category = auth()->user()->categories->first()->subcategories->first()->id ?? null;
-        $this->label = auth()->user()->labels->first()->id ?? null;
+        $this->label = null;
         $this->date = now()->format('Y-m-d');
         $this->time = now()->format('H:i');
         $this->to_accounts = auth()->user()->accounts->skip(1);
