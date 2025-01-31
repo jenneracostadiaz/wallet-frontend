@@ -35,7 +35,7 @@
 
     <!-- Page Content -->
     <main
-        class="py-4 w-11/12 max-w-6xl mx-auto sm:px-6 lg:px-8 bg-gray-800 text-gray-200 overflow-hidden shadow-xl sm:rounded-lg my-8">
+        class="py-4 w-11/12 max-w-6xl mx-auto sm:px-6 lg:px-8 bg-gray-800 text-gray-200 overflow-hidden shadow-xl sm:rounded-lg">
         {{ $slot }}
     </main>
 

@@ -1,6 +1,7 @@
 <div>
-    <button wire:click="openModal" class="fixed bottom-0 left-0 w-full p-4 bg-teal-400 text-gray-700">
-        <span class="text-xl">➕</span> <span class="text-lg">{{__('Add New Record')}}</span>
+    <button wire:click="openModal"
+            class="fixed bottom-4 right-4 py-4 px-8 flex gap-1 text-sm rounded-full transition bg-teal-400 text-gray-700 hover:bg-teal-300">
+        <span>➕</span>{{__('Add Record')}}
     </button>
     <x-modal :maxWidth="'3xl'" wire:model="modal">
         <x-modal-content :name="'Create Record'">
