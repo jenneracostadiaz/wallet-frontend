@@ -26,8 +26,6 @@
             <div class="flex flex-1 flex-col gap-1 order-1 lg:order-2">
                 {{ $record->account->icon }}
                 {{ $record->account->name }}
-
-                {{$record->main_transfer}}
                 @if($record->main_transfer)
                     →
                     {{$record->transfer->account->icon}}

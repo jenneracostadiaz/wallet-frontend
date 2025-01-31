@@ -65,7 +65,7 @@ class Create extends Component
     public function handleAccountChange(): void
     {
         $this->to_accounts = auth()->user()->accounts->where('id', '!=', $this->from_account);
-
+        $this->to_account = $this->to_accounts->first()->id ?? null;
     }
 
     public function handleCurrencyChange($currency): void
@@ -126,11 +126,10 @@ class Create extends Component
                     'time' => $this->time,
                 ]);
 
-                $from_record::query()->update(['transfer_id' => $to_record->id]);
-
+                $from_record->update(['transfer_id' => $to_record->id]);
+                
                 $account = auth()->user()->accounts()->find($this->to_account);
                 $account->current_balance += $this->amount;
-                $account->save();
             } else {
 
                 auth()->user()->records()->create([
@@ -145,8 +144,8 @@ class Create extends Component
                 ]);
 
                 $account->current_balance += $amount;
-                $account->save();
             }
+            $account->save();
 
             session()->flash('message', 'Record created successfully.');
             session()->flash('message_style', 'success');

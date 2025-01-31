@@ -16,6 +16,7 @@ class Records extends Component
 
     public $filterAccount;
     public $filterDate;
+    public $filterType;
 
     #[On('refreshRecords')]
     public function refreshRecords(): void
@@ -39,23 +40,12 @@ class Records extends Component
         }
 
         if ($type === 'transfer') {
-            if ($id->main_transfer) {
-                $account->current_balance += $id->amount;
-                $account->save();
-                $to_account = Record::query()->find($id->transfer_id)->account;
-                $to_account->current_balance -= $id->amount;
-            } else {
-                $account->current_balance -= $id->amount;
-                $account->save();
-                $to_account = Record::query()->where('transfer_id', $id->id)->first()->account;
-                $to_account->current_balance += $id->amount;
-            }
+            $to_account = $id->transfer()->first()->account;
+            $account->current_balance += $id->amount;
+            $account->save();
+            $to_account->current_balance -= $id->amount;
             $to_account->save();
-            $record_transfer = Record::query()->where('transfer_id', $id->id)->get();
-            foreach ($record_transfer as $record) {
-                $record->delete();
-            }
-
+            $id->transfer()->delete();
             $id->delete();
         }
 
@@ -66,18 +56,23 @@ class Records extends Component
     {
         return view('livewire.records', [
             'records' => auth()->user()->records()
-                ->where('type', 'expense')
-                ->orWhere(function ($query) {
-                    $query->where('type', 'transfer')
-                        ->where('main_transfer', true);
-                })
+                ->when($this->filterType, fn($query) => $query->where('type', $this->filterType))
                 ->when($this->filterAccount, fn($query) => $query->where('account_id', $this->filterAccount))
-                ->with('account', 'currency', 'category', 'label')
                 ->when($this->filterDate, fn($query) => $query->whereDate('date', $this->filterDate))
+                ->when($this->filterType == '', function ($query) {
+                    $query->where('type', 'expense')
+                        ->orWhere('type', 'income')
+                        ->orWhere(function ($query) {
+                            $query->where('type', 'transfer')
+                                ->where('main_transfer', true);
+                        });
+                })
+                ->when($this->filterType === 'transfer', fn($query) => $query->where('main_transfer', true))
                 ->orderBy('date', 'desc')
                 ->orderBy('time', 'desc')
                 ->paginate(25),
             'accounts' => auth()->user()->accounts,
+            'types' => ['expense', 'income', 'transfer'],
         ]);
     }
 }

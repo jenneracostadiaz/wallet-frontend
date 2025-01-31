@@ -1,4 +1,4 @@
-@props(['name', 'showCreateButton' => true, 'showSearch' => true, 'showStoreBy' => true, 'placeholder' => 'Search', 'icon' => '', 'showAccounts' => false, 'accounts' => [], 'showDate' => false])
+@props(['name', 'showCreateButton' => true, 'showSearch' => true, 'showStoreBy' => true, 'placeholder' => 'Search', 'icon' => '', 'showAccounts' => false, 'accounts' => [], 'showDate' => false, 'showTypes' => false, 'types' => []])
 
 <div class="flex flex-col sm:flex-row gap-4 sm:gap-24 items-center py-4 px-4">
 
@@ -48,6 +48,19 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                     <option value="created_at">{{__('Created At')}}</option>
                     <option value="name">{{__('Name')}}</option>
+                </select>
+            </div>
+        @endif
+
+        @if($showTypes)
+            <div class="flex">
+                <label class="sr-only">{{__('Type')}}</label>
+                <select wire:model.live="filterType"
+                        class="capitalize bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                    <option value="">{{__('All Types')}}</option>
+                    @foreach($types as $type)
+                        <option value="{{$type}}">{{$type}}</option>
+                    @endforeach()
                 </select>
             </div>
         @endif
