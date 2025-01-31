@@ -1,22 +1,16 @@
 <div class="w-full py-4 px-8 gap-4 rounded-md shadow-lg bg-slate-700 border-t-4 sm:border-l-4 sm:border-t-0
-                            @if ($record->type === 'income')
-                                border-green-500
-                            @endif
-                            @if ($record->type === 'expense')
-                                border-red-500
-                            @endif
-                            @if ($record->type === 'transfer')
-                                border-blue-500
-                            @endif
-                        ">
+    {{ $record->type === 'income' ? 'border-green-500' : '' }}
+    {{ $record->type === 'expense' ? 'border-red-500' : '' }}
+    {{ $record->type === 'transfer' ? 'border-blue-500' : '' }}
+">
     <div class="flex flex-col gap-2 sm:flex-row justify-between items-center">
         <div
             class="relative flex flex-1 flex-col sm:flex-row items-center gap-1 text-sm font-medium text-gray-900 dark:text-white order-3 sm:order-1">
             <p>
-                                        <span class="font-bold">
-                                            {{ $record->category->parent->icon }}
-                                            {{ $record->category->parent->name }}
-                                        </span> →
+                <span class="font-bold">
+                    {{ $record->category->parent->icon }}
+                    {{ $record->category->parent->name }}
+                </span> →
                 {{ $record->category->icon }}
                 {{ $record->category->name }}
             </p>
@@ -36,16 +30,10 @@
         @endif
         <div class="flex-1 flex flex-col sm:flex-row items-center gap-2 relative order-2 sm:order-4">
             <div class="block font-black text-md sm:text-sm
-                                        @if ($record->type === 'income')
-                                            text-green-500
-                                        @endif
-                                        @if ($record->type === 'expense')
-                                            text-red-500
-                                        @endif
-                                        @if ($record->type === 'transfer')
-                                            text-white
-                                        @endif
-                                    ">
+                {{ $record->type === 'income' ? 'text-green-500' : '' }}
+                {{ $record->type === 'expense' ? 'text-red-500' : '' }}
+                {{ $record->type === 'transfer' ? 'text-white' : '' }}
+            ">
                 {{ $record->currency->symbol }}
                 {{ $record->amount }}
             </div>
@@ -64,9 +52,7 @@
         </div>
         <div class="flex justify-end items-end gap-2 order-4 sm:order-5">
             @if($record->type != 'transfer')
-                <a>
-                    ✏️
-                </a>
+                <button>✏️</button>
             @endif
             <button type="button" wire:click="delete({{ $record->id }})"
                     wire:confirm.prompt="Are you sure?\n\nType DELETE RECORD {{$record->id}} to confirm|DELETE RECORD {{$record->id}}">
