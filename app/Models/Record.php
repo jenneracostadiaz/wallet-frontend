@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Record extends Model
 {
     protected $fillable = [
-        'amount',
-        'date',
-        'description',
         'type',
         'account_id',
+        'amount',
+        'currency_id',
         'category_id',
+        'label_id',
+        'date',
+        'time',
+        'user_id',
     ];
 
     public function account(): BelongsTo
