@@ -9,31 +9,60 @@
         />
 
         <section class="my-8">
-            <h2 class="font-bold text-xl mb-4">To be received this month</h2>
-
-            <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Amount
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    @foreach($receivables as $receivable)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                            <td class="px-6 py-4">{{$receivable->name}}</td>
-                            <td class="px-6 py-4">S/. {{$receivable->total_amount}}</td>
-                        </tr>
+            <h2 class="font-bold text-xl my-8">To be received this month</h2>
+            <x-table>
+                <x-slot name="head">
+                    <x-th>Name</x-th>
+                    <x-th>Amount</x-th>
+                </x-slot>
+                <x-slot name="body">
+                    @foreach($resume as $receivable)
+                        <x-tr>
+                            <x-td>{{$receivable->name}}</x-td>
+                            <x-td>S/. {{$receivable->total_amount}}</x-td>
+                        </x-tr>
                     @endforeach
-                    </tbody>
-                </table>
-            </div>
+                </x-slot>
+            </x-table>
+            <h2 class="font-bold text-xl my-8">{{__('Registers')}}</h2>
+            <x-table>
+                <x-slot name="head">
+                    <x-th>Name</x-th>
+                    <x-th>Date</x-th>
+                    <x-th>Amount</x-th>
+                    <x-th></x-th>
+                </x-slot>
+                <x-slot name="body">
+                    @foreach($receivables as $receivable)
+                        <x-tr>
+                            <x-td>{{$receivable->name}}</x-td>
+                            <x-td>{{\Carbon\Carbon::parse($receivable->due_date)->format('d M Y')}}</x-td>
+                            <x-td>S/. {{$receivable->amount}}</x-td>
+                            <x-td class="flex gap-4 justify-end">
+                                <button
+                                    wire:click="complete({{$receivable->id}})"
+                                    wire:confirm="Are you sure?"
+                                    class="flex justify-center items-center py-2.5 px-3 gap-1 text-sm font-medium text-white text-center ">
+                                    ✅
+                                </button>
+                                <button
+                                    wire:click="openModal({{$receivable->id}})"
+                                    class="flex justify-center items-center py-2.5 px-3 gap-1 text-sm font-medium text-white text-center ">
+                                    ✏️
+                                    <span class="sm:ms-1">Edit</span>
+                                </button>
+                                <div class="relative">
+                                    <button type="button" wire:click="delete({{$receivable->id}})"
+                                            wire:confirm.prompt="Are you sure?\n\nType DELETE to confirm|DELETE"
+                                            class="flex justify-center items-center py-2.5 px-1 text-sm font-medium text-white text-center">
+                                        🗑️
+                                    </button>
+                                </div>
+                            </x-td>
+                        </x-tr>
+                    @endforeach
+                </x-slot>
+            </x-table>
 
         </section>
 
