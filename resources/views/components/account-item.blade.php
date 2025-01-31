@@ -7,6 +7,20 @@
                 {{ $account->icon }} {{ $account->name }}
             </span>
         </div>
+        <div class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-900 dark:text-white capitalize">
+                {{$account->type}}
+            </span>
+        </div>
+        <div class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-900 dark:text-white">
+                {{ $account->currency->symbol }} {{ $account->current_balance }}
+            </span>
+            <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
+                Starting Balance:
+                {{ $account->currency->symbol }} {{ $account->starting_balance }}
+            </span>
+        </div>
         <div class="flex justify-end items-end gap-2">
             <button
                 wire:click="openModal({{$account->id}})"

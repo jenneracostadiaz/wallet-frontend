@@ -68,6 +68,7 @@ class Account extends Component
             'color' => $this->color,
             'icon' => $this->icon,
             'starting_balance' => $this->starting_balance,
+            'current_balance' => $this->starting_balance,
             'currency_id' => $this->currency,
         ]);
         $this->closeModal();

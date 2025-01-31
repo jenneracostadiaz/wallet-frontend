@@ -7,10 +7,12 @@
         <div
             class="relative flex flex-1 flex-col sm:flex-row items-center gap-1 text-sm font-medium text-gray-900 dark:text-white order-3 sm:order-1">
             <p>
-                <span class="font-bold">
+                @if($record->category->parent)
+                    <span class="font-bold">
                     {{ $record->category->parent->icon }}
-                    {{ $record->category->parent->name }}
+                        {{ $record->category->parent->name }}
                 </span> →
+                @endif
                 {{ $record->category->icon }}
                 {{ $record->category->name }}
             </p>
