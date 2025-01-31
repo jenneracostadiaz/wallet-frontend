@@ -8,16 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Record extends Model
 {
     protected $fillable = [
+        'user_id',
         'type',
         'account_id',
         'amount',
         'currency_id',
         'category_id',
         'label_id',
+        'main_transfer',
+        'transfer_id',
         'date',
         'time',
-        'user_id',
     ];
+
+    public function transfer(): BelongsTo
+    {
+        return $this->belongsTo(Record::class, 'transfer_id');
+    }
 
     public function account(): BelongsTo
     {

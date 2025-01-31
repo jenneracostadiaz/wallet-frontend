@@ -1,4 +1,4 @@
-@props(['name', 'showCreateButton' => true, 'showSearch' => true, 'showStoreBy' => true, 'placeholder' => 'Search', 'icon' => ''])
+@props(['name', 'showCreateButton' => true, 'showSearch' => true, 'showStoreBy' => true, 'placeholder' => 'Search', 'icon' => '', 'showAccounts' => false, 'accounts' => [], 'showDate' => false])
 
 <div class="flex flex-col sm:flex-row gap-4 sm:gap-24 items-center py-4 px-4">
 
@@ -49,6 +49,28 @@
                     <option value="created_at">{{__('Created At')}}</option>
                     <option value="name">{{__('Name')}}</option>
                 </select>
+            </div>
+        @endif
+
+        @if($showAccounts)
+            <div class="flex">
+                <label class="sr-only">{{__('Accounts')}}</label>
+                <select wire:model.live="filterAccount"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                    <option value="">{{__('All Accounts')}}</option>
+                    @foreach($accounts as $account)
+                        <option value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
+                    @endforeach()
+                </select>
+            </div>
+        @endif
+
+        @if($showDate)
+            <div class="flex">
+                <label class="sr-only">{{__('Date')}}</label>
+                <input type="date" wire:model.live="filterDate"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+
             </div>
         @endif
     </div>

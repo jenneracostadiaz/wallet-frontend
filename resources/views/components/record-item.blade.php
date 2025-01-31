@@ -1,11 +1,11 @@
-<div class="w-full py-4 px-8 gap-4 rounded-md shadow-lg bg-slate-700 border-t-4 lg:border-l-4 lg:border-t-0
+<div class="w-full py-4 px-8 lg:px-4 gap-4 rounded-md shadow-lg bg-slate-700 border-t-4 lg:border-l-4 lg:border-t-0
     {{ $record->type === 'income' ? 'border-green-500' : '' }}
     {{ $record->type === 'expense' ? 'border-red-500' : '' }}
     {{ $record->type === 'transfer' ? 'border-blue-500' : '' }}
 ">
     <div class="flex flex-col gap-2 lg:flex-row justify-between items-center">
         <div
-            class="relative flex flex-1 flex-col lg:flex-row items-center gap-1 text-sm font-medium text-gray-900 dark:text-white order-3 lg:order-1">
+            class="relative flex flex-1 flex-col items-center lg:items-start gap-1 lg:gap-0 text-sm font-medium text-gray-900 dark:text-white order-3 lg:order-1">
             <p>
                 @if($record->category->parent)
                     <span class="font-bold">
@@ -15,8 +15,9 @@
                 @endif
                 {{ $record->category->icon }}
                 {{ $record->category->name }}
+
             </p>
-            <div class="lg:absolute top-4 text-[12px] text-slate-400">
+            <div class="text-[12px] text-slate-400">
                 Date: {{ \Carbon\Carbon::parse($record->date)->format('d/m/Y') }}
                 - Time: {{ \Carbon\Carbon::parse($record->time)->format('H:i') }}
             </div>
@@ -25,6 +26,13 @@
             <div class="flex flex-1 flex-col gap-1 order-1 lg:order-2">
                 {{ $record->account->icon }}
                 {{ $record->account->name }}
+
+                {{$record->main_transfer}}
+                @if($record->main_transfer)
+                    →
+                    {{$record->transfer->account->icon}}
+                    {{$record->transfer->account->name}}
+                @endif
             </div>
         @else
             <div class="flex flex-col gap-1 order-1 lg:order-2">
@@ -53,12 +61,10 @@
             @endif
         </div>
         <div class="flex justify-end items-end gap-2 order-4 lg:order-5">
-            @if($record->type != 'transfer')
-                <button type="button" wire:click="openModal({{ $record->id }})"
-                        wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD {{$record->id}} to confirm|EDIT RECORD {{$record->id}}">
-                    ✏️
-                </button>
-            @endif
+            <button type="button" wire:click="openModal({{ $record->id }})"
+                    wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD {{$record->id}} to confirm|EDIT RECORD {{$record->id}}">
+                ✏️
+            </button>
             <button type="button" wire:click="delete({{ $record->id }})"
                     wire:confirm.prompt="Are you sure?\n\nType DELETE RECORD {{$record->id}} to confirm|DELETE RECORD {{$record->id}}">
                 🗑️
