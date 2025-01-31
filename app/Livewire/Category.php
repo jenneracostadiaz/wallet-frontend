@@ -48,11 +48,10 @@ class Category extends Component
 
     public function save(): void
     {
-        CategoryModel::query()->create([
+        auth()->user()->categories()->create([
             'name' => $this->name,
             'icon' => $this->icon,
             'parent_id' => $this->parent,
-            'user_id' => auth()->id()
         ]);
 
         $this->closeModal();
@@ -61,13 +60,11 @@ class Category extends Component
 
     public function update(): void
     {
-        CategoryModel::query()
-            ->where('id', $this->categoryId)
-            ->update([
-                'name' => $this->name,
-                'icon' => $this->icon,
-                'parent_id' => $this->parent === 'None--' ? null : $this->parent,
-            ]);
+        auth()->user()->categories()->where('id', $this->categoryId)->update([
+            'name' => $this->name,
+            'icon' => $this->icon,
+            'parent_id' => $this->parent === 'None--' ? null : $this->parent,
+        ]);
 
         $this->closeModal();
         $this->resetFields();
@@ -81,8 +78,7 @@ class Category extends Component
     #[Layout('layouts.app')]
     public function render(): View
     {
-        $query = CategoryModel::query()
-            ->where('parent_id', null);
+        $query = auth()->user()->categories()->where('parent_id', null);
 
         if ($this->search) {
             $query->where(function ($query) {

@@ -46,11 +46,9 @@ class Label extends Component
 
     public function save(): void
     {
-        LabelModel::query()->create([
+        auth()->user()->labels()->create([
             'name' => $this->name,
             'color' => $this->color,
-            'visibility' => true,
-            'user_id' => auth()->id(),
         ]);
 
         $this->closeModal();
@@ -59,7 +57,7 @@ class Label extends Component
 
     public function update(): void
     {
-        LabelModel::query()->where('id', $this->labelId)->update([
+        auth()->user()->labels()->where('id', $this->labelId)->update([
             'name' => $this->name,
             'color' => $this->color,
         ]);
@@ -77,7 +75,7 @@ class Label extends Component
     public function render(): View
     {
         return view('livewire.label', [
-            'labels' => LabelModel::query()
+            'labels' => auth()->user()->labels()
                 ->where('name', 'like', '%' . $this->search . '%')
                 ->orderBy($this->storeBy)
                 ->paginate(20),
