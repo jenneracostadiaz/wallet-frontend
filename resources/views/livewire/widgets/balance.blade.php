@@ -1,4 +1,4 @@
-<div class="my-4 grid lg:grid-cols-2 gap-8">
+<div class="my-4 grid lg:grid-cols-2 gap-12">
     <div class="flex flex-wrap items-center lg:items-start gap-4 justify-between">
         <div class="grid">
             <h2 class="text-2xl font-bold">{{__('Balance')}}</h2>
@@ -55,4 +55,6 @@
             @endforeach
         </div>
     </div>
+
+
 </div>

@@ -38,7 +38,7 @@ class Receivables extends Component
         $this->edit = (bool)$receivable->getAttributes();
         $this->receivableId = $receivable->id ?? 0;
         $this->name = $receivable->name ?? '';
-        $this->due_date = $receivable->due_date->format('Y-m-d') ?? now()->format('Y-m-d');
+        $this->due_date = $receivable->due_date?->format('Y-m-d') ?? now()->format('Y-m-d');
         $this->amount = $receivable->amount ?? 0.0;
         $this->is_paid = $receivable->is_paid ?? false;
     }
@@ -60,6 +60,7 @@ class Receivables extends Component
 
         $this->closeModal();
         $this->resetFields();
+        $this->dispatch('getReceivables');
     }
 
 
@@ -68,6 +69,7 @@ class Receivables extends Component
         $receivable->update([
             'is_paid' => true,
         ]);
+        $this->dispatch('getReceivables');
     }
 
     public function update(): void
@@ -81,24 +83,19 @@ class Receivables extends Component
 
         $this->closeModal();
         $this->resetFields();
+        $this->dispatch('getReceivables');
     }
 
     public function delete(Receivable $receivable): void
     {
         $receivable->delete();
+        $this->dispatch('getReceivables');
     }
 
     #[Layout('layouts.app')]
     public function render(): View
     {
         return view('livewire.receivables', [
-            'resume' => auth()->user()->receivables()
-                ->whereMonth('due_date', now()->month)
-                ->where('is_paid', false)
-                ->selectRaw('name, strftime("%Y-%m", due_date) as month, SUM(amount) as total_amount')
-                ->groupBy('name')
-                ->orderBy('due_date')
-                ->get(),
             'receivables' => auth()->user()->receivables()
                 ->where('is_paid', false)
                 ->orderBy('due_date')

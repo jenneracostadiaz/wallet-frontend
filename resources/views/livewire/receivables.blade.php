@@ -9,21 +9,7 @@
         />
 
         <section class="my-8">
-            <h2 class="font-bold text-xl my-8">To be received this month</h2>
-            <x-table>
-                <x-slot name="head">
-                    <x-th>Name</x-th>
-                    <x-th>Amount</x-th>
-                </x-slot>
-                <x-slot name="body">
-                    @foreach($resume as $receivable)
-                        <x-tr>
-                            <x-td>{{$receivable->name}}</x-td>
-                            <x-td>S/. {{$receivable->total_amount}}</x-td>
-                        </x-tr>
-                    @endforeach
-                </x-slot>
-            </x-table>
+            <livewire:receivables.resumen/>
             <h2 class="font-bold text-xl my-8">{{__('Registers')}}</h2>
             <x-table>
                 <x-slot name="head">
