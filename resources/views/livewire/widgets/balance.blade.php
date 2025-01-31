@@ -19,8 +19,8 @@
             <div class="flex-1 text-lg flex items-center">
                 <p class="font-semibold">{{__('Category')}}</p>
             </div>
-            <p class="w-16 font-semibold">{{__('Expense')}}</p>
-            <p class="w-16 font-semibold">{{__('Income')}}</p>
+            <p class="w-24 font-semibold">{{__('Expense')}}</p>
+            <p class="w-24 font-semibold">{{__('Income')}}</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 items-center my-2">
@@ -44,11 +44,11 @@
                                 </p>
                             @endif
                         </div>
-                        <p class="w-16 font-semibold">
-                            S/. {{$found['expense'] ?? 0}}
+                        <p class="w-24 font-semibold">
+                            ➖ S/. {{$found['expense'] ?? 0}}
                         </p>
-                        <p class="w-16 font-semibold">
-                            S/. {{$found['income'] ?? 0}}
+                        <p class="w-24 font-semibold">
+                            ➕ S/. {{$found['income'] ?? 0}}
                         </p>
                     </div>
                 @endif

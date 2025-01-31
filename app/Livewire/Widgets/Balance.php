@@ -3,10 +3,17 @@
 namespace App\Livewire\Widgets;
 
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Balance extends Component
 {
+    #[On('refreshRecords')]
+    public function refreshRecords(): void
+    {
+        $this->render();
+    }
+
     public function render(): View
     {
 
