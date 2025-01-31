@@ -31,7 +31,7 @@ class Create extends Component
         $this->to_account = auth()->user()->accounts->first()->id ?? null;
         $this->to_amount = 0;
         $this->to_currency = 1;
-        $this->category = auth()->user()->categories->first()->id ?? null;
+        $this->category = auth()->user()->categories->first()->subcategories->first()->id ?? null;
         $this->label = auth()->user()->labels->first()->id ?? null;
         $this->date = now()->format('Y-m-d');
         $this->time = now()->format('H:i');
@@ -83,22 +83,14 @@ class Create extends Component
             }
 
             $this->closeModal();
+            $this->dispatch('refreshRecords');
+            session()->flash('message', 'Record created successfully.');
             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
-            session()->flash('error', 'Something went wrong');
+            session()->flash('message', 'Record creation failed.');
         }
-    }
-
-    public function mount(): void
-    {
-        $this->from_account = auth()->user()->accounts->first()->id ?? null;
-        $this->to_account = auth()->user()->accounts->first()->id ?? null;
-        $this->category = auth()->user()->categories->first()->id ?? null;
-        $this->label = auth()->user()->labels->first()->id ?? null;
-        $this->date = now()->format('Y-m-d');
-        $this->time = now()->format('H:i');
     }
 
     public function render(): View
