@@ -110,8 +110,9 @@ class Create extends Component
 
     public function render(): View
     {
+
         return view('livewire.records.create', [
-            'types' => ['expense', 'income', 'transfer'],
+            'types' => auth()->user()->accounts->count() > 1 ? ['expense', 'income', 'transfer'] : ['expense', 'income'],
             'accounts' => auth()->user()->accounts,
             'currencies' => Currency::all(),
             'categories' => auth()->user()->categories->where('parent_id', null),
