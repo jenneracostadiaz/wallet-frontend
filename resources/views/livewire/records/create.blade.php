@@ -135,6 +135,4 @@
             </form>
         </x-modal-content>
     </x-modal>
-
-
 </div>

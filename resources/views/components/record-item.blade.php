@@ -52,7 +52,10 @@
         </div>
         <div class="flex justify-end items-end gap-2 order-4 sm:order-5">
             @if($record->type != 'transfer')
-                <button>✏️</button>
+                <button type="button" wire:click="openModal({{ $record->id }})"
+                        wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD {{$record->id}} to confirm|EDIT RECORD {{$record->id}}">
+                    ✏️
+                </button>
             @endif
             <button type="button" wire:click="delete({{ $record->id }})"
                     wire:confirm.prompt="Are you sure?\n\nType DELETE RECORD {{$record->id}} to confirm|DELETE RECORD {{$record->id}}">
