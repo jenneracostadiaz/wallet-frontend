@@ -4,6 +4,8 @@
             :name="'Payments'"
             :placeholder="'Search payments...'"
             :icon="'💎'"
+            :show-search="false"
+            :show-store-by="false"
         />
 
         <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4">

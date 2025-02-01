@@ -56,7 +56,7 @@ class Payments extends Component
         $this->resetFields();
     }
 
-    public function calculateTotalAmount()
+    public function calculateTotalAmount(): void
     {
         if ($this->total_installments && $this->installment_amount) {
             $this->total_amount = $this->total_installments * $this->installment_amount;
