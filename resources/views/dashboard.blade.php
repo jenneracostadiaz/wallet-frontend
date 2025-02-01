@@ -2,7 +2,7 @@
     <livewire:widgets.accounts/>
     <livewire:widgets.balance/>
     <hr class="my-12 border-gray-700"/>
-    <div class="grid grid-cols-3">
+    <div class="grid lg:grid-cols-3">
         <livewire:receivables.resumen/>
     </div>
     <hr class="my-12 border-gray-700"/>
