@@ -6,16 +6,15 @@
                 {{ $payment->payment_description }}
             </span>
             <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
-                Cuotas: {{ $payment->total_installments }} → Moto por cuota: S/.{{ $payment->installment_amount }}
+                {{__('Dues')}}: {{ $payment->total_installments }} → {{__('Total payment')}}: S/.{{ $payment->total_amount }}
             </span>
         </div>
         <div class="flex-1 flex flex-col gap-1">
             <span class="text-sm font-medium text-gray-900 dark:text-white">
-                Restante por pagar: S/.{{ $payment->remaining_amount }}
+                {{__('Pay now')}}: S/.{{ $payment->installment_amount }}
             </span>
             <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
-                Total a pagar:
-                {{ $payment->total_amount }}
+                {{__('Remaining payable')}}: S/.{{ $payment->remaining_amount }}
             </span>
         </div>
         <div class="flex justify-end items-end gap-2">
@@ -23,7 +22,6 @@
                 wire:click="openModal({{$payment->id}})"
                 class="flex justify-center items-center py-2.5 px-3 gap-1 text-sm font-medium text-white text-center ">
                 ✏️
-                <span class="sm:ms-1">Edit</span>
             </button>
             <div class="relative">
                 <button type="button" wire:click="delete({{$payment->id}})"

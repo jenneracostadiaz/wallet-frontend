@@ -51,12 +51,12 @@ class Payments extends Component
         $this->resetFields();
         $this->nameModal = $payment->getAttributes() ? 'Edit Payment' : 'Create new Payment';
         $this->edit = (bool)$payment->getAttributes();
-        $this->payment_id = $payment->id;
-        $this->payment_description = $payment->payment_description;
-        $this->total_installments = $payment->total_installments;
-        $this->installment_amount = $payment->installment_amount;
-        $this->total_amount = $payment->total_amount;
-        $this->payment_date = $payment->payment_date;
+        $this->payment_id = $payment->id ?? 0;
+        $this->payment_description = $payment->payment_description ?? '';
+        $this->total_installments = $payment->total_installments ?? 0;
+        $this->installment_amount = $payment->installment_amount ?? 0.0;
+        $this->total_amount = $payment->total_amount ?? 0.0;
+        $this->payment_date = $payment->payment_date ?? now()->format('Y-m-d');
 
     }
 
