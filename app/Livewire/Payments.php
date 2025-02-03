@@ -18,6 +18,8 @@ class Payments extends Component
     public string $nameModal = 'Create new Label';
     public bool $edit = false;
 
+    public int $payment_id = 0;
+
     #[Validate('required|string|max:255')]
     public string $payment_description = '';
 
@@ -48,6 +50,14 @@ class Payments extends Component
         $this->modal = true;
         $this->resetFields();
         $this->nameModal = $payment->getAttributes() ? 'Edit Payment' : 'Create new Payment';
+        $this->edit = (bool)$payment->getAttributes();
+        $this->payment_id = $payment->id;
+        $this->payment_description = $payment->payment_description;
+        $this->total_installments = $payment->total_installments;
+        $this->installment_amount = $payment->installment_amount;
+        $this->total_amount = $payment->total_amount;
+        $this->payment_date = $payment->payment_date;
+
     }
 
     public function closeModal(): void
@@ -78,11 +88,33 @@ class Payments extends Component
         $this->resetFields();
     }
 
+    public function update(): void
+    {
+        $payment = Payment::query()->find($this->payment_id);
+        $payment->update([
+            'payment_description' => $this->payment_description,
+            'total_installments' => $this->total_installments,
+            'installment_amount' => $this->installment_amount,
+            'total_amount' => $this->total_amount,
+            'remaining_amount' => $this->total_amount,
+            'payment_date' => $this->payment_date,
+        ]);
+
+        $this->closeModal();
+        $this->resetFields();
+    }
+
+    public function delete(Payment $payment): void
+    {
+        $payment->delete();
+    }
+
     #[Layout('layouts.app')]
     public function render(): View
     {
         return view('livewire.payments', [
             'payments' => auth()->user()->payments()->latest()->paginate(10),
+            'amount' => auth()->user()->payments()->sum('installment_amount'),
         ]);
     }
 }

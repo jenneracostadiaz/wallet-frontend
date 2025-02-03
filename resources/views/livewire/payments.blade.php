@@ -8,6 +8,10 @@
             :show-store-by="false"
         />
 
+        <div class="flex">
+            {{__("This month's payments")}}: S/. {{$amount}}
+        </div>
+
         <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4">
             @foreach ($payments as $payment)
                 <x-payment-item :payment="$payment"/>
