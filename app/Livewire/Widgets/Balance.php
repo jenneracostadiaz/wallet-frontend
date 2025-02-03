@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Widgets;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -18,8 +19,8 @@ class Balance extends Component
     {
 
         return view('livewire.widgets.balance', [
-            'balances' => $this->getBalances(),
-            'categories' => auth()->user()->categories,
+            'balances' => $this->getBalances()['balances'],
+            'categories' => $this->getBalances()['categories'],
         ]);
     }
 
@@ -46,6 +47,28 @@ class Balance extends Component
                 $balances['total'] += $currencyCode === 'pen' ? $currentBalance : $currentBalance * $exchangeRates[strtoupper($currencyCode)];
             }
         }
-        return $balances;
+
+        $categories = auth()->user()->categories()
+            ->whereNotNull('parent_id')
+            ->with(['records' => function ($query) {
+                $query->select('category_id', 'type', DB::raw('SUM(amount) as total'))
+                    ->groupBy('category_id', 'type');
+            }])
+            ->get()
+            ->map(function ($category) {
+                $found = $category->records->groupBy('type')->map(function ($records) {
+                    return $records->sum('total');
+                })->toArray();
+                $category->expense = $found['expense'] ?? 0;
+                $category->income = $found['income'] ?? 0;
+                return $category;
+            })
+            ->sortByDesc('expense')
+            ->take(5);
+
+        return [
+            'balances' => $balances,
+            'categories' => $categories,
+        ];
     }
 }
