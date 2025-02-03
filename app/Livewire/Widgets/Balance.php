@@ -29,6 +29,8 @@ class Balance extends Component
         $accounts = auth()->user()->accounts;
         $balances = [
             'total' => 0,
+            'payments' => 0,
+            'difference' => 0,
             'pen' => 0,
             'usd' => 0,
             'eur' => 0,
@@ -47,6 +49,10 @@ class Balance extends Component
                 $balances['total'] += $currencyCode === 'pen' ? $currentBalance : $currentBalance * $exchangeRates[strtoupper($currencyCode)];
             }
         }
+
+        $balances['payments'] = auth()->user()->payments()->sum('installment_amount');
+
+        $balances['difference'] = $balances['total'] - $balances['payments'];
 
         $categories = auth()->user()->categories()
             ->whereNotNull('parent_id')

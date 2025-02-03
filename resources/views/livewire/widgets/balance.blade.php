@@ -1,9 +1,16 @@
 <div class="my-8 grid lg:grid-cols-[400px,1fr] gap-12">
     <div class="flex flex-wrap items-center lg:items-start gap-4 justify-between">
         <div class="grid">
-            <h2 class="text-2xl font-bold">{{__('Balance')}}</h2>
+            <h2 class="text-2xl font-bold">{{__('Total in accounts')}}</h2>
             <p class="text-3xl font-bold">
                 S/. {{ number_format($balances['total'], 2) }}
+            </p>
+            <p class="text-sm text-gray-300 dark:text-gray-400 my-2">
+                {{__('Installment amount')}}: <span
+                    class="text-gray-100">S/. {{ number_format($balances['payments'], 2) }}</span>
+            </p>
+            <p class="text-sm text-gray-300 dark:text-gray-400">
+                {{__('Difference')}}: <span class="text-gray-100">S/. {{ $balances['difference'] }}</span>
             </p>
         </div>
         <div class="grid gap-2 font-semibold">
