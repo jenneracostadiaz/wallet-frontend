@@ -145,7 +145,7 @@ class Create extends Component
                 $account = auth()->user()->accounts()->find($this->to_account);
                 $account->current_balance += $this->amount;
             } else {
-                if ($this->record) {
+                if (!empty($this->record)) {
                     $record = auth()->user()->records()->find($this->record->id);
                     $record->update([
                         'type' => $this->selectType,

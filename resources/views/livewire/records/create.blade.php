@@ -44,7 +44,7 @@
                             <div class="flex-1 flex flex-col gap-2">
                                 <x-label value="{{__('Currency')}}"/>
                                 <x-select class="w-full" wire:model="from_currency"
-                                          wire:change="handleCurrencyChange('from')" disabled="$disabled_amount">
+                                          wire:change="handleCurrencyChange('from')" :disabled="$disabled_amount">
                                     @foreach($currencies as $currency)
                                         <option
                                             value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>
