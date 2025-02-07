@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\Record;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -26,6 +27,11 @@ class Create extends Component
     public $date;
     public $time;
     public $to_accounts;
+    public ?Record $record;
+
+    public $disabled_amount = false;
+    public $disabled_types = false;
+
 
     public function resetFields(): void
     {
@@ -43,6 +49,24 @@ class Create extends Component
         $this->date = now()->format('Y-m-d');
         $this->time = now()->format('H:i');
         $this->to_accounts = auth()->user()->accounts->skip(1);
+    }
+
+    #[On('edit_record')]
+    public function editRecord(Record $record): void
+    {
+        $this->modal = true;
+        $this->resetFields();
+        $this->record = $record;
+        $this->selectType = $record->type;
+        $this->from_currency = $record->currency_id;
+        $this->from_account = $record->account()->first()->id ?? null;
+        $this->amount = $record->amount;
+        $this->category = $record->category()->first()->id ?? null;
+        $this->label = $record->label()->first()->id ?? null;
+        $this->date = now()->format('Y-m-d');
+        $this->time = now()->format('H:i');
+        $this->disabled_amount = true;
+        $this->disabled_types = true;
     }
 
     public function openModal(): void
@@ -99,17 +123,7 @@ class Create extends Component
 
             if ($this->selectType === 'transfer') {
 
-                $from_record = auth()->user()->records()->create([
-                    'type' => $this->selectType,
-                    'account_id' => $this->from_account,
-                    'amount' => $this->amount,
-                    'currency_id' => $this->from_currency,
-                    'category_id' => $this->category,
-                    'label_id' => $this->label,
-                    'main_transfer' => true,
-                    'date' => $this->date,
-                    'time' => $this->time,
-                ]);
+                $from_record = $this->createRecord();
 
                 $account->current_balance += $amount;
                 $account->save();
@@ -127,23 +141,26 @@ class Create extends Component
                 ]);
 
                 $from_record->update(['transfer_id' => $to_record->id]);
-                
+
                 $account = auth()->user()->accounts()->find($this->to_account);
                 $account->current_balance += $this->amount;
             } else {
-
-                auth()->user()->records()->create([
-                    'type' => $this->selectType,
-                    'account_id' => $this->from_account,
-                    'amount' => $this->amount,
-                    'currency_id' => $this->from_currency,
-                    'category_id' => $this->category,
-                    'label_id' => $this->label,
-                    'date' => $this->date,
-                    'time' => $this->time,
-                ]);
-
-                $account->current_balance += $amount;
+                if ($this->record) {
+                    $record = auth()->user()->records()->find($this->record->id);
+                    $record->update([
+                        'type' => $this->selectType,
+                        'account_id' => $this->from_account,
+                        'amount' => $this->amount,
+                        'currency_id' => $this->from_currency,
+                        'category_id' => $this->category,
+                        'label_id' => $this->label,
+                        'date' => $this->date,
+                        'time' => $this->time,
+                    ]);
+                } else {
+                    $this->createRecord();
+                    $account->current_balance += $amount;
+                }
             }
             $account->save();
 
@@ -171,6 +188,23 @@ class Create extends Component
             'currencies' => Currency::all(),
             'categories' => auth()->user()->categories->where('parent_id', null),
             'labels' => auth()->user()->labels,
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function createRecord(): Record
+    {
+        return auth()->user()->records()->create([
+            'type' => $this->selectType,
+            'account_id' => $this->from_account,
+            'amount' => $this->amount,
+            'currency_id' => $this->from_currency,
+            'category_id' => $this->category,
+            'label_id' => $this->label,
+            'date' => $this->date,
+            'time' => $this->time,
         ]);
     }
 }

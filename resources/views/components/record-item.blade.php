@@ -59,11 +59,11 @@
         </div>
         <div class="flex justify-end items-end gap-2 order-4 lg:order-5">
             <button type="button" wire:click="openModal({{ $record->id }})"
-                    wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD {{$record->id}} to confirm|EDIT RECORD {{$record->id}}">
+                    wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD to confirm|EDIT RECORD">
                 ✏️
             </button>
             <button type="button" wire:click="delete({{ $record->id }})"
-                    wire:confirm.prompt="Are you sure?\n\nType DELETE RECORD {{$record->id}} to confirm|DELETE RECORD {{$record->id}}">
+                    wire:confirm.prompt="Are you sure?\n\nType DELETE RECORD to confirm|DELETE RECORD">
                 🗑️
             </button>
         </div>

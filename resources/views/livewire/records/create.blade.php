@@ -9,7 +9,10 @@
                 @foreach($types as $type)
                     <button
                         class="flex-1 capitalize  font-semibold border {{ $type == $selectType ? 'border-teal-400 text-teal-400' : 'border-gray-400 text-gray-400' }} py-4 px-8 rounded-lg"
-                        wire:click.prevent="setType('{{$type}}')">{{$type}}</button>
+                        @if(!$disabled_types)
+                            wire:click.prevent="setType('{{$type}}')"
+                        @endif
+                    >{{$type}}</button>
                 @endforeach
             </nav>
             <form wire:submit.prevent="save" class="my-8 flex gap-4 flex-col">
@@ -18,7 +21,8 @@
                     <div class="flex-1 flex flex-col gap-2">
                         <div class="flex flex-col gap-2">
                             <x-label value="{{__('From Account')}}"/>
-                            <x-select wire:model="from_account" wire:change="handleAccountChange">
+                            <x-select wire:model="from_account" wire:change="handleAccountChange"
+                                      :disabled="$disabled_amount">
                                 @forelse($accounts as $account)
                                     <option value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
                                 @empty
@@ -34,13 +38,13 @@
                                     {{$selectType === 'expense' || $selectType === 'transfer' ? '➖' : '➕'}}
                                     <x-input class="w-full" x-ref="amountInput" x-on:input="handleInput"
                                              wire:model="amount" type="text" step="0.01" min="0"
-                                             placeholder="Ex. 1000.00"/>
+                                             placeholder="Ex. 1000.00" :disabled="$disabled_amount"/>
                                 </div>
                             </div>
                             <div class="flex-1 flex flex-col gap-2">
                                 <x-label value="{{__('Currency')}}"/>
                                 <x-select class="w-full" wire:model="from_currency"
-                                          wire:change="handleCurrencyChange('from')">
+                                          wire:change="handleCurrencyChange('from')" disabled="$disabled_amount">
                                     @foreach($currencies as $currency)
                                         <option
                                             value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>

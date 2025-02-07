@@ -50,7 +50,11 @@ class Records extends Component
             $id->transfer()->delete();
             $id->delete();
         }
+    }
 
+    public function openModal(Record $record): void
+    {
+        $this->dispatch('edit_record', $record);
     }
 
     #[Layout('layouts.app')]
