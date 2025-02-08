@@ -137,7 +137,8 @@ class Payments extends Component
                 ->orderBy('payment_date')->paginate(10),
             'payed' => auth()->user()->payments()->where('is_paid', true)
                 ->orderBy('payment_date')->paginate(10),
-            'amount' => auth()->user()->payments()->where('is_paid', false)->sum('installment_amount'),
+            'amount' => auth()->user()->payments()->where('is_paid', false)->whereMonth('payment_date', now()->month)
+                ->whereYear('payment_date', now()->year)->sum('installment_amount'),
             'categories' => auth()->user()->categories->where('parent_id', null),
         ]);
     }
