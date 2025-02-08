@@ -42,7 +42,7 @@
                 {{ $record->type === 'transfer' ? 'text-white' : '' }}
             ">
                 {{ $record->currency->symbol }}
-                {{ $record->amount }}
+                {{ number_format($record->amount, 2) }}
             </div>
             @if (isset($record->label))
                 <div class="flex items-center gap-1">

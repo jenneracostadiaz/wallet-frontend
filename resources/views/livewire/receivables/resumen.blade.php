@@ -9,7 +9,7 @@
             @foreach($resume as $receivable)
                 <x-tr>
                     <x-td>{{$receivable->name}}</x-td>
-                    <x-td>S/. {{$receivable->total_amount}}</x-td>
+                    <x-td>S/. {{number_format($receivable->total_amount, 2)}}</x-td>
                 </x-tr>
             @endforeach
         </x-slot>

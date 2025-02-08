@@ -7,13 +7,13 @@
             </span>
 
         <span class="text-sm font-medium text-gray-900 dark:text-white">
-                {{ $account->currency->symbol }} {{ $account->current_balance }}
+                {{ $account->currency->symbol }} {{ number_format($account->current_balance, 2) }}
             </span>
     </div>
     <div class="flex justify-end">
         <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
                 Starting Balance:
-                {{ $account->currency->symbol }} {{ $account->starting_balance }}
+                {{ $account->currency->symbol }} {{ number_format($account->starting_balance, 2) }}
             </span>
     </div>
 </div>
