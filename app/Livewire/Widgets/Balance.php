@@ -52,7 +52,11 @@ class Balance extends Component
             }
         }
 
-        $balances['payments'] = auth()->user()->payments()->where('is_paid', false)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('installment_amount');
+        $balances['payments'] = auth()->user()->payments()
+            ->where('is_paid', false)
+            ->whereMonth('payment_date', now()->month)
+            ->whereYear('payment_date', now()->year)
+            ->sum('installment_amount');
 
         $balances['difference'] = $balances['total'] - $balances['payments'];
 
