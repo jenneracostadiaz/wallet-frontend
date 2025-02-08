@@ -18,18 +18,25 @@
             </span>
         </div>
         <div class="flex justify-end items-end gap-2">
-            <button
-                wire:click="openModal({{$payment->id}})"
-                class="flex justify-center items-center py-2.5 px-3 gap-1 text-sm font-medium text-white text-center ">
-                ✏️
-            </button>
-            <div class="relative">
-                <button type="button" wire:click="delete({{$payment->id}})"
-                        wire:confirm.prompt="Are you sure?\n\nType DELETE to confirm|DELETE"
-                        class="flex justify-center items-center py-2.5 px-1 text-sm font-medium text-white text-center">
-                    🗑️
+            @if($actions)
+                <button
+                    wire:click="pay({{$payment->id}})"
+                    class="flex justify-center items-center py-2.5 px-3 gap-1 text-sm font-medium">
+                    ✅
                 </button>
-            </div>
+                <button
+                    wire:click="openModal({{$payment->id}})"
+                    class="flex justify-center items-center py-2.5 px-3 gap-1 text-sm font-medium text-white text-center ">
+                    ✏️
+                </button>
+                <div class="relative">
+                    <button type="button" wire:click="delete({{$payment->id}})"
+                            wire:confirm.prompt="Are you sure?\n\nType DELETE to confirm|DELETE"
+                            class="flex justify-center items-center py-2.5 px-1 text-sm font-medium text-white text-center">
+                        🗑️
+                    </button>
+                </div>
+            @endif
         </div>
     </div>
 </div>

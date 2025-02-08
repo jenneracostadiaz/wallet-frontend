@@ -5,7 +5,7 @@
     <div class="grid lg:grid-cols-3 gap-4">
         <livewire:receivables.resumen/>
         <div class="col-span-2">
-            <livewire:payments/>
+            <livewire:payments :showPaid="false"/>
         </div>
     </div>
     <hr class="my-12 border-gray-700"/>

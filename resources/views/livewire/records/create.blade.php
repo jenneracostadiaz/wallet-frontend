@@ -8,7 +8,7 @@
             <nav class="flex flex-wrap gap-3 ">
                 @foreach($types as $type)
                     <button
-                        class="flex-1 capitalize  font-semibold border {{ $type == $selectType ? 'border-teal-400 text-teal-400' : 'border-gray-400 text-gray-400' }} py-4 px-8 rounded-lg"
+                        class="flex-1 capitalize  font-semibold border {{ $type == $selectType ? 'border-teal-400 text-teal-400' : 'border-gray-400 text-gray-400' }} py-4 px-8 rounded-lg {{!$disabled_types ? 'cursor-pointer' : 'cursor-not-allowed'}}"
                         @if(!$disabled_types)
                             wire:click.prevent="setType('{{$type}}')"
                         @endif
@@ -133,6 +133,30 @@
                         <x-input type="time" wire:model="time"/>
                     </div>
                 </div>
+
+                <div class="flex-1 flex flex-col space-y-2">
+                    <div class="flex items-center gap-2">
+                        <x-input type="checkbox" id="for_payment" wire:model="for_payment"
+                                 wire:change="toggle_payment($event.target.checked)"/>
+                        <x-label for="for_payment" value="{{__('Realize one Payment')}}"/>
+                    </div>
+                    <x-input-error for="for_payment"/>
+                </div>
+
+                @if($for_payment)
+                    <div class="flex-1 flex flex-col space-y-2">
+                        <x-label value="{{__('Payments')}}"/>
+                        <x-select wire:model="payment_id">
+                            <option value="">{{__('None--')}}</option>
+                            @foreach($payments as $payment)
+                                <option value="{{$payment->id}}">{{$payment->payment_description}} - ({{__('Dues')}}
+                                    : {{$payment->total_installments}})
+                                </option>
+                            @endforeach
+                        </x-select>
+                        <x-input-error for="payments"/>
+                    </div>
+                @endif
 
                 <div class="flex justify-between gap-2">
                     <x-button class="flex-1 py-4 justify-center bg-teal-400 text-gray-600"

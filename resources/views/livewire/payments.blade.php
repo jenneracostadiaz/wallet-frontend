@@ -18,6 +18,15 @@
             @endforeach
         </div>
 
+        @if($showPaid)
+            <h2 class="text-2xl font-bold">{{__('Paids')}}</h2>
+            <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4 opacity-50">
+                @foreach ($paids as $paid)
+                    <x-payment-item :payment="$paid" :actions="false"/>
+                @endforeach
+            </div>
+        @endif
+
         {{ $payments->links() }}
     </div>
     <x-modal :maxWidth="'xl'" wire:model="modal">
@@ -56,6 +65,28 @@
                     <x-input type="date" wire:model="payment_date"/>
                     <x-input-error for="payment_date"/>
                 </div>
+
+                <div class="flex-1 flex flex-col space-y-2">
+                    <x-label value="{{__('Category')}}"/>
+                    <x-select wire:model="category_id">
+                        @forelse($categories as $category)
+                            @if($category->subcategories->isNotEmpty())
+                                <optgroup label="{{$category->icon}} {{$category->name}}">
+                                    @foreach($category->subcategories as $subcategory)
+                                        <option
+                                            value="{{$subcategory->id}}">{{$subcategory->icon}} {{$subcategory->name}}</option>
+                                    @endforeach
+                                </optgroup>
+                            @else
+                                <option value="{{$category->id}}">{{$category->icon}} {{$category->name}}</option>
+                            @endif
+                        @empty
+                            <option value="">{{__('None--')}}</option>
+                        @endforelse
+                    </x-select>
+                    <x-input-error for="category_id"/>
+                </div>
+
                 <div class="flex gap-4 mt-2 items-center">
                     <x-button class="flex-1 justify-center bg-red-400 text-gray-200" type="button"
                               wire:click.prevent="closeModal">{{__('Cancel')}}</x-button>

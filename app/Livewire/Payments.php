@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Payment;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -17,6 +18,7 @@ class Payments extends Component
     public bool $modal = false;
     public string $nameModal = 'Create new Label';
     public bool $edit = false;
+    public bool $showPaid = true;
 
     public int $payment_id = 0;
 
@@ -35,6 +37,15 @@ class Payments extends Component
     #[Validate('required|date')]
     public string $payment_date;
 
+    #[Validate('required|integer')]
+    public int $category_id = 0;
+
+    #[On('refreshPayments')]
+    public function refreshPayments(): void
+    {
+        $this->resetPage();
+    }
+
 
     public function resetFields(): void
     {
@@ -43,6 +54,7 @@ class Payments extends Component
         $this->installment_amount = 0.0;
         $this->total_amount = 0.0;
         $this->payment_date = now()->format('Y-m-d');
+        $this->category_id = 0;
     }
 
     public function openModal(?Payment $payment = null): void
@@ -57,6 +69,7 @@ class Payments extends Component
         $this->installment_amount = $payment->installment_amount ?? 0.0;
         $this->total_amount = $payment->total_amount ?? 0.0;
         $this->payment_date = $payment->payment_date ?? now()->format('Y-m-d');
+        $this->category_id = $payment->category_id ?? 0;
 
     }
 
@@ -82,6 +95,7 @@ class Payments extends Component
             'total_amount' => $this->total_amount,
             'remaining_amount' => $this->total_amount,
             'payment_date' => $this->payment_date,
+            'category_id' => $this->category_id,
         ]);
 
         $this->closeModal();
@@ -98,6 +112,7 @@ class Payments extends Component
             'total_amount' => $this->total_amount,
             'remaining_amount' => $this->total_amount,
             'payment_date' => $this->payment_date,
+            'category_id' => $this->category_id,
         ]);
 
         $this->closeModal();
@@ -109,12 +124,21 @@ class Payments extends Component
         $payment->delete();
     }
 
+    public function pay(Payment $payment): void
+    {
+        $this->dispatch('payment:pay', $payment);
+    }
+
     #[Layout('layouts.app')]
     public function render(): View
     {
         return view('livewire.payments', [
-            'payments' => auth()->user()->payments()->latest()->paginate(10),
-            'amount' => auth()->user()->payments()->sum('installment_amount'),
+            'payments' => auth()->user()->payments()->where('is_paid', false)
+                ->latest()->paginate(10),
+            'paids' => auth()->user()->payments()->where('is_paid', true)
+                ->latest()->paginate(10),
+            'amount' => auth()->user()->payments()->where('is_paid', false)->sum('installment_amount'),
+            'categories' => auth()->user()->categories->where('parent_id', null),
         ]);
     }
 }

@@ -17,6 +17,7 @@ class Payment extends Model
         'remaining_amount',
         'payment_date',
         'is_paid',
+        'category_id',
     ];
 
     public function user(): BelongsTo

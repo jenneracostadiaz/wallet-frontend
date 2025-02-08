@@ -3,6 +3,7 @@
 namespace App\Livewire\Records;
 
 use App\Models\Currency;
+use App\Models\Payment;
 use App\Models\Record;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -27,10 +28,12 @@ class Create extends Component
     public $date;
     public $time;
     public $to_accounts;
+    public bool $for_payment = false;
     public ?Record $record;
 
     public $disabled_amount = false;
     public $disabled_types = false;
+    public ?int $payment_id;
 
 
     public function resetFields(): void
@@ -49,6 +52,10 @@ class Create extends Component
         $this->date = now()->format('Y-m-d');
         $this->time = now()->format('H:i');
         $this->to_accounts = auth()->user()->accounts->skip(1);
+        $this->for_payment = false;
+        $this->record = null;
+        $this->disabled_amount = false;
+        $this->disabled_types = false;
     }
 
     #[On('edit_record')]
@@ -67,6 +74,29 @@ class Create extends Component
         $this->time = now()->format('H:i');
         $this->disabled_amount = true;
         $this->disabled_types = true;
+    }
+
+    #[On('payment:pay')]
+    public function pay(Payment $payment): void
+    {
+        $this->modal = true;
+        $this->resetFields();
+        $this->disabled_types = true;
+        $this->for_payment = true;
+        $this->payment_id = $payment->id;
+        $this->amount = $payment->installment_amount;
+        $this->from_account = auth()->user()->accounts->first()->id ?? null;
+        $this->from_currency = 1;
+        $this->category = $payment->category_id;
+        $this->label = null;
+        $this->date = now()->format('Y-m-d');
+        $this->time = now()->format('H:i');
+        $this->payment_id = $payment->id;
+    }
+
+    public function toggle_payment($for_payment): void
+    {
+        $this->for_payment = $for_payment;
     }
 
     public function openModal(): void
@@ -146,8 +176,8 @@ class Create extends Component
                 $account->current_balance += $this->amount;
             } else {
                 if (!empty($this->record)) {
-                    $record = auth()->user()->records()->find($this->record->id);
-                    $record->update([
+                    $from_record = auth()->user()->records()->find($this->record->id);
+                    $from_record->update([
                         'type' => $this->selectType,
                         'account_id' => $this->from_account,
                         'amount' => $this->amount,
@@ -158,11 +188,27 @@ class Create extends Component
                         'time' => $this->time,
                     ]);
                 } else {
-                    $this->createRecord();
+                    $from_record = $this->createRecord();
                     $account->current_balance += $amount;
                 }
             }
             $account->save();
+
+            if ($this->payment_id) {
+                $payment = Payment::query()->find($this->payment_id);
+                if ($payment->total_installments <= 0) {
+                    $payment->is_paid = true;
+                } else {
+                    $payment->remaining_amount -= $payment->installment_amount;
+                    if ($payment->total_installments == 1) {
+                        $payment->is_paid = true;
+                    }
+                    $payment->total_installments -= 1;
+                }
+                $payment->save();
+                $from_record->update(['payment_id' => $payment->id]);
+                $this->dispatch('refreshPayments');
+            }
 
             session()->flash('message', 'Record created successfully.');
             session()->flash('message_style', 'success');
@@ -188,11 +234,12 @@ class Create extends Component
             'currencies' => Currency::all(),
             'categories' => auth()->user()->categories->where('parent_id', null),
             'labels' => auth()->user()->labels,
+            'payments' => auth()->user()->payments,
         ]);
     }
 
     /**
-     * @return void
+     * @return Record
      */
     public function createRecord(): Record
     {
