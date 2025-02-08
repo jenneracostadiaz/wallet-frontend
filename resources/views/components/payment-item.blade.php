@@ -1,3 +1,4 @@
+@props(['payment', 'actions' => true])
 <div class="w-full py-4 px-4 rounded-md shadow-lg bg-slate-700">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
         <div class="flex flex-col gap-1">
