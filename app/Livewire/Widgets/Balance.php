@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Widgets;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -20,7 +21,8 @@ class Balance extends Component
 
         return view('livewire.widgets.balance', [
             'balances' => $this->getBalances()['balances'],
-            'categories' => $this->getBalances()['categories'],
+            'categories_expense' => $this->getBalances()['categories_expense'],
+            'categories_income' => $this->getBalances()['categories_income'],
         ]);
     }
 
@@ -50,11 +52,23 @@ class Balance extends Component
             }
         }
 
-        $balances['payments'] = auth()->user()->payments()->sum('installment_amount');
+        $balances['payments'] = auth()->user()->payments()->where('is_paid', false)->sum('installment_amount');
 
         $balances['difference'] = $balances['total'] - $balances['payments'];
 
-        $categories = auth()->user()->categories()
+        $categories_expense = $this->getCategories('expense', 'sortByDesc');
+        $categories_income = $this->getCategories('income', 'sortByDesc');
+
+        return [
+            'balances' => $balances,
+            'categories_expense' => $categories_expense,
+            'categories_income' => $categories_income,
+        ];
+    }
+
+    private function getCategories(string $type, string $sortMethod): Collection
+    {
+        return auth()->user()->categories()
             ->whereNotNull('parent_id')
             ->with(['records' => function ($query) {
                 $query->select('category_id', 'type', DB::raw('SUM(amount) as total'))
@@ -69,12 +83,7 @@ class Balance extends Component
                 $category->income = $found['income'] ?? 0;
                 return $category;
             })
-            ->sortByDesc('expense')
+            ->$sortMethod($type)
             ->take(5);
-
-        return [
-            'balances' => $balances,
-            'categories' => $categories,
-        ];
     }
 }
