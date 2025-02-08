@@ -21,7 +21,7 @@
         @if($showPaid)
             <h2 class="text-2xl font-bold">{{__('Paids')}}</h2>
             <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4 opacity-50">
-                @foreach ($paids as $paid)
+                @foreach ($payed as $paid)
                     <x-payment-item :payment="$paid" :actions="false"/>
                 @endforeach
             </div>

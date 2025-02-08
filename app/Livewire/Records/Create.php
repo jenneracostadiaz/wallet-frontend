@@ -5,6 +5,7 @@ namespace App\Livewire\Records;
 use App\Models\Currency;
 use App\Models\Payment;
 use App\Models\Record;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -56,6 +57,7 @@ class Create extends Component
         $this->record = null;
         $this->disabled_amount = false;
         $this->disabled_types = false;
+        $this->selectType = 'expense';
     }
 
     #[On('edit_record')]
@@ -84,6 +86,7 @@ class Create extends Component
         $this->disabled_types = true;
         $this->for_payment = true;
         $this->payment_id = $payment->id;
+        $this->selectType = 'expense';
         $this->amount = $payment->installment_amount;
         $this->from_account = auth()->user()->accounts->first()->id ?? null;
         $this->from_currency = 1;
@@ -194,7 +197,7 @@ class Create extends Component
             }
             $account->save();
 
-            if ($this->payment_id) {
+            if (!empty($this->payment_id)) {
                 $payment = Payment::query()->find($this->payment_id);
                 if ($payment->total_installments <= 0) {
                     $payment->is_paid = true;
@@ -202,6 +205,8 @@ class Create extends Component
                     $payment->remaining_amount -= $payment->installment_amount;
                     if ($payment->total_installments == 1) {
                         $payment->is_paid = true;
+                    } else {
+                        $payment->payment_date = Carbon::parse($payment->payment_date)->addMonth()->format('Y-m-d');
                     }
                     $payment->total_installments -= 1;
                 }
