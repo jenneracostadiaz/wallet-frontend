@@ -18,7 +18,9 @@
             @forelse($records as $record)
                 <x-record-item :record="$record"/>
             @empty
-                <p class="text-center text-gray-400">{{__('No records found')}}</p>
+                <x-card-empty title="{{__('No records found')}}"
+                              message="{{__('No records found with the selected filters')}}"
+                />
             @endforelse
         </div>
         {{ $records->links() }}

@@ -14,10 +14,11 @@
                     class="text-gray-100">S/. {{ number_format($balances['difference'], 2) }}</span>
             </p>
         </div>
-        <div class="grid gap-2 font-semibold">
+        <div class="grid gap-2 font-semibold text-right">
             <p>Total (PEN) S/. {{number_format($balances['pen'], 2)}}</p>
             <p>Total (USD) $ {{number_format($balances['usd'], 2)}}</p>
             <p>Total (EUR) € {{number_format($balances['eur'], 2)}}</p>
+            <p class="text-xs">Please, create only S/. for the moment</p>
         </div>
     </div>
 

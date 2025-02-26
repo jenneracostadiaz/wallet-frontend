@@ -13,7 +13,7 @@
 </div>
 
 <div class="grid grid-cols-1 gap-4 items-center my-2">
-    @foreach($categories as $category)
+    @forelse($categories as $category)
         <div class="flex items-center gap-2">
             <div class="flex-1 text-lg flex items-center">
                 {!! $category->icon !!}
@@ -33,5 +33,12 @@
                 @endif
             </p>
         </div>
-    @endforeach
+    @empty
+        <div class="col-span-4">
+            <x-card-empty title="{{__('No categories found')}}"
+                          message="{{__('No categories found with the selected filters')}}"
+                          link="{{route('categories')}}"
+            />
+        </div>
+    @endforelse
 </div>
