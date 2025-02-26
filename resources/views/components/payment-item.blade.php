@@ -4,21 +4,21 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
         <div class="flex flex-col gap-1">
             <span
-                class="flex items-center gap-1 text-sm font-medium text-gray-900 dark:text-white">
+                class="flex items-center gap-1 text-sm font-medium text-white">
                 {{ $payment->payment_description }}
             </span>
-            <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
+            <span class="text-xs font-medium text-slate-300">
                 {{__('Dues')}}: {{ $payment->total_installments }} → {{__('Total payment')}}: S/.{{ $payment->total_amount }}
             </span>
-            <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
+            <span class="text-xs font-medium text-slate-300">
                 {{__('Payment date')}}: {{ $payment->payment_date }}
             </span>
         </div>
         <div class="flex-1 flex flex-col gap-1">
-            <span class="text-sm font-medium text-gray-900 dark:text-white">
+            <span class="text-sm font-medium text-white">
                 {{__('Pay now')}}: S/.{{ $payment->installment_amount }}
             </span>
-            <span class="text-xs font-medium text-gray-900 dark:text-slate-300">
+            <span class="text-xs font-medium text-slate-300">
                 {{__('Remaining payable')}}: S/.{{ $payment->remaining_amount }}
             </span>
         </div>

@@ -8,7 +8,7 @@
 
         @if($showCreateButton)
             <button wire:click="openModal"
-                    class="flex justify-center items-center gap-2 py-2.5 px-3 text-sm font-medium text-white text-center bg-teal-700 rounded-lg border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">
+                    class="flex justify-center items-center gap-2 py-2.5 px-3 text-sm font-medium text-white text-center rounded-lg border border-teal-700 focus:ring-4 focus:outline-none bg-teal-600 hover:bg-teal-700 focus:ring-teal-800">
                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                      viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -26,11 +26,11 @@
                         {{$icon}}
                     </div>
                     <input type="text" id="voice-search" wire:model.live="search"
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
+                           class="text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full ps-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500"
                            placeholder="{{__($placeholder)}}" required>
                     <button type="button" class="absolute inset-y-0 end-0 flex items-center pe-3">
                         <svg
-                            class="w-4 h-4 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                            class="w-4 h-4 text-gray-400 hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                   stroke-width="2"
@@ -45,7 +45,7 @@
             <div class="flex">
                 <label for="store-by" class="sr-only">{{__('Store By')}}</label>
                 <select id="store-by" wire:model.live="storeBy"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                        class="text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500">
                     <option value="created_at">{{__('Created At')}}</option>
                     <option value="name">{{__('Name')}}</option>
                 </select>
@@ -56,7 +56,7 @@
             <div class="flex">
                 <label class="sr-only">{{__('Type')}}</label>
                 <select wire:model.live="filterType"
-                        class="capitalize bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                        class="capitalize text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500">
                     <option value="">{{__('All Types')}}</option>
                     @foreach($types as $type)
                         <option value="{{$type}}">{{$type}}</option>
@@ -69,7 +69,7 @@
             <div class="flex">
                 <label class="sr-only">{{__('Accounts')}}</label>
                 <select wire:model.live="filterAccount"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                        class="text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500">
                     <option value="">{{__('All Accounts')}}</option>
                     @foreach($accounts as $account)
                         <option value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
@@ -82,7 +82,7 @@
             <div class="flex">
                 <label class="sr-only">{{__('Date')}}</label>
                 <input type="date" wire:model.live="filterDate"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                       class="text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500">
 
             </div>
         @endif

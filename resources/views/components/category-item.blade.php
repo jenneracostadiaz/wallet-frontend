@@ -2,7 +2,7 @@
 <div
     class="{{$subItem ? 'w-11/12' : 'w-full'}} flex justify-between items-center py-4 px-8 gap-4 rounded-md shadow-lg bg-slate-700">
     <div class="flex flex-col gap-1">
-        <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $icon }} {{ $name }}</span>
+        <span class="text-sm font-medium text-white">{{ $icon }} {{ $name }}</span>
     </div>
     <div class="flex justify-end items-end gap-2">
         <button wire:click="openModal({{$id}})"

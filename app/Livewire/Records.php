@@ -65,7 +65,7 @@ class Records extends Component
                 ->when($this->filterType, fn($query) => $query->where('type', $this->filterType))
                 ->when($this->filterAccount, fn($query) => $query->where('account_id', $this->filterAccount))
                 ->when($this->filterDate, fn($query) => $query->whereDate('date', $this->filterDate))
-                ->when($this->filterType == '', function ($query) {
+                ->when($this->filterType == 'type', function ($query) {
                     $query->where('type', 'expense')
                         ->orWhere('type', 'income')
                         ->orWhere(function ($query) {

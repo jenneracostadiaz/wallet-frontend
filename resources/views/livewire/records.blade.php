@@ -18,7 +18,7 @@
             @forelse($records as $record)
                 <x-record-item :record="$record"/>
             @empty
-                <p class="text-center text-gray-500 dark:text-gray-400">{{__('No records found')}}</p>
+                <p class="text-center text-gray-400">{{__('No records found')}}</p>
             @endforelse
         </div>
         {{ $records->links() }}

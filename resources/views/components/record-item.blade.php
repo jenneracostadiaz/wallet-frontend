@@ -5,7 +5,7 @@
 ">
     <div class="flex flex-col gap-2 lg:flex-row justify-between items-center">
         <div
-            class="relative flex flex-1 flex-col items-center lg:items-start gap-1 lg:gap-0 text-sm font-medium text-gray-900 dark:text-white order-3 lg:order-1">
+            class="relative flex flex-1 flex-col items-center lg:items-start gap-1 lg:gap-0 text-sm font-medium text-white order-3 lg:order-1">
             <p>
                 @if($record->category->parent)
                     <span class="font-bold">

@@ -20,7 +20,7 @@
                 <p class="font-semibold">{{$category->name}}</p>
                 @if($category->parent)
                     →
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                    <p class="text-xs text-gray-400">
                         {{$category->parent->icon}}{{$category->parent->name}}
                     </p>
                 @endif

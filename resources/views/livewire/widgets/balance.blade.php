@@ -5,11 +5,11 @@
             <p class="text-3xl font-bold">
                 S/. {{ number_format($balances['total'], 2) }}
             </p>
-            <p class="text-sm text-gray-300 dark:text-gray-400 my-2">
+            <p class="text-sm :text-gray-400 my-2">
                 {{__('Installment amount')}}: <span
                     class="text-gray-100">S/. {{ number_format($balances['payments'], 2) }}</span>
             </p>
-            <p class="text-sm text-gray-300 dark:text-gray-400">
+            <p class="text-sm :text-gray-400">
                 {{__('Difference')}}: <span
                     class="text-gray-100">S/. {{ number_format($balances['difference'], 2) }}</span>
             </p>
