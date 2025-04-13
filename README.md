@@ -31,7 +31,7 @@ of debt. It is a simple and easy-to-use tool that helps you take control of your
 * Reports to see your finances
 
 ## Next Steps
-- [ ] Update Categories report with filters
+- [x] Update Categories report with filters
 - [ ] Add charts to see the transactions
 - [ ] Add a calendar to see the transactions by date
 - [ ] Add currency_id to payments relationship
