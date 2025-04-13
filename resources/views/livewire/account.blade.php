@@ -60,7 +60,7 @@
                         <x-label for="type" value="{{__('Currency')}}"/>
                         <x-select wire:model="currency" class="w-full font-mono capitalize">
                             @foreach($currencies as $currency)
-                                <option value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>
+                                <option value="{{$currency->id}}" {{$currency->id !== 1 ? 'disabled' : ''}}>{{$currency->name}} {{$currency->symbol}}</option>
                             @endforeach
                         </x-select>
                     </div>
