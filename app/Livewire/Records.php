@@ -105,7 +105,8 @@ class Records extends Component
                                 ->where('main_transfer', true);
                         });
                 })
-                ->when($this->filterType === 'transfer', fn($query) => $query->where('main_transfer', true))
+                ->when($this->filterType === 'transfer', fn($query) => $query->where('main_transfer', 1))
+                ->where('main_transfer', 1)
                 ->orderBy('date', 'desc')
                 ->orderBy('time', 'desc')
                 ->paginate($this->perPage),

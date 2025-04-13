@@ -172,6 +172,7 @@ class Create extends Component
                     'currency_id' => $this->to_currency,
                     'category_id' => $this->category,
                     'label_id' => $this->label,
+                    'main_transfer' => false,
                     'transfer_id' => $from_record->id,
                     'date' => $this->date,
                     'time' => $this->time,
@@ -291,6 +292,7 @@ class Create extends Component
             'currency_id' => $this->from_currency,
             'category_id' => $this->category,
             'label_id' => $this->label,
+            'main_transfer' => true,
             'date' => $this->date,
             'time' => $this->time,
         ]);
