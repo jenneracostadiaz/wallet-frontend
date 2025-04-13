@@ -12,9 +12,10 @@ of debt. It is a simple and easy-to-use tool that helps you take control of your
 
 * Clone the repository
 * Run `composer install`
+* Clone `.env.example` to `.env`
 * Run `npm install`
 * Run `npm run dev`
-* Create a database and configure the .env file
+* RUN `php artisan key:generate`
 * Run `php artisan migrate`
 * Run `php artisan serve`
 * Visit `localhost:8000` in your browser
@@ -27,6 +28,12 @@ of debt. It is a simple and easy-to-use tool that helps you take control of your
 * Add, edit and delete accounts
 * Add, edit and delete labels
 * Add, edit and delete receivable and payable
+
+## Next Steps
+* Update Categories report with filters
+* Add charts to see the transactions
+* Add a calendar to see the transactions by date
+* Add multi currency support
 
 ## License
 
