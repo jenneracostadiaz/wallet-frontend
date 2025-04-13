@@ -72,8 +72,8 @@ class Create extends Component
         $this->amount = $record->amount;
         $this->category = $record->category()->first()->id ?? null;
         $this->label = $record->label()->first()->id ?? null;
-        $this->date = now()->format('Y-m-d');
-        $this->time = now()->format('H:i');
+        $this->date = $record->date;
+        $this->time = $record->time;
         $this->disabled_amount = true;
         $this->disabled_types = true;
     }

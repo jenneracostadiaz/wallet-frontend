@@ -58,8 +58,7 @@
             @endif
         </div>
         <div class="flex justify-end items-end gap-2 order-4 lg:order-5">
-            <button type="button" wire:click="openModal({{ $record->id }})"
-                    wire:confirm.prompt="Are you sure?\n\nType EDIT RECORD to confirm|EDIT RECORD">
+            <button type="button" wire:click="openModal({{ $record->id }})">
                 ✏️
             </button>
             <button type="button" wire:click="delete({{ $record->id }})"
