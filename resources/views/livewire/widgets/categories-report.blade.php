@@ -14,19 +14,19 @@
         <button type="button" wire:click="nextMonth" class="px-4 py-2 text-xs border-b border-slate-700">{{ __('next →') }}</button>
     </div>
 
-    <x-categories-table :categories="$categories" />
+    <x-categories-table :categories="$categories" :count="$count" :total_category="$total_category" />
 
 
     <x-modal :maxWidth="'lg'" wire:model="modal">
-        <x-modal-content :name="'All Categories Expenses Report'">
+        <x-modal-content :name="$type === 'expense' ? __('Categories Expenses') : __('Categories Income')">
             <div class="flex items-center justify-center mb-4">
                 <button type="button" wire:click="previousMonth" class="px-4 py-2 text-xs border-b border-slate-700"> {{ __('← prev') }}</button>
                 <span class="mx-4 text-sm font-semibold">
-            {{ \Carbon\Carbon::create($filterYear, $filterMonth)->format('F Y') }}
-        </span>
+                    {{ \Carbon\Carbon::create($filterYear, $filterMonth)->format('F Y') }}
+                </span>
                 <button type="button" wire:click="nextMonth" class="px-4 py-2 text-xs border-b border-slate-700">{{ __('next →') }}</button>
             </div>
-            <x-categories-table :categories="$allCategories" />
+            <x-categories-table :categories="$allCategories" :count="$count" :total_category="$total_category" />
         </x-modal-content>
     </x-modal>
 

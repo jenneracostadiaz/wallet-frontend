@@ -63,6 +63,7 @@ class CategoriesReport extends Component
             [
                 'categories' => $this->getCategoriesExpenses(5),
                 'count' => $this->getCategoriesExpenses(0)->count(),
+                'total_category' => optional($this->getCategoriesExpenses(1)->first())->currency . number_format($this->getCategoriesExpenses(0)->sum('total'), 2),
             ]
         );
     }

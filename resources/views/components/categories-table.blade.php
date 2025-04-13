@@ -1,9 +1,9 @@
-@props(['categories', 'filterYear', 'filterMonth'])
+@props(['categories', 'count', 'total_category'])
 
 <x-table>
     <x-slot name="head">
-        <x-th>{{__('Category')}}</x-th>
-        <x-th>{{__('Mount')}}</x-th>
+        <x-th>{{__('Category')}} ({{$count}})</x-th>
+        <x-th>{{__('Mount')}} ({{$total_category}})</x-th>
     </x-slot>
     <x-slot name="body">
         @forelse ($categories as $category)
@@ -13,7 +13,7 @@
                         <p class="font-semibold">{{$category->category->icon}} {{$category->category->name}}</p> @if($category->parent) → <p class="text-xs text-gray-400">{{$category->parent->icon}} {{$category->parent->name}}</p>@endif
                     </div>
                 </x-td>
-                <x-td>{{$category->currency}} {{$category->total}}</x-td>
+                <x-td>{{$category->currency}} {{number_format($category->total, 2)}}</x-td>
             </x-tr>
         @empty
             <x-tr>
