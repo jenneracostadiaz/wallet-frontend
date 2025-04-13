@@ -3,7 +3,7 @@
 <x-table>
     <x-slot name="head">
         <x-th>{{__('Category')}}</x-th>
-        <x-th>{{__('Expense')}}</x-th>
+        <x-th>{{__('Mount')}}</x-th>
     </x-slot>
     <x-slot name="body">
         @forelse ($categories as $category)

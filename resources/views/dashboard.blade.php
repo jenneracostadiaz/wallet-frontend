@@ -3,9 +3,10 @@
     <livewire:widgets.balance/>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="col-span-1">
-            <livewire:widgets.categories-expenses/>
+            <livewire:widgets.categories-report :type="'expense'"/>
         </div>
         <div class="col-span-1">
+            <livewire:widgets.categories-report :type="'income'"/>
         </div>
     </div>
     <hr class="my-12 border-gray-700"/>

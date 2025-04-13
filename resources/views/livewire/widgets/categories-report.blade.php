@@ -1,7 +1,6 @@
 <section>
-
     <div class="flex items-end justify-between mb-4">
-        <h2 class="text-2xl font-bold">Categories Expenses</h2>
+        <h2 class="text-2xl font-bold">{{$type === 'expense' ? __('Categories Expenses') : __('Categories Income')}}</h2>
         @if($count > 5)
             <button type="button" wire:click="openModal">{{__('See all categories')}}</button>
         @endif

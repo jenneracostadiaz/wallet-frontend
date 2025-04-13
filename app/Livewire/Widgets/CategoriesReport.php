@@ -5,8 +5,9 @@ namespace App\Livewire\Widgets;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class CategoriesExpenses extends Component
+class CategoriesReport extends Component
 {
+    public $type = 'expense';
     public $modal = false;
     public $allCategories = [];
     public $filterMonth;
@@ -52,7 +53,7 @@ class CategoriesExpenses extends Component
 
     public function render(): View
     {
-        return view('livewire.widgets.categories-expenses',
+        return view('livewire.widgets.categories-report',
             [
                 'categories' => $this->getCategoriesExpenses(5),
                 'count' => $this->getCategoriesExpenses(0)->count(),
@@ -63,7 +64,7 @@ class CategoriesExpenses extends Component
     private function getCategoriesExpenses(int $take)
     {
         return auth()->user()->records()
-            ->where('type', 'expense')
+            ->where('type', $this->type)
             ->where('currency_id', 1)
             ->when($this->filterMonth, function ($query) {
                 $query->whereMonth('date', $this->filterMonth)
