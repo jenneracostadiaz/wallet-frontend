@@ -19,6 +19,7 @@ class Records extends Component
     public $filterType;
 
     public $perPage = 25;
+    public $filterCategory;
     public $filterMonth;
     public $filterYear;
     public function __construct()
@@ -91,6 +92,7 @@ class Records extends Component
             'records' => auth()->user()->records()
                 ->when($this->filterType, fn($query) => $query->where('type', $this->filterType))
                 ->when($this->filterAccount, fn($query) => $query->where('account_id', $this->filterAccount))
+                ->when($this->filterCategory, fn($query) => $query->where('category_id', $this->filterCategory))
                 ->when($this->filterMonth, function ($query) {
                     $query->whereMonth('date', $this->filterMonth)
                         ->whereYear('date', $this->filterYear);
@@ -109,6 +111,7 @@ class Records extends Component
                 ->paginate($this->perPage),
             'accounts' => auth()->user()->accounts,
             'types' => ['expense', 'income', 'transfer'],
+            'categories' => auth()->user()->categories->where('parent_id', null),
         ]);
     }
 }

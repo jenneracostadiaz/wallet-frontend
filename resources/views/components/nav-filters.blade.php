@@ -7,6 +7,8 @@
     'icon' => '',
     'showAccounts' => false,
     'accounts' => [],
+    'showCategories' => false,
+    'categories' => [],
     'showDate' => false,
     'showMonth' => false,
     'filterYear' => null,
@@ -89,6 +91,29 @@
                     @foreach($accounts as $account)
                         <option value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
                     @endforeach()
+                </select>
+            </div>
+        @endif
+
+        @if($showCategories)
+            <div class="flex">
+                <label class="sr-only">{{__('Categories')}}</label>
+                <select wire:model.live="filterCategory" class="text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500">>
+                    <option value="">{{__('All Categories')}}</option>
+                    @forelse($categories as $category)
+                        @if($category->subcategories->isNotEmpty())
+                            <optgroup label="{{$category->icon}} {{$category->name}}">
+                                @foreach($category->subcategories as $subcategory)
+                                    <option
+                                        value="{{$subcategory->id}}">{{$subcategory->icon}} {{$subcategory->name}}</option>
+                                @endforeach
+                            </optgroup>
+                        @else
+                            <option value="{{$category->id}}">{{$category->icon}} {{$category->name}}</option>
+                        @endif
+                    @empty
+                        <option value="">{{__('None--')}}</option>
+                    @endforelse
                 </select>
             </div>
         @endif

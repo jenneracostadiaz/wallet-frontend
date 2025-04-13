@@ -10,6 +10,8 @@
             :showCreateButton="false"
             :showStoreBy="false"
             :showAccounts="true"
+            :showCategories="true"
+            :categories="$categories"
             :showDate="false"
             :showMonth="true"
             :filterYear="$filterYear"
