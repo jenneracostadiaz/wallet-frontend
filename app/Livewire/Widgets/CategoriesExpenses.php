@@ -21,6 +21,7 @@ class CategoriesExpenses extends Component
         return view('livewire.widgets.categories-expenses',
             [
                 'categories' => $this->getCategoriesExpenses(5),
+                'count' => $this->getCategoriesExpenses(0)->count(),
             ]
         );
     }
@@ -29,7 +30,7 @@ class CategoriesExpenses extends Component
     {
         return auth()->user()->records()
             ->where('type', 'expense')
-            ->where('currency_id', 2)
+            ->where('currency_id', 1)
             ->with('category', 'currency')
             ->get()
             ->groupBy('category.name')
