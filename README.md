@@ -33,6 +33,7 @@ of debt. It is a simple and easy-to-use tool that helps you take control of your
 * Update Categories report with filters
 * Add charts to see the transactions
 * Add a calendar to see the transactions by date
+* Add currency_id to payments relationship
 * Add multi currency support
 
 ## License
