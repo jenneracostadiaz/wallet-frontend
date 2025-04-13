@@ -61,7 +61,7 @@
                         <div class="flex-1 flex flex-col gap-2">
                             <div class="flex flex-col gap-2">
                                 <x-label value="{{__('To Account')}}"/>
-                                <x-select wire:model="to_account">
+                                <x-select wire:model="to_account" :disabled="$disabled_amount">
                                     @foreach($to_accounts as $account)
                                         <option
                                             value="{{$account->id}}">{{$account->icon}} {{$account->name}}</option>
@@ -75,13 +75,13 @@
                                         {{$selectType === 'expense' || $selectType === 'transfer' ? '➕' : '➖'}}
                                         <x-input class="w-full" x-ref="amountInput" x-on:input="handleInput"
                                                  wire:model="amount" type="text" step="0.01" min="0"
-                                                 placeholder="Ex. 1000.00"/>
+                                                 placeholder="Ex. 1000.00" :disabled="$disabled_amount"/>
                                     </div>
                                 </div>
                                 <div class="flex-1 flex flex-col gap-2">
                                     <x-label value="{{__('Currency')}}"/>
                                     <x-select class="w-full" wire:model="to_currency"
-                                              wire:change="handleCurrencyChange('to')">
+                                              wire:change="handleCurrencyChange('to')" :disabled="$disabled_amount">
                                         @foreach($currencies as $currency)
                                             <option
                                                 value="{{$currency->id}}" {{$currency->id !== 1 ? 'disabled' : '' }}>{{$currency->name}} {{$currency->symbol}}</option>

@@ -73,6 +73,8 @@ class Create extends Component
         $this->selectType = $record->type;
         $this->from_currency = $record->currency_id;
         $this->from_account = $record->account()->first()->id ?? null;
+        $this->to_accounts = auth()->user()->accounts->where('id', '!=', $this->from_account);
+        $this->to_account = $record->transfer->account_id ?? null;
         $this->amount = $record->amount;
         $this->category = $record->category()->first()->id ?? null;
         $this->label = $record->label()->first()->id ?? null;
