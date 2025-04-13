@@ -47,7 +47,7 @@
                                           wire:change="handleCurrencyChange('from')" :disabled="$disabled_amount">
                                     @foreach($currencies as $currency)
                                         <option
-                                            value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>
+                                            value="{{$currency->id}}" {{$currency->id !== 1 ? 'disabled' : '' }} >{{$currency->name}} {{$currency->symbol}}</option>
                                     @endforeach
                                 </x-select>
                             </div>
@@ -84,7 +84,7 @@
                                               wire:change="handleCurrencyChange('to')">
                                         @foreach($currencies as $currency)
                                             <option
-                                                value="{{$currency->id}}">{{$currency->name}} {{$currency->symbol}}</option>
+                                                value="{{$currency->id}}" {{$currency->id !== 1 ? 'disabled' : '' }}>{{$currency->name}} {{$currency->symbol}}</option>
                                         @endforeach
                                     </x-select>
                                 </div>
