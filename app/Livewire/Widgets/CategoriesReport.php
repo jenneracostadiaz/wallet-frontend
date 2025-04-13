@@ -3,6 +3,7 @@
 namespace App\Livewire\Widgets;
 
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CategoriesReport extends Component
@@ -19,7 +20,12 @@ class CategoriesReport extends Component
         $this->filterYear = now()->year;
     }
 
-    protected $listeners = ['updateAllCategories'];
+
+    #[On('refreshRecords')]
+    public function refreshRecords(): void
+    {
+        $this->render();
+    }
 
     public function previousMonth(): void
     {
