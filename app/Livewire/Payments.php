@@ -100,6 +100,8 @@ class Payments extends Component
 
         $this->closeModal();
         $this->resetFields();
+
+        $this->dispatch('refreshRecords');
     }
 
     public function update(): void
@@ -117,11 +119,14 @@ class Payments extends Component
 
         $this->closeModal();
         $this->resetFields();
+
+        $this->dispatch('refreshRecords');
     }
 
     public function delete(Payment $payment): void
     {
         $payment->delete();
+        $this->dispatch('refreshRecords');
     }
 
     public function pay(Payment $payment): void
