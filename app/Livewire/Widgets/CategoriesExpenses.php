@@ -9,6 +9,40 @@ class CategoriesExpenses extends Component
 {
     public $modal = false;
     public $allCategories = [];
+    public $filterMonth;
+    public $filterYear;
+
+    public function __construct()
+    {
+        $this->filterMonth = now()->month;
+        $this->filterYear = now()->year;
+    }
+
+    protected $listeners = ['updateAllCategories'];
+
+    public function previousMonth(): void
+    {
+        if ($this->filterMonth == 1) {
+            $this->filterMonth = 12;
+            $this->filterYear--;
+        } else {
+            $this->filterMonth--;
+        }
+
+        $this->allCategories = $this->getCategoriesExpenses(0);
+    }
+
+    public function nextMonth(): void
+    {
+        if ($this->filterMonth == 12) {
+            $this->filterMonth = 1;
+            $this->filterYear++;
+        } else {
+            $this->filterMonth++;
+        }
+
+        $this->allCategories = $this->getCategoriesExpenses(0);
+    }
 
     public function openModal(): void
     {
@@ -31,6 +65,10 @@ class CategoriesExpenses extends Component
         return auth()->user()->records()
             ->where('type', 'expense')
             ->where('currency_id', 1)
+            ->when($this->filterMonth, function ($query) {
+                $query->whereMonth('date', $this->filterMonth)
+                    ->whereYear('date', $this->filterYear);
+            })
             ->with('category', 'currency')
             ->get()
             ->groupBy('category.name')

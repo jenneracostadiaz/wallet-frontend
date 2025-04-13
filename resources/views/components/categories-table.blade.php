@@ -1,4 +1,4 @@
-@props(['categories'])
+@props(['categories', 'filterYear', 'filterMonth'])
 
 <x-table>
     <x-slot name="head">
