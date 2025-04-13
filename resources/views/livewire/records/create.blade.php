@@ -15,7 +15,7 @@
                     >{{$type}}</button>
                 @endforeach
             </nav>
-            <form wire:submit.prevent="save" class="my-8 flex gap-4 flex-col">
+            <form wire:submit.prevent="{{$typeTransaction}}" class="my-8 flex gap-4 flex-col">
                 <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8">
 
                     <div class="flex-1 flex flex-col gap-2">
@@ -159,8 +159,8 @@
                 @endif
 
                 <div class="flex justify-between gap-2">
-                    <x-button class="flex-1 py-4 justify-center bg-teal-400 text-gray-600"
-                              type="submit">➕ {{__('Save')}}</x-button>
+                    <x-button class="flex-1 py-4 justify-center uppercase bg-teal-400 text-gray-600"
+                              type="submit">➕ {{__($typeTransaction)}}</x-button>
                 </div>
             </form>
             @if (session()->has('message'))

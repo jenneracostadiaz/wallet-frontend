@@ -35,6 +35,8 @@ class Create extends Component
     public $disabled_amount = false;
     public $disabled_types = false;
     public ?int $payment_id;
+    public $typeTransaction = 'create';
+    public $recordToUpdate;
 
 
     public function resetFields(): void
@@ -65,6 +67,8 @@ class Create extends Component
     {
         $this->modal = true;
         $this->resetFields();
+        $this->typeTransaction = 'update';
+        $this->recordToUpdate = $record->id;
         $this->record = $record;
         $this->selectType = $record->type;
         $this->from_currency = $record->currency_id;
@@ -134,7 +138,7 @@ class Create extends Component
         }
     }
 
-    public function save(): void
+    public function create(): void
     {
         DB::beginTransaction();
         try {
@@ -226,6 +230,38 @@ class Create extends Component
         } catch (\Exception $e) {
             DB::rollback();
             session()->flash('message', 'Record creation failed.');
+            session()->flash('message_style', 'danger');
+        }
+    }
+
+    public function update():void
+    {
+        try {
+            $this->validate();
+            $record = Record::query()->find($this->recordToUpdate);
+            $record->update([
+                'category_id' => $this->category,
+                'label_id' => $this->label,
+                'date' => $this->date,
+                'time' => $this->time,
+            ]);
+
+            if($record->type === 'transfer') {
+                $record->transfer()->update([
+                    'category_id' => $this->category,
+                    'label_id' => $this->label,
+                    'date' => $this->date,
+                    'time' => $this->time,
+                ]);
+            }
+
+            session()->flash('message', 'Record updated successfully.');
+            session()->flash('message_style', 'success');
+
+            $this->closeModal();
+            $this->dispatch('refreshRecords');
+        } catch (\Throwable $e) {
+            session()->flash('message', 'Record update failed.');
             session()->flash('message_style', 'danger');
         }
     }
