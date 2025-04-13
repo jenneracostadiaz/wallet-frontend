@@ -19,6 +19,13 @@ class Records extends Component
     public $filterType;
 
     public $perPage = 25;
+    public $filterMonth;
+    public $filterYear;
+    public function __construct()
+    {
+        $this->filterMonth = now()->month;
+        $this->filterYear = now()->year;
+    }
 
     #[On('refreshRecords')]
     public function refreshRecords(): void
@@ -57,6 +64,26 @@ class Records extends Component
         $this->dispatch('edit_record', $record);
     }
 
+    public function previousMonth(): void
+    {
+        if ($this->filterMonth == 1) {
+            $this->filterMonth = 12;
+            $this->filterYear--;
+        } else {
+            $this->filterMonth--;
+        }
+    }
+
+    public function nextMonth(): void
+    {
+        if ($this->filterMonth == 12) {
+            $this->filterMonth = 1;
+            $this->filterYear++;
+        } else {
+            $this->filterMonth++;
+        }
+    }
+
     #[Layout('layouts.app')]
     public function render(): View
     {
@@ -64,7 +91,10 @@ class Records extends Component
             'records' => auth()->user()->records()
                 ->when($this->filterType, fn($query) => $query->where('type', $this->filterType))
                 ->when($this->filterAccount, fn($query) => $query->where('account_id', $this->filterAccount))
-                ->when($this->filterDate, fn($query) => $query->whereDate('date', $this->filterDate))
+                ->when($this->filterMonth, function ($query) {
+                    $query->whereMonth('date', $this->filterMonth)
+                        ->whereYear('date', $this->filterYear);
+                })
                 ->when($this->filterType == 'type', function ($query) {
                     $query->where('type', 'expense')
                         ->orWhere('type', 'income')

@@ -1,4 +1,19 @@
-@props(['name', 'showCreateButton' => true, 'showSearch' => true, 'showStoreBy' => true, 'placeholder' => 'Search', 'icon' => '', 'showAccounts' => false, 'accounts' => [], 'showDate' => false, 'showTypes' => false, 'types' => []])
+@props([
+    'name',
+    'showCreateButton' => true,
+    'showSearch' => true,
+    'showStoreBy' => true,
+    'placeholder' => 'Search',
+    'icon' => '',
+    'showAccounts' => false,
+    'accounts' => [],
+    'showDate' => false,
+    'showMonth' => false,
+    'filterYear' => null,
+    'filterMonth' => null,
+    'showTypes' => false,
+    'types' => []]
+)
 
 <div class="flex flex-col sm:flex-row gap-4 sm:gap-24 items-center py-4">
 
@@ -85,6 +100,16 @@
                        class="text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full   bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-teal-500 focus:border-teal-500">
 
             </div>
+        @endif
+
+        @if($showMonth)
+                <div class="flex items-center justify-center mb-4">
+                    <button type="button" wire:click="previousMonth" class="px-4 py-2 text-xs border-b border-slate-700"> {{ __('← prev') }}</button>
+                    <span class="mx-4 text-sm font-semibold">
+                    {{ \Carbon\Carbon::create($filterYear, $filterMonth)->format('F Y') }}
+                </span>
+                    <button type="button" wire:click="nextMonth" class="px-4 py-2 text-xs border-b border-slate-700">{{ __('next →') }}</button>
+                </div>
         @endif
     </div>
 </div>
