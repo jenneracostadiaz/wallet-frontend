@@ -37,10 +37,22 @@
     <x-modal :maxWidth="'xl'" wire:model="modal">
         <x-modal-content :name="$nameModal">
             <form wire:submit.prevent="{{$edit ? 'update' : 'save'}}" class="flex flex-col gap-4">
-                <div class="flex-1 flex flex-col space-y-2">
-                    <x-label value="{{__('Description')}}"/>
-                    <x-input type="text" wire:model="payment_description" placeholder="{{__('Ex. Deuda CMR')}}"/>
-                    <x-input-error for="payment_description"/>
+
+                <div class="flex gap-4">
+                    <div class="flex-1 flex flex-col space-y-2">
+                        <x-label value="{{__('Description')}}"/>
+                        <x-input type="text" wire:model="payment_description" placeholder="{{__('Ex. Deuda CMR')}}"/>
+                        <x-input-error for="payment_description"/>
+                    </div>
+
+                    <div class="flex-1 flex flex-col space-y-2">
+                        <x-label value="{{__('Currency')}}"/>
+                        <x-select wire:model="currency">
+                            @foreach($currencies as $currency)
+                                <option value="{{$currency->id}}" {{$currency->id !== 1 ? 'disabled' : ''}} >{{$currency->symbol}} {{$currency->name}}</option>
+                            @endforeach
+                        </x-select>
+                    </div>
                 </div>
 
                 <div class="flex gap-4">

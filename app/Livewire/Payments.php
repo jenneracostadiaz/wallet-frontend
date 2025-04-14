@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Currency;
 use App\Models\Payment;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -145,6 +146,7 @@ class Payments extends Component
             'amount' => auth()->user()->payments()->where('is_paid', false)->whereMonth('payment_date', now()->month)
                 ->whereYear('payment_date', now()->year)->sum('installment_amount'),
             'categories' => auth()->user()->categories->where('parent_id', null),
+            'currencies' => Currency::all(),
         ]);
     }
 
