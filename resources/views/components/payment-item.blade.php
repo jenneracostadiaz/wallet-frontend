@@ -1,6 +1,6 @@
 @props(['payment', 'actions' => true])
 <div
-    class="w-full py-4 px-4 rounded-md shadow-lg bg-slate-700 {{ \Carbon\Carbon::parse($payment->payment_date)->isCurrentMonth() ? 'opacity-100' : 'opacity-60' }}">
+    class="w-full py-4 px-4 rounded-md shadow-lg bg-slate-700 {{ \Carbon\Carbon::parse($payment->payment_date)->between(now()->startOfMonth(), now()->addWeeks(3)) ? 'opacity-100' : 'opacity-60' }}">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
         <div class="flex flex-col gap-1">
             <span

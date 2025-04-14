@@ -9,7 +9,7 @@
         />
 
         <div class="flex">
-            {{__("This month's payments")}}: S/. {{$amount}}
+            {{__("Upcoming payments")}}: S/. {{$amount}}
         </div>
 
         <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4">
@@ -22,15 +22,6 @@
                 />
             @endforelse
         </div>
-
-        @if($showPaid)
-            <h2 class="text-2xl font-bold">{{__('Paids')}}</h2>
-            <div class="flex flex-col gap-4 items-center py-4 px-4 mt-4 opacity-50">
-                @foreach ($payed as $paid)
-                    <x-payment-item :payment="$paid" :actions="false"/>
-                @endforeach
-            </div>
-        @endif
 
         {{ $payments->links() }}
     </div>

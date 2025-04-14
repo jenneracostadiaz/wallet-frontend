@@ -19,7 +19,6 @@ class Payments extends Component
     public bool $modal = false;
     public string $nameModal = 'Create new Label';
     public bool $edit = false;
-    public bool $showPaid = true;
 
     public int $payment_id = 0;
 
@@ -141,10 +140,9 @@ class Payments extends Component
         return view('livewire.payments', [
             'payments' => auth()->user()->payments()->where('is_paid', false)
                 ->orderBy('payment_date')->paginate(10),
-            'payed' => auth()->user()->payments()->where('is_paid', true)
-                ->orderBy('payment_date')->paginate(10),
-            'amount' => auth()->user()->payments()->where('is_paid', false)->whereMonth('payment_date', now()->month)
-                ->whereYear('payment_date', now()->year)->sum('installment_amount'),
+            'amount' => auth()->user()->payments()->where('is_paid', false)
+                ->whereBetween('payment_date', [now()->startOfMonth(), now()->addWeeks(3)])
+                ->sum('installment_amount'),
             'categories' => auth()->user()->categories->where('parent_id', null),
             'currencies' => Currency::all(),
         ]);
