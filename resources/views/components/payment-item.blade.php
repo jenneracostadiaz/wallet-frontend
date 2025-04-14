@@ -8,7 +8,7 @@
                 {{ $payment->payment_description }}
             </span>
             <span class="text-xs font-medium text-slate-300">
-                {{__('Dues')}}: {{ $payment->total_installments }} → {{__('Total payment')}}: S/.{{ $payment->total_amount }}
+                {{__('Dues')}}: {{ $payment->total_installments }} → {{__('Total payment')}}: S/.{{ number_format($payment->total_amount, 2) }}
             </span>
             <span class="text-xs font-medium text-slate-300">
                 {{__('Payment date')}}: {{ $payment->payment_date }}
@@ -16,10 +16,10 @@
         </div>
         <div class="flex-1 flex flex-col gap-1">
             <span class="text-sm font-medium text-white">
-                {{__('Pay now')}}: S/.{{ $payment->installment_amount }}
+                {{__('Pay now')}}: S/.{{ number_format($payment->installment_amount, 2) }}
             </span>
             <span class="text-xs font-medium text-slate-300">
-                {{__('Remaining payable')}}: S/.{{ $payment->remaining_amount }}
+                {{__('Remaining payable')}}: S/.{{ number_format($payment->remaining_amount, 2) }}
             </span>
         </div>
         <div class="flex justify-end items-end gap-2">
