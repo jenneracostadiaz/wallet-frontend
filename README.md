@@ -32,9 +32,10 @@ of debt. It is a simple and easy-to-use tool that helps you take control of your
 
 ## Next Steps
 - [x] Update Categories report with filters
+- [ ] Add currency_id to payments relationship
+- [ ] Add payments types (one_time, installments, recurring)
 - [ ] Add charts to see the transactions
 - [ ] Add a calendar to see the transactions by date
-- [ ] Add currency_id to payments relationship
 - [ ] Add multi currency support
 
 ## License
