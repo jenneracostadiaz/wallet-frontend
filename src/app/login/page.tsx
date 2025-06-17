@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -10,13 +10,13 @@ export default function LoginPage() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
 
         try {
             const result = await signIn('credentials', {
-                redirect: false, // No redirigir automáticamente
+                redirect: false,
                 email,
                 password,
             });
@@ -24,7 +24,6 @@ export default function LoginPage() {
             if (result?.error) {
                 setError('Credenciales inválidas. Por favor, intenta de nuevo.');
             } else {
-                // Login exitoso, redirige al dashboard o a la página principal
                 router.push('/dashboard');
             }
         } catch (err) {
