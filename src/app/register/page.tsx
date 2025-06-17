@@ -36,12 +36,6 @@ export default function RegisterPage() {
                 }),
             });
 
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.message || 'Error al registrar');
-            }
-
             const signInResponse = await signIn('credentials', {
                 email,
                 password,
