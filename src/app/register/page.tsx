@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
@@ -12,7 +12,7 @@ export default function RegisterPage() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null);
 
@@ -42,25 +42,20 @@ export default function RegisterPage() {
                 throw new Error(data.message || 'Error al registrar');
             }
 
-            // Registro exitoso, ahora intentar iniciar sesión automáticamente
             const signInResponse = await signIn('credentials', {
                 email,
                 password,
-                redirect: false, // Para manejar la redirección manualmente
+                redirect: false,
             });
 
             if (signInResponse?.ok) {
-                // Changed to optional chain
-                router.push('/dashboard'); // Redirigir al dashboard si el inicio de sesión es exitoso
+                router.push('/dashboard');
             } else {
-                // Si el inicio de sesión automático falla, mostrar un error.
-                // El usuario ya está registrado, pero necesitará iniciar sesión manualmente.
                 setError(
                     signInResponse?.error ||
                         'Registro exitoso, pero el inicio de sesión automático falló. Por favor, inicie sesión manualmente.'
                 );
-                // Opcionalmente, redirigir a la p��gina de login si se prefiere:
-                // router.push('/login');
+                router.push('/login');
             }
             // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         } catch (err: any) {
