@@ -1,6 +1,8 @@
 import { auth } from '@/app/api/auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 
+console.log('👋Middleware loaded');
+
 const publicRoutes = ['/login', '/register'];
 
 export default auth(req => {
@@ -14,7 +16,7 @@ export default auth(req => {
     }
 
     if (isPublicRoute && req.auth) {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
     return NextResponse.next();

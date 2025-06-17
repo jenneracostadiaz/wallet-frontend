@@ -43,7 +43,7 @@ export default function RegisterPage() {
             });
 
             if (signInResponse?.ok) {
-                router.push('/dashboard');
+                router.push('/');
             } else {
                 setError(
                     signInResponse?.error ||
