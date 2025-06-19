@@ -1,4 +1,6 @@
 import {ReactNode} from "react";
+import {SidebarProvider, SidebarTrigger} from "@/components/ui";
+import {AppSidebar} from "@/app/(dashboard)/components/AppSidebar";
 
 interface DashboardLayoutProps {
 	children: ReactNode;
@@ -6,8 +8,12 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({children}: DashboardLayoutProps) {
 	return (
-		<>
-			{children}
-		</>
+		<SidebarProvider>
+			<AppSidebar />
+			<main>
+				<SidebarTrigger />
+				{children}
+			</main>
+		</SidebarProvider>
 	);
 }
