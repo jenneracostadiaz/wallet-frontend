@@ -1,4 +1,4 @@
-import { Wallet } from 'lucide-react';
+import { Coins, LucideLayoutDashboard, PiggyBank, Wallet, WalletCards } from 'lucide-react';
 
 import {
     Sidebar,
@@ -10,6 +10,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui';
 
+import { NavSecondary } from '@/app/(dashboard)/components/NavSecondary';
 import { NavUser } from '@/app/(dashboard)/components/NavUser';
 import { auth } from '@/app/api/auth/[...nextauth]/route';
 import type { User } from '@/type/User';
@@ -29,6 +30,29 @@ export async function AppSidebar() {
         name: 'Guest',
         email: 'guest@example.com',
     };
+
+    const navItems = [
+        {
+            title: 'Dashboard',
+            url: '/',
+            icon: LucideLayoutDashboard,
+        },
+        {
+            title: 'Transactions',
+            url: '#',
+            icon: Coins,
+        },
+        {
+            title: 'Accounts',
+            url: '#',
+            icon: PiggyBank,
+        },
+        {
+            title: 'Categories',
+            url: '#',
+            icon: WalletCards,
+        },
+    ];
 
     return (
         <Sidebar variant="inset">
@@ -50,7 +74,7 @@ export async function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <p>Sidebar Content</p>
+                <NavSecondary items={navItems} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={user} />
