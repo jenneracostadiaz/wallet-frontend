@@ -6,6 +6,7 @@ import { type FormEvent, useState } from 'react';
 import {AlertCircleIcon, GalleryVerticalEnd} from "lucide-react";
 import Link from "next/link";
 import {Alert, AlertDescription, AlertTitle, Button, Input, Label} from "@/components/ui";
+import {ModeToggle} from "@/components/ModeToggle";
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
@@ -63,6 +64,9 @@ export default function RegisterPage() {
 
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="absolute top-8 right-8">
+                <ModeToggle />
+            </div>
             <div className="flex flex-col gap-6">
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-6">

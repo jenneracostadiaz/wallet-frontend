@@ -6,6 +6,7 @@ import {signIn} from "next-auth/react";
 import {AlertCircleIcon, GalleryVerticalEnd} from "lucide-react";
 import Link from "next/link";
 import {Alert, AlertDescription, AlertTitle, Button, Input, Label} from "@/components/ui";
+import {ModeToggle} from "@/components/ModeToggle";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -36,6 +37,9 @@ export default function LoginPage() {
 
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="absolute top-8 right-8">
+                <ModeToggle />
+            </div>
             <div className="flex flex-col gap-6">
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-6">
