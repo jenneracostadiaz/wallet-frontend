@@ -21,7 +21,7 @@ export default function RegisterPage() {
         setError(null);
 
         if (password !== passwordConfirmation) {
-            setError('Las contraseñas no coinciden');
+            setError('Passwords do not match');
             return;
         }
 
@@ -51,13 +51,12 @@ export default function RegisterPage() {
             } else {
                 setError(
                     signInResponse?.error ||
-                        'Registro exitoso, pero el inicio de sesión automático falló. Por favor, inicie sesión manualmente.'
+                        'Registration successful, but automatic login failed. Please log in manually.'
                 );
                 router.push('/login');
             }
             // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         } catch (err: any) {
-            console.log('Error en el registro o inicio de sesión:', err);
             setError(err.message);
         }
     };
@@ -79,7 +78,7 @@ export default function RegisterPage() {
                             </div>
                             <h1 className="text-xl font-bold">Welcome to Wallet</h1>
                             <div className="text-center text-sm">
-                                Don&apos;t have an account?{' '}
+                                Already have an account?{' '}
                                 <Link href="/login" className="underline underline-offset-4">
                                     Sign in
                                 </Link>
@@ -88,11 +87,11 @@ export default function RegisterPage() {
 
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-3">
-                                <Label htmlFor="name">Nombre</Label>
+                                <Label htmlFor="name">Name</Label>
                                 <Input
                                     id="name"
                                     type="text"
-                                    placeholder="Tu nombre"
+                                    placeholder="Your Name"
                                     value={name}
                                     onChange={e => setName(e.target.value)}
                                     required
@@ -111,11 +110,11 @@ export default function RegisterPage() {
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="password">Contraseña</Label>
+                                <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
                                     type="password"
-                                    placeholder="Contraseña"
+                                    placeholder="Password"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
                                     required
@@ -123,11 +122,11 @@ export default function RegisterPage() {
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="passwordConfirmation">Confirmar Contraseña</Label>
+                                <Label htmlFor="passwordConfirmation">Confirm Password</Label>
                                 <Input
                                     id="passwordConfirmation"
                                     type="password"
-                                    placeholder="Confirmar Contraseña"
+                                    placeholder="Confirm Password"
                                     value={passwordConfirmation}
                                     onChange={e => setPasswordConfirmation(e.target.value)}
                                     required
