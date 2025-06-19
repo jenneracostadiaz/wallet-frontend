@@ -84,16 +84,6 @@ export default function RegisterPage() {
 
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-3">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="m@example.com"
-                                    onChange={e => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="grid gap-3">
                                 <Label htmlFor="name">Nombre</Label>
                                 <Input
                                     id="name"
@@ -101,6 +91,17 @@ export default function RegisterPage() {
                                     placeholder="Tu nombre"
                                     value={name}
                                     onChange={e => setName(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="grid gap-3">
+                                <Label htmlFor="email">Email</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="m@example.com"
+                                    onChange={e => setEmail(e.target.value)}
                                     required
                                 />
                             </div>
