@@ -1,5 +1,4 @@
 import { auth } from '@/app/api/auth/[...nextauth]/route';
-import { LogoutButton } from '@/app/(dashboard)/components/LogoutButton';
 import { redirect } from 'next/navigation';
 
 export default async function Home() {
@@ -14,7 +13,6 @@ export default async function Home() {
             <h1>Dashboard</h1>
             <p>Bienvenido, {session.user?.name}!</p>
             <p>Tu email es: {session.user?.email}</p>
-            <LogoutButton />
         </>
     );
 }

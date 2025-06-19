@@ -1,36 +1,60 @@
-import { Wallet } from "lucide-react"
+import { Wallet } from 'lucide-react';
 
 import {
-	Sidebar,
-	SidebarContent, SidebarHeader, SidebarFooter,
-	SidebarMenu, SidebarMenuButton, SidebarMenuItem,
-} from "@/components/ui"
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from '@/components/ui';
 
+import { NavUser } from '@/app/(dashboard)/components/NavUser';
+import { auth } from '@/app/api/auth/[...nextauth]/route';
+import type { User } from '@/type/User';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-export function AppSidebar() {
-	return (
-		<Sidebar variant="inset">
-			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton size="lg" asChild>
-							<a href="#">
-								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-									<Wallet className="size-4" />
-								</div>
-								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-medium">Wallet App</span>
-									<span className="truncate text-xs">Personal Finance</span>
-								</div>
-							</a>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarHeader>
-			<SidebarContent>
-			</SidebarContent>
-			<SidebarFooter>
-			</SidebarFooter>
-		</Sidebar>
-	)
+export async function AppSidebar() {
+    const session = await auth();
+
+    if (!session) {
+        redirect('/login');
+    }
+
+    // @ts-ignore
+    const user: User = session.user ?? {
+        id: '123',
+        name: 'Guest',
+        email: 'guest@example.com',
+    };
+
+    return (
+        <Sidebar variant="inset">
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <Link href="/">
+                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                                    <Wallet className="size-4" />
+                                </div>
+                                <div className="grid flex-1 text-left text-sm leading-tight">
+                                    <span className="truncate font-medium">Wallet App</span>
+                                    <span className="truncate text-xs">Personal Finance</span>
+                                </div>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+            <SidebarContent>
+                <p>Sidebar Content</p>
+            </SidebarContent>
+            <SidebarFooter>
+                <NavUser user={user} />
+            </SidebarFooter>
+        </Sidebar>
+    );
 }
