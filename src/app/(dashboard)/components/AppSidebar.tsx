@@ -26,7 +26,7 @@ export async function AppSidebar() {
 
     // @ts-ignore
     const user: User = session.user ?? {
-        id: '123',
+        id: 1,
         name: 'Guest',
         email: 'guest@example.com',
     };
