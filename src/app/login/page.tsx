@@ -1,12 +1,12 @@
 'use client';
 
-import {FormEvent, useState} from "react";
-import {useRouter} from "next/navigation";
-import {signIn} from "next-auth/react";
-import {AlertCircleIcon, GalleryVerticalEnd} from "lucide-react";
-import Link from "next/link";
-import {Alert, AlertDescription, AlertTitle, Button, Input, Label} from "@/components/ui";
-import {ModeToggle} from "@/components/ModeToggle";
+import { ModeToggle } from '@/components/ModeToggle';
+import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import { AlertCircleIcon, GalleryVerticalEnd } from 'lucide-react';
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { type FormEvent, useState } from 'react';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -73,11 +73,19 @@ export default function LoginPage() {
                             <div className="grid gap-3">
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
-                                    <a href="#" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                                    <a
+                                        href="#"
+                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                                    >
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required onChange={e => setPassword(e.target.value)} />
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    required
+                                    onChange={e => setPassword(e.target.value)}
+                                />
                             </div>
 
                             <Button type="submit" className="w-full">

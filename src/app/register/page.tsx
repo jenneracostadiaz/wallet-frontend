@@ -1,12 +1,12 @@
 'use client';
 
+import { ModeToggle } from '@/components/ModeToggle';
+import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import { AlertCircleIcon, GalleryVerticalEnd } from 'lucide-react';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type FormEvent, useState } from 'react';
-import {AlertCircleIcon, GalleryVerticalEnd} from "lucide-react";
-import Link from "next/link";
-import {Alert, AlertDescription, AlertTitle, Button, Input, Label} from "@/components/ui";
-import {ModeToggle} from "@/components/ModeToggle";
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
@@ -174,7 +174,6 @@ export default function RegisterPage() {
                             Continue with Google
                         </Button>
                     </div>
-
                 </form>
                 <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
                     By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
