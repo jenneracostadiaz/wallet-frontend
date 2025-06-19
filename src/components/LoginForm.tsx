@@ -1,11 +1,11 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { GalleryVerticalEnd } from 'lucide-react';
+import {AlertCircleIcon, GalleryVerticalEnd} from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type ComponentProps, type FormEvent, useState } from 'react';
-import {Label, Input, Button} from "@/components/ui";
+import {Label, Input, Button, Alert, AlertTitle, AlertDescription} from "@/components/ui";
 
 export function LoginForm({ className, ...props }: ComponentProps<'div'>) {
     const [email, setEmail] = useState('');
@@ -25,12 +25,12 @@ export function LoginForm({ className, ...props }: ComponentProps<'div'>) {
             });
 
             if (result?.error) {
-                setError('Credenciales inválidas. Por favor, intenta de nuevo.');
+                setError('Invalid credentials. Please try again.');
             } else {
                 router.push('/');
             }
         } catch (err) {
-            setError('Ocurrió un error inesperado.');
+            setError('An unexpected error occurred.');
         }
     };
 
@@ -79,6 +79,15 @@ export function LoginForm({ className, ...props }: ComponentProps<'div'>) {
                             Login
                         </Button>
                     </div>
+                    {error && (
+                        <Alert variant="destructive">
+                            <AlertCircleIcon />
+                            <AlertTitle>Error</AlertTitle>
+                            <AlertDescription>
+                                <p>{error}</p>
+                            </AlertDescription>
+                        </Alert>
+                    )}
                     <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                         <span className="bg-background text-muted-foreground relative z-10 px-2">Or</span>
                     </div>
