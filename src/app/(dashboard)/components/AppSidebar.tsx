@@ -39,7 +39,7 @@ export async function AppSidebar() {
         },
         {
             title: 'Transactions',
-            url: '#',
+            url: '/transactions',
             icon: Coins,
         },
         {
