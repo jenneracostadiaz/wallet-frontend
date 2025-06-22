@@ -14,7 +14,7 @@ export default function Home() {
             <h1>Dashboard</h1>
             <p>Bienvenido, {session?.user?.name}!</p>
             <p>Tu email es: {session?.user?.email}</p>
-            <p>Tu token de acceso es: {session?.accessToken}</p>
+            <p>Tu token de acceso es: {session?.expires}</p>
         </>
     );
 }

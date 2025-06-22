@@ -67,15 +67,15 @@ export function NavUser({ user }: UserProps) {
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <button
-                                type="button"
-                                className="flex items-center gap-2"
-                                onClick={() => signOut({ redirectTo: '/' })}
-                            >
-                                <LogOut />
-                                Log out
-                            </button>
+                        <DropdownMenuItem
+                            onSelect={event => {
+                                event.preventDefault();
+                                signOut({ redirectTo: '/' }).catch(console.error);
+                            }}
+                            className="flex cursor-pointer items-center gap-2"
+                        >
+                            <LogOut />
+                            <span>Log out</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
