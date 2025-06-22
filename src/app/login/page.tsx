@@ -2,38 +2,32 @@
 
 import { ModeToggle } from '@/components/ModeToggle';
 import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import { useMutation } from '@tanstack/react-query';
 import { AlertCircleIcon, GalleryVerticalEnd } from 'lucide-react';
-import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
+import { loginUser } from './mutations';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
+    const { mutate, isError, error, isSuccess } = useMutation({
+        mutationFn: loginUser,
+    });
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setError(null);
-
-        try {
-            const result = await signIn('credentials', {
-                redirect: false,
-                email,
-                password,
-            });
-
-            if (result?.error) {
-                setError('Invalid credentials. Please try again.');
-            } else {
-                router.push('/');
-            }
-        } catch (err) {
-            setError('An unexpected error occurred.');
-        }
+        mutate({ email, password });
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            router.push('/');
+        }
+    }, [isSuccess, router]);
 
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -92,12 +86,12 @@ export default function LoginPage() {
                                 Login
                             </Button>
                         </div>
-                        {error && (
+                        {isError && (
                             <Alert variant="destructive">
                                 <AlertCircleIcon />
                                 <AlertTitle>Error</AlertTitle>
                                 <AlertDescription>
-                                    <p>{error}</p>
+                                    <p>{error?.message}</p>
                                 </AlertDescription>
                             </Alert>
                         )}

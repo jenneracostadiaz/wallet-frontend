@@ -1,18 +1,20 @@
-import { auth } from '@/app/api/auth/[...nextauth]/route';
-import { redirect } from 'next/navigation';
+'use client';
 
-export default async function Home() {
-    const session = await auth();
+import { useSession } from 'next-auth/react';
 
-    if (!session) {
-        redirect('/login');
+export default function Home() {
+    const { data: session, status } = useSession();
+
+    if (status === 'loading') {
+        return <p>Loading...</p>;
     }
 
     return (
         <>
             <h1>Dashboard</h1>
-            <p>Bienvenido, {session.user?.name}!</p>
-            <p>Tu email es: {session.user?.email}</p>
+            <p>Bienvenido, {session?.user?.name}!</p>
+            <p>Tu email es: {session?.user?.email}</p>
+            <p>Tu token de acceso es: {session?.accessToken}</p>
         </>
     );
 }

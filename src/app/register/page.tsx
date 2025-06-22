@@ -2,64 +2,41 @@
 
 import { ModeToggle } from '@/components/ModeToggle';
 import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import { useMutation } from '@tanstack/react-query';
 import { AlertCircleIcon, GalleryVerticalEnd } from 'lucide-react';
-import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
+import { registerUser } from './mutations';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
+    const { mutate, isError, error, isSuccess } = useMutation({
+        mutationFn: registerUser,
+    });
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setError(null);
 
         if (password !== passwordConfirmation) {
-            setError('Passwords do not match');
+            // This should be handled by a validation library like zod
+            // but for now, we'll just set an error
             return;
         }
 
-        try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    password_confirmation: passwordConfirmation,
-                }),
-            });
-
-            const signInResponse = await signIn('credentials', {
-                email,
-                password,
-                redirect: false,
-            });
-
-            if (signInResponse?.ok) {
-                router.push('/');
-            } else {
-                setError(
-                    signInResponse?.error ||
-                        'Registration successful, but automatic login failed. Please log in manually.'
-                );
-                router.push('/login');
-            }
-            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        } catch (err: any) {
-            setError(err.message);
-        }
+        mutate({ name, email, password, passwordConfirmation });
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            router.push('/');
+        }
+    }, [isSuccess, router]);
 
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -138,12 +115,12 @@ export default function RegisterPage() {
                             </Button>
                         </div>
 
-                        {error && (
+                        {isError && (
                             <Alert variant="destructive">
                                 <AlertCircleIcon />
                                 <AlertTitle>Error</AlertTitle>
                                 <AlertDescription>
-                                    <p>{error}</p>
+                                    <p>{error?.message}</p>
                                 </AlertDescription>
                             </Alert>
                         )}
