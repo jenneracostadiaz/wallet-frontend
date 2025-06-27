@@ -1,8 +1,20 @@
+import {Header} from "@/components/Header";
+
+const breadcrumbs = [
+    {
+        title: 'Dashboard',
+        href: '/'
+    },
+    {
+        title: 'Transactions',
+        href: '/transactions'
+    }
+]
+
 export default function TransactionsPage() {
     return (
-        <div>
-            <h1>Transactions</h1>
-            <p>This is the transactions page.</p>
-        </div>
+        <>
+            <Header breadcrumbs={breadcrumbs} />
+        </>
     );
 }
