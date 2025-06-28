@@ -10,7 +10,7 @@ export const TotalBalance = ({balance, loading}: TotalBalanceProps) => {
     return (
         <>
             {loading && (
-                <Skeleton className="h-44 w-full rounded-2xl" />
+                <Skeleton className="h-52 w-full rounded-2xl" />
             )}
 
             {!loading && (
