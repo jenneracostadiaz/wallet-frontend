@@ -23,8 +23,12 @@ export const BalanceByAccounts = ({ loading, accounts }: BalanceByAccountsProps)
             {!loading && (
                 <ScrollArea className="lg:col-span-2 md:h-[202px] w-full">
                     <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
-                        {accounts?.map((account: Account, index) => (
-                            <Card key={index} className="@container/card py-2" style={{ borderColor: account.color }}>
+                        {accounts?.map((account: Account) => (
+                            <Card
+                                key={account.name}
+                                className="@container/card py-2"
+                                style={{ borderColor: account.color }}
+                            >
                                 <CardHeader>
                                     <CardDescription>
                                         {account.name} ({account.type})

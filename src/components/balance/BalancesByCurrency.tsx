@@ -22,8 +22,8 @@ export const BalancesByCurrency = ({ balances, loading }: BalancesByCurrencyProp
 
             {!loading && (
                 <section className="lg:col-span-3 flex flex-wrap gap-4">
-                    {balances?.map((balance: BalanceByCurrency, index) => (
-                        <Badge key={index} variant="secondary">
+                    {balances?.map((balance: BalanceByCurrency) => (
+                        <Badge key={balance.currency.code} variant="secondary">
                             {balance.currency.symbol}
                             {balance.total}
                             <span className="text-muted-foreground text-xs">{balance.currency.code}</span>
