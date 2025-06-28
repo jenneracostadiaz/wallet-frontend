@@ -1,11 +1,4 @@
-import {
-    Card,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-    Separator,
-    Skeleton,
-} from '@/components/ui';
+import { Card, CardDescription, CardHeader, CardTitle, Separator, Skeleton } from '@/components/ui';
 import type { Currency } from '@/type/Currencies';
 import type { Summary } from '@/type/MonthlyReport';
 import { TrendingDown, TrendingUp } from 'lucide-react';
