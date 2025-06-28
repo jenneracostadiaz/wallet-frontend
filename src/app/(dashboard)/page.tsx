@@ -1,6 +1,5 @@
 import { Header } from '@/components/Header';
-import { Balance } from '@/components/widgets';
-import { MonthlyReport } from '@/components/widgets/MonthlyReport';
+import { Balance, LatestTransactions, MonthlyReport } from '@/components/widgets';
 
 const breadcrumbs = [
     {
@@ -16,6 +15,7 @@ export default function Home() {
             <section className="flex flex-col gap-4 p-4 pt-0">
                 <Balance />
                 <MonthlyReport />
+                <LatestTransactions />
             </section>
         </>
     );
