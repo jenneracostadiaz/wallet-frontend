@@ -1,12 +1,14 @@
 import {Badge, Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle, Skeleton} from "@/components/ui";
 import {TrendingUp} from "lucide-react";
+import {Currency} from "@/type/Currencies";
 
 interface TotalBalanceProps {
+    currency: Currency;
     balance: number;
     loading?: boolean;
 }
 
-export const TotalBalance = ({balance, loading}: TotalBalanceProps) => {
+export const TotalBalance = ({currency, balance, loading}: TotalBalanceProps) => {
     return (
         <>
             {loading && (
@@ -18,7 +20,7 @@ export const TotalBalance = ({balance, loading}: TotalBalanceProps) => {
                     <CardHeader>
                         <CardDescription>Total Balance</CardDescription>
                         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                            ${balance}
+                            {currency?.symbol}{balance}<span className="text-muted-foreground text-sm">{currency?.code}</span>
                         </CardTitle>
                         <CardAction>
                             <Badge variant="outline">
