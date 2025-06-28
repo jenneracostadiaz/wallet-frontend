@@ -1,4 +1,4 @@
-import {Badge, Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle, Skeleton} from "@/components/ui";
+import {Card, CardDescription, CardFooter, CardHeader, CardTitle, Skeleton} from "@/components/ui";
 import {TrendingUp} from "lucide-react";
 import {Currency} from "@/type/Currencies";
 
