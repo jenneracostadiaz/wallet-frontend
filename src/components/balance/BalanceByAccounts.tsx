@@ -1,12 +1,12 @@
-import {Card, CardDescription, CardTitle, CardHeader, ScrollArea, Skeleton, CardFooter} from "@/components/ui";
+import {Card, CardDescription, CardTitle, CardHeader, ScrollArea, Skeleton} from "@/components/ui";
 import type {Account} from "@/type/Accounts";
 
-interface Props {
+interface BalanceByAccountsProps {
     loading: boolean;
     accounts?: Account[];
 }
 
-export const BalanceByAccounts = ({loading, accounts}) => {
+export const BalanceByAccounts = ({loading, accounts}: BalanceByAccountsProps) => {
     return (
         <>
             {loading && (
