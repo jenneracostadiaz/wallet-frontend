@@ -1,6 +1,10 @@
 'use client';
 
 import {useGetBalance} from "@/hooks/useBalance";
+import {TotalBalance} from "@/components/balance/TotalBalance";
+import {Alert, AlertDescription, AlertTitle, Skeleton} from "@/components/ui";
+import {Terminal} from "lucide-react";
+import {ifError} from "node:assert";
 
 export const Balance = () => {
 
@@ -8,21 +12,24 @@ export const Balance = () => {
     const balanceData = balance?.data;
     console.log('balanceData', balanceData);
 
-    if (isError) {
-        return <div className="text-red-500">Error al cargar el balance</div>;
-    }
-
     return (
-        isLoading ? (
-            <div className="text-gray-500">Cargando...</div>
-        ) : (
-            <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold">Balance</h2>
-                <div className="p-4 rounded shadow">
-                    <p className="text-lg font-semibold">Saldo Actual: ${balanceData?.total_balance}</p>
+        <>
+            {isError && (
+                <Alert variant="destructive">
+                    <Terminal />
+                    <AlertTitle>Balance Error</AlertTitle>
+                    <AlertDescription>
+                        There was a problem fetching your balance. Please try again later.
+                    </AlertDescription>
+                </Alert>
+            )}
+
+            {!isError && (
+                <div className="flex flex-col gap-4">
+                    <TotalBalance loading={isLoading} balance={balanceData?.total_balance} />
                 </div>
-            </div>
-        )
+            )}
+        </>
     )
 
 }
