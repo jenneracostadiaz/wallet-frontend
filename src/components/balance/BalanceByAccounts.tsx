@@ -1,5 +1,6 @@
-import { Card, CardDescription, CardHeader, CardTitle, ScrollArea, Skeleton } from '@/components/ui';
+import { Card, CardAction, CardDescription, CardHeader, CardTitle, ScrollArea, Skeleton } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
+import { CircleDashed } from 'lucide-react';
 
 interface BalanceByAccountsProps {
     loading: boolean;
@@ -24,20 +25,20 @@ export const BalanceByAccounts = ({ loading, accounts }: BalanceByAccountsProps)
                 <ScrollArea className="lg:col-span-2 md:h-[202px] w-full">
                     <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
                         {accounts?.map((account: Account) => (
-                            <Card
-                                key={account.name}
-                                className="@container/card py-2"
-                                style={{ borderColor: account.color }}
-                            >
-                                <CardHeader>
+                            <Card key={account.name} className="@container/card py-2">
+                                <CardHeader className="px-4">
                                     <CardDescription>
-                                        {account.name} ({account.type})
+                                        <span>{account.name}</span>
+                                        <span className="text-muted-foreground  text-xs">({account.type})</span>
                                     </CardDescription>
                                     <CardTitle>
                                         {account.currency.symbol}
                                         {account.balance}
                                         <span className="text-muted-foreground text-xs">{account.currency.code}</span>
                                     </CardTitle>
+                                    <CardAction>
+                                        <CircleDashed className="size-4" style={{ color: account.color }} />
+                                    </CardAction>
                                 </CardHeader>
                             </Card>
                         ))}
