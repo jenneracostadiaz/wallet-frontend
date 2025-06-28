@@ -1,10 +1,10 @@
 import { Card, CardDescription, CardHeader, CardTitle, Separator, Skeleton } from '@/components/ui';
 import type { Currency } from '@/type/Currencies';
-import type { Summary } from '@/type/MonthlyReport';
+import type { Summary as SummaryType } from '@/type/MonthlyReport';
 import { TrendingDown, TrendingUp } from 'lucide-react';
 
 interface SummaryProps {
-    summary: Summary;
+    summary: SummaryType;
     currency: Currency;
     loading: boolean;
 }
