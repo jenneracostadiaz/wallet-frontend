@@ -56,6 +56,7 @@ export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
             },
             tooltip: {
                 callbacks: {
+                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     label: (tooltipItem: any) => {
                         const label = tooltipItem.dataset.label || '';
                         const value = tooltipItem.raw;
