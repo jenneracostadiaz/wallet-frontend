@@ -1,11 +1,10 @@
 'use client';
 
 import {useGetBalance} from "@/hooks/useBalance";
-import {TotalBalance} from "@/components/balance/TotalBalance";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui";
 import {Terminal} from "lucide-react";
 import type {Balance as BalanceType} from "@/type/Balance";
-import {BalanceByAccounts} from "@/components/balance/BalanceByAccounts";
+import {BalancesByCurrency, TotalBalance, BalanceByAccounts} from "@/components/balance";
 
 export const Balance = () => {
 
