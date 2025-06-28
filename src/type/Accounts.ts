@@ -1,5 +1,10 @@
+import {Currency} from "@/type/Currencies";
+
 export type Account = {
+    name: string;
     type: string;
-    count: number;
-    total_balance: number;
+    description: string;
+    color: string;
+    balance: number;
+    currency: Currency;
 }
