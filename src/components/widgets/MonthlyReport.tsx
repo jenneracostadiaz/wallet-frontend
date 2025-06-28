@@ -1,10 +1,10 @@
 'use client';
 
-import {useGetMonthlyReport} from "@/hooks/useMonthlyReport";
-import type {monthlyReport} from "@/type/MonthlyReport";
-import {Terminal} from "lucide-react";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui";
-import {Summary} from "@/components/reports/Summary";
+import { Summary } from '@/components/reports/Summary';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { useGetMonthlyReport } from '@/hooks/useMonthlyReport';
+import type { monthlyReport } from '@/type/MonthlyReport';
+import { Terminal } from 'lucide-react';
 
 export const MonthlyReport = () => {
     const { data, isLoading, isError } = useGetMonthlyReport();
@@ -20,9 +20,7 @@ export const MonthlyReport = () => {
                 <Alert variant="destructive">
                     <Terminal />
                     <AlertTitle>Monthly Report Error</AlertTitle>
-                    <AlertDescription>
-                        Error fetching monthly report. Please try again later.
-                    </AlertDescription>
+                    <AlertDescription>Error fetching monthly report. Please try again later.</AlertDescription>
                 </Alert>
             )}
             {!isError && (
