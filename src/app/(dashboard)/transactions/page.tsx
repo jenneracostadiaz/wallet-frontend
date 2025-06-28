@@ -1,15 +1,15 @@
-import {Header} from "@/components/Header";
+import { Header } from '@/components/Header';
 
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/'
+        href: '/',
     },
     {
         title: 'Transactions',
-        href: '/transactions'
-    }
-]
+        href: '/transactions',
+    },
+];
 
 export default function TransactionsPage() {
     return (

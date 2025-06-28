@@ -5,4 +5,4 @@ export const MonthlyReport = () => {
             <p className="text-muted-foreground">This feature is coming soon!</p>
         </section>
     );
-}
+};

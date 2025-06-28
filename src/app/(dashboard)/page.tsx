@@ -1,12 +1,12 @@
-import {Header} from "@/components/Header";
-import {Balance} from "@/components/widgets";
-import {MonthlyReport} from "@/components/widgets/MonthlyReport";
+import { Header } from '@/components/Header';
+import { Balance } from '@/components/widgets';
+import { MonthlyReport } from '@/components/widgets/MonthlyReport';
 
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/'
-    }
+        href: '/',
+    },
 ];
 
 export default function Home() {

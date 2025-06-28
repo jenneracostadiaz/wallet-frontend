@@ -1,4 +1,4 @@
-import {Currency} from "@/type/Currencies";
+import type { Currency } from '@/type/Currencies';
 
 export type Account = {
     name: string;
@@ -7,4 +7,4 @@ export type Account = {
     color: string;
     balance: number;
     currency: Currency;
-}
+};

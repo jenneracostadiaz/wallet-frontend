@@ -1,5 +1,5 @@
-import {useSession} from "next-auth/react";
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 
 export const fetchBalance = async (token: string) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/balance`, {
@@ -8,15 +8,19 @@ export const fetchBalance = async (token: string) => {
         },
     });
     if (!response.ok) {
-        throw new Error("Could not fetch balance");
+        throw new Error('Could not fetch balance');
     }
     return response.json();
-}
+};
 
 export const useGetBalance = () => {
     const { data: session } = useSession();
 
-    const { data: balance, isLoading, isError } = useQuery({
+    const {
+        data: balance,
+        isLoading,
+        isError,
+    } = useQuery({
         queryKey: ['balance', session?.accessToken],
         queryFn: () => fetchBalance(session?.accessToken || ''),
         enabled: !!session?.accessToken,
@@ -28,4 +32,4 @@ export const useGetBalance = () => {
         isLoading,
         isError,
     };
-}
+};

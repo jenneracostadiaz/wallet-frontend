@@ -2,12 +2,15 @@ import { AppSidebar } from '@/app/(dashboard)/components/AppSidebar';
 import { ModeToggle } from '@/components/ModeToggle';
 import {
     Breadcrumb,
-    BreadcrumbItem, BreadcrumbLink,
-    BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
     Separator,
     SidebarInset,
     SidebarProvider,
-    SidebarTrigger
+    SidebarTrigger,
 } from '@/components/ui';
 import type { ReactNode } from 'react';
 
@@ -19,9 +22,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>
-                {children}
-            </SidebarInset>
+            <SidebarInset>{children}</SidebarInset>
         </SidebarProvider>
     );
 }
