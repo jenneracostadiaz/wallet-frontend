@@ -1,8 +1,5 @@
 import { AppSidebar } from '@/app/(dashboard)/components/AppSidebar';
-import {
-    SidebarInset,
-    SidebarProvider,
-} from '@/components/ui';
+import { SidebarInset, SidebarProvider } from '@/components/ui';
 import type { ReactNode } from 'react';
 
 interface DashboardLayoutProps {

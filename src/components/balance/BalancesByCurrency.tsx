@@ -1,4 +1,4 @@
-import {Badge, ScrollArea, ScrollBar, Skeleton} from '@/components/ui';
+import { Badge, ScrollArea, ScrollBar, Skeleton } from '@/components/ui';
 import type { BalanceByCurrency } from '@/type/Balance';
 
 interface BalancesByCurrencyProps {
