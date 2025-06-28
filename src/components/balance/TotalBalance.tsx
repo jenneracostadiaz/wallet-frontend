@@ -28,7 +28,7 @@ export const TotalBalance = ({currency, balance, loading}: TotalBalanceProps) =>
                             Your balance so far <TrendingUp className="size-4" />
                         </p>
                         <p className="text-muted-foreground">
-                            This is the sum of all your accounts
+                            This is the sum of all your main currencies across all accounts.
                         </p>
                     </CardFooter>
                 </Card>
