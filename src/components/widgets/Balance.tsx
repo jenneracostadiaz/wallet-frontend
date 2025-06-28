@@ -1,35 +1,15 @@
 'use client';
 
-import {useSession} from "next-auth/react";
-import {useQuery} from "@tanstack/react-query";
-
-const fetchBalance = async (token: string) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/balance`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) {
-        throw new Error("Could not fetch balance");
-    }
-    return response.json();
-}
+import {useGetBalance} from "@/hooks/useBalance";
 
 export const Balance = () => {
-    const { data: session } = useSession();
 
-    const {data: balance, isLoading, isError} = useQuery({
-        queryKey: ['balance', session?.accessToken],
-        queryFn: () => fetchBalance(session?.accessToken || ''),
-        enabled: !!session?.accessToken, // Only run the query if we have a token
-        refetchOnWindowFocus: false,
-    })
-
-    console.log('balance', balance);
+    const { balance, isLoading, isError } = useGetBalance();
+    const balanceData = balance.data;
 
     return (
         <div className="p-4 shadow rounded">
-            <h2 className="text-lg font-semibold">Balance: S/{balance?.data.total_balance}</h2>
+            <h2 className="text-lg font-semibold">Balance: S/{balanceData?.total_balance}</h2>
         </div>
     );
 
