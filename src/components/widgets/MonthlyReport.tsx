@@ -1,12 +1,12 @@
 'use client';
 
+import { DailyBalance } from '@/components/reports/DailyBalance';
 import { Summary } from '@/components/reports/Summary';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { ExpensesByCategory } from '@/components/widgets/ExpensesByCategory';
 import { useGetMonthlyReport } from '@/hooks/useMonthlyReport';
 import type { monthlyReport as monthlyReportType } from '@/type/MonthlyReport';
 import { Terminal } from 'lucide-react';
-import {DailyBalance} from "@/components/reports/DailyBalance";
-import {ExpensesByCategory} from "@/components/widgets/ExpensesByCategory";
 
 export const MonthlyReport = () => {
     const { data, isLoading, isError } = useGetMonthlyReport();
@@ -27,7 +27,11 @@ export const MonthlyReport = () => {
             {!isError && (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="flex flex-col gap-4">
-                        <Summary summary={monthlyReport?.summary} currency={monthlyReport?.currency} loading={isLoading} />
+                        <Summary
+                            summary={monthlyReport?.summary}
+                            currency={monthlyReport?.currency}
+                            loading={isLoading}
+                        />
                         <ExpensesByCategory expenses={monthlyReport?.expenses_by_category} loading={isLoading} />
                     </div>
                     <DailyBalance balance={monthlyReport?.daily_balance} loading={isLoading} />

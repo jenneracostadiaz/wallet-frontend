@@ -1,40 +1,31 @@
+import { Card, Skeleton } from '@/components/ui';
 import type { DailyBalance as DailyBalanceType } from '@/type/MonthlyReport';
-import {Card, Skeleton} from "@/components/ui";
-import { Line } from 'react-chartjs-2';
 import {
+    CategoryScale,
     Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
     Legend,
-} from 'chart.js';
-
-ChartJS.register(
-    CategoryScale,
+    LineElement,
     LinearScale,
     PointElement,
-    LineElement,
     Title,
     Tooltip,
-    Legend
-);
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface DailyBalanceProps {
     loading: boolean;
     balance: DailyBalanceType[];
 }
 
-export const DailyBalance = ({loading, balance}: DailyBalanceProps) => {
-
-    if(!balance || balance.length === 0) {
+export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
+    if (!balance || balance.length === 0) {
         return <Skeleton className="h-72 w-full rounded-2xl lg:col-span-2" />;
     }
 
     const data = {
-        labels: balance.map(item => new Date(item.date).getDate() + '/' + (new Date(item.date).getMonth() + 1)),
+        labels: balance.map(item => `${new Date(item.date).getDate()}/${new Date(item.date).getMonth() + 1}`),
         datasets: [
             {
                 label: 'Income',
@@ -65,7 +56,7 @@ export const DailyBalance = ({loading, balance}: DailyBalanceProps) => {
             },
             tooltip: {
                 callbacks: {
-                    label: function(tooltipItem: any) {
+                    label: (tooltipItem: any) => {
                         const label = tooltipItem.dataset.label || '';
                         const value = tooltipItem.raw;
                         return `${label}: ${value.toLocaleString('es-PE', { style: 'currency', currency: 'PEN' })}`;
@@ -98,5 +89,5 @@ export const DailyBalance = ({loading, balance}: DailyBalanceProps) => {
                 </Card>
             )}
         </>
-    )
-}
+    );
+};
