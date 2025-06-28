@@ -3,13 +3,14 @@
 import { Summary } from '@/components/reports/Summary';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 import { useGetMonthlyReport } from '@/hooks/useMonthlyReport';
-import type { monthlyReport } from '@/type/MonthlyReport';
+import type { monthlyReport as monthlyReportType } from '@/type/MonthlyReport';
 import { Terminal } from 'lucide-react';
+import {DailyBalance} from "@/components/reports/DailyBalance";
 
 export const MonthlyReport = () => {
     const { data, isLoading, isError } = useGetMonthlyReport();
-    const monthlyReport: monthlyReport = data?.data;
-    console.log('Monthly Report Data:', monthlyReport);
+    const monthlyReport: monthlyReportType = data?.data;
+    // console.log('Monthly Report Data:', monthlyReport);
 
     return (
         <section className="flex flex-col">
@@ -26,6 +27,7 @@ export const MonthlyReport = () => {
             {!isError && (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <Summary summary={monthlyReport?.summary} currency={monthlyReport?.currency} loading={isLoading} />
+                    <DailyBalance balance={monthlyReport?.daily_balance} loading={isLoading} />
                 </div>
             )}
         </section>
