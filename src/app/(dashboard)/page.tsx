@@ -1,4 +1,5 @@
 import {Header} from "@/components/Header";
+import {Balance} from "@/components/widgets";
 
 const breadcrumbs = [
     {
@@ -12,6 +13,7 @@ export default function Home() {
         <>
             <Header breadcrumbs={breadcrumbs} />
             <section className="flex flex-col p-4 pt-0">
+                <Balance />
             </section>
         </>
     );
