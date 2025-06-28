@@ -2,9 +2,8 @@
 
 import {useGetBalance} from "@/hooks/useBalance";
 import {TotalBalance} from "@/components/balance/TotalBalance";
-import {Alert, AlertDescription, AlertTitle, Skeleton} from "@/components/ui";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui";
 import {Terminal} from "lucide-react";
-import {ifError} from "node:assert";
 
 export const Balance = () => {
 
