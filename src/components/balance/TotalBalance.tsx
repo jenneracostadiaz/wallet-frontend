@@ -22,12 +22,6 @@ export const TotalBalance = ({currency, balance, loading}: TotalBalanceProps) =>
                         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                             {currency?.symbol}{balance}<span className="text-muted-foreground text-sm">{currency?.code}</span>
                         </CardTitle>
-                        <CardAction>
-                            <Badge variant="outline">
-                                <TrendingUp />
-                                +12.5%
-                            </Badge>
-                        </CardAction>
                     </CardHeader>
                     <CardFooter className="flex-col items-start gap-1.5 text-sm">
                         <p className="line-clamp-1 flex gap-2 font-medium">
