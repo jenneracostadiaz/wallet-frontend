@@ -30,7 +30,7 @@ interface DailyBalanceProps {
 export const DailyBalance = ({loading, balance}: DailyBalanceProps) => {
 
     if(!balance || balance.length === 0) {
-        return <div>Loading...</div>;
+        return <Skeleton className="h-72 w-full rounded-2xl lg:col-span-2" />;
     }
 
     const data = {
