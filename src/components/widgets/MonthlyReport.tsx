@@ -11,7 +11,6 @@ import {ExpensesByCategory} from "@/components/widgets/ExpensesByCategory";
 export const MonthlyReport = () => {
     const { data, isLoading, isError } = useGetMonthlyReport();
     const monthlyReport: monthlyReportType = data?.data;
-    // console.log('Monthly Report Data:', monthlyReport);
 
     return (
         <section className="flex flex-col">
