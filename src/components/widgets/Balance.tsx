@@ -4,6 +4,7 @@ import {useGetBalance} from "@/hooks/useBalance";
 import {TotalBalance} from "@/components/balance/TotalBalance";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui";
 import {Terminal} from "lucide-react";
+import {BalancesByCurrency} from "@/components/balance/BalancesByCurrency";
 
 export const Balance = () => {
 
@@ -24,8 +25,9 @@ export const Balance = () => {
             )}
 
             {!isError && (
-                <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     <TotalBalance loading={isLoading} balance={balanceData?.total_balance} />
+                    <BalancesByCurrency loading={isLoading} accounts={balanceData?.accounts_summary} />
                 </div>
             )}
         </>
