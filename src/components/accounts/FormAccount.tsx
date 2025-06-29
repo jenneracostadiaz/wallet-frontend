@@ -22,46 +22,46 @@ interface FormSystemProps {
     onSuccess?: () => void;
 }
 
+function getInitialState(account?: Account) {
+    return {
+        name: account?.name || '',
+        type: account?.type || '',
+        balance: account?.balance ?? 0,
+        color: account?.color || '',
+        currency_id: account?.currency_id ?? 0,
+        description: account?.description || '',
+    };
+}
+
 export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
-    const [name, setName] = useState('');
-    const [type, setType] = useState('');
-    const [balance, setBalance] = useState(0);
-    const [color, setColor] = useState('');
-    const [currency_id, setCurrencyId] = useState(0);
-    const [description, setDescription] = useState('');
+    const [form, setForm] = useState(() => getInitialState(account));
 
     useEffect(() => {
-        if (account) {
-            setName(account.name);
-            setType(account.type);
-            setBalance(account.balance);
-            setColor(account.color || '');
-            setCurrencyId(account.currency_id);
-            setDescription(account.description || '');
-        }
+        setForm(getInitialState(account));
     }, [account]);
 
     const { mutate, isPending, error } = useAccountsMutation({
         account,
         onSuccess,
-        setName,
-        setType,
-        setBalance,
-        setColor,
-        setCurrencyId,
-        setDescription,
+        setName: (v: string) => setForm(f => ({ ...f, name: v })),
+        setType: (v: string) => setForm(f => ({ ...f, type: v })),
+        setBalance: (v: number) => setForm(f => ({ ...f, balance: v })),
+        setColor: (v: string) => setForm(f => ({ ...f, color: v })),
+        setCurrencyId: (v: number) => setForm(f => ({ ...f, currency_id: v })),
+        setDescription: (v: string) => setForm(f => ({ ...f, description: v })),
     });
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         mutate({
             id: account?.id || 0,
-            name,
-            type,
-            balance,
-            color,
-            currency_id,
-            description,
+            ...form,
+            currency: {
+                id: 0,
+                symbol: '',
+                name: '',
+                code: '',
+            },
         });
     };
 
@@ -75,14 +75,14 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                         type="text"
                         placeholder="Enter account name"
                         required
-                        value={name}
-                        onChange={e => setName(e.target.value)}
+                        value={form.name}
+                        onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                     />
                 </div>
 
                 <div className="grid gap-3">
                     <Label htmlFor="type">Account Type</Label>
-                    <Select onValueChange={value => setType(value)} value={type}>
+                    <Select onValueChange={value => setForm(f => ({ ...f, type: value }))} value={form.type}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select account type" />
                         </SelectTrigger>
@@ -103,14 +103,20 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                     type="number"
                     placeholder="Enter account balance"
                     required
-                    value={balance}
-                    onChange={e => setBalance(Number(e.target.value))}
+                    value={form.balance}
+                    onChange={e => setForm(f => ({ ...f, balance: Number(e.target.value) }))}
                 />
             </div>
 
             <div className="grid gap-3">
                 <Label htmlFor="color">Color</Label>
-                <Input id="color" type="color" required value={color} onChange={e => setColor(e.target.value)} />
+                <Input
+                    id="color"
+                    type="color"
+                    required
+                    value={form.color}
+                    onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
+                />
             </div>
 
             <div className="grid gap-3">
@@ -120,8 +126,8 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                     type="number"
                     placeholder="Enter currency ID"
                     required
-                    value={currency_id}
-                    onChange={e => setCurrencyId(Number(e.target.value))}
+                    value={form.currency_id}
+                    onChange={e => setForm(f => ({ ...f, currency_id: Number(e.target.value) }))}
                 />
             </div>
 
@@ -131,8 +137,8 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                     id="description"
                     type="text"
                     placeholder="Enter account description"
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
+                    value={form.description}
+                    onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 />
             </div>
 
