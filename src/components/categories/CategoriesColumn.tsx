@@ -19,8 +19,9 @@ export const categoriesColumn: ColumnDef<Category>[] = [
         cell: ({ row, getValue }) => {
             const value = getValue() as string;
             const icon = row.original.icon;
+            const parentId = row.original.parent_id || 0;
             return (
-                <span className="font-semibold capitalize">
+                <span className={`font-semibold capitalize ${parentId ? 'pl-6' : ''}`}>
                     {icon} {value}
                 </span>
             );
