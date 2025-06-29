@@ -44,7 +44,7 @@ export async function AppSidebar() {
         },
         {
             title: 'Accounts',
-            url: '#',
+            url: '/accounts',
             icon: PiggyBank,
         },
         {
