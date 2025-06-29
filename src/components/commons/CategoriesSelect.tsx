@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
-import { useGetCategories, useGetParentCategories } from '@/hooks/useCategories';
+import { useGetParentCategories } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
 import { useEffect } from 'react';
 
