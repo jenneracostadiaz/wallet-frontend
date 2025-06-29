@@ -2,14 +2,14 @@
 import { DataTable } from '@/components/DataTable';
 import { LatestTransactionsColumns } from '@/components/transactions/LatestTransactionsColumns';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
-import { useGetLatestTransactions } from '@/hooks/useLatestTransactions';
+import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import type { Transaction } from '@/type/Transactions';
 import { Terminal } from 'lucide-react';
 
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
-    const transactions: Transaction[] = data?.data ?? [];
-    console.log(transactions);
+    const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
+    // console.log(transactions);
 
     return (
         <section className="flex flex-col">
