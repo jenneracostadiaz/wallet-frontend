@@ -11,7 +11,6 @@ export const AccountsColumns: ColumnDef<Account>[] = [
         cell: ({ row, getValue }) => {
             const value = getValue() as string;
             const color: string = row.original.color;
-            console.log(color);
             return (
                 <span className="flex flex-col">
                     <span className="font-semibold capitalize flex items-center gap-1">
