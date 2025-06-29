@@ -41,6 +41,31 @@ export const useCategoriesTableData = ({ categories }: { categories: Category[] 
     }, [categories]);
 };
 
+export const useGetParentCategories = ({ category }: { category: Category }) => {
+    const { data: session } = useSession();
+
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['categories', session?.accessToken],
+        queryFn: () => fetchCategories(session?.accessToken || ''),
+        enabled: !!session?.accessToken,
+        refetchOnWindowFocus: false,
+    });
+
+    const parentCategories = useMemo(() => {
+        if (!data || !data.data) return [];
+        const type = category.type;
+        return data.data.filter(
+            (cat: Category) => cat.type === type && cat.parent_id === null && cat.id !== category.id
+        );
+    }, [data, category]);
+
+    return {
+        parentCategories,
+        isLoading,
+        isError,
+    };
+};
+
 interface useCategoriesDeleteProps {
     category: Category;
     setOpen: (open: boolean) => void;
