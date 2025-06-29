@@ -1,20 +1,22 @@
-import { auth } from '@/app/api/auth/[...nextauth]/route';
-import { LogoutButton } from '@/app/(dashboard)/components/LogoutButton';
-import { redirect } from 'next/navigation';
+import { Header } from '@/components/Header';
+import { Balance, LatestTransactions, MonthlyReport } from '@/components/widgets';
 
-export default async function Home() {
-    const session = await auth();
+const breadcrumbs = [
+    {
+        title: 'Dashboard',
+        href: '/',
+    },
+];
 
-    if (!session) {
-        redirect('/login');
-    }
-
+export default function Home() {
     return (
         <>
-            <h1>Dashboard</h1>
-            <p>Bienvenido, {session.user?.name}!</p>
-            <p>Tu email es: {session.user?.email}</p>
-            <LogoutButton />
+            <Header breadcrumbs={breadcrumbs} />
+            <section className="flex flex-col gap-4 p-4 pt-0">
+                <Balance />
+                <MonthlyReport />
+                <LatestTransactions />
+            </section>
         </>
     );
 }

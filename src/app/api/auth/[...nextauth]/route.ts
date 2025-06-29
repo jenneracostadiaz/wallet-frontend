@@ -13,55 +13,52 @@ export const {
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials.password) {
-                    return null;
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+                    method: 'POST',
+                    body: JSON.stringify(credentials),
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                const data = await res.json();
+
+                if (res.ok && data && data.user && data.access_token) {
+                    // Unificamos el objeto user y el token para retornarlo a NextAuth
+                    return {
+                        id: data.user.id,
+                        name: data.user.name,
+                        email: data.user.email,
+                        accessToken: data.access_token,
+                    };
                 }
-
-                try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Accept: 'application/json',
-                        },
-                        body: JSON.stringify({
-                            email: credentials.email,
-                            password: credentials.password,
-                        }),
-                    });
-
-                    const user = await res.json();
-
-                    if (res.ok && user) {
-                        return user;
-                    }
-
-                    return null;
-                } catch (error) {
-                    console.error('Error en authorize:', error);
-                    return null;
-                }
+                return null;
             },
         }),
     ],
     pages: {
         signIn: '/login',
+        newUser: '/register',
     },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email;
                 // @ts-ignore
-                token.user = user.user;
-                // @ts-ignore
-                token.accessToken = user.token;
+                token.accessToken = user.accessToken;
             }
             return token;
         },
         async session({ session, token }) {
-            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-            session.user = token.user as any;
+            session.user = {
+                // @ts-ignore
+                id: token.id,
+                // @ts-ignore
+                name: token.name,
+                // @ts-ignore
+                email: token.email,
+            };
             // @ts-ignore
-            session.accessToken = token.accessToken as string;
+            session.accessToken = token.accessToken;
             return session;
         },
     },

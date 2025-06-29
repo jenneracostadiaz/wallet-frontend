@@ -1,8 +1,6 @@
 import { auth } from '@/app/api/auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 
-console.log('👋Middleware loaded');
-
 const publicRoutes = ['/login', '/register'];
 
 export default auth(req => {
