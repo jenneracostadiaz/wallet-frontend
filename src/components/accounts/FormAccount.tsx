@@ -12,7 +12,9 @@ import {
     SelectValue,
 } from '@/components/ui';
 import { useAccountsMutation } from '@/hooks/useAccounts';
+import { useGetCurrencies } from '@/hooks/useCurrencies';
 import type { Account } from '@/type/Accounts';
+import type { Currency } from '@/type/Currencies';
 import { Terminal } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -55,9 +57,16 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                 symbol: '',
                 name: '',
                 code: '',
+                decimal_places: 2,
             },
         });
     };
+
+    const { data: currencies, isLoading: isLoadingCurrency, isError: isErrorCurrency } = useGetCurrencies();
+
+    const currencyList = Array.isArray(currencies) ? currencies : (currencies?.data ?? []);
+    const isCurrencySelectDisabled = isLoadingCurrency || isErrorCurrency;
+    const currencyIdExists = currencyList.some(c => String(c.id) === String(form.currency_id));
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -90,39 +99,60 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                 </div>
             </div>
 
-            <div className="grid gap-3">
-                <Label htmlFor="balance">Balance</Label>
-                <Input
-                    id="balance"
-                    type="number"
-                    placeholder="Enter account balance"
-                    required
-                    value={form.balance}
-                    onChange={e => setForm(f => ({ ...f, balance: Number(e.target.value) }))}
-                />
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid gap-3">
+                    <Label htmlFor="color">Color</Label>
+                    <Input
+                        id="color"
+                        type="color"
+                        required
+                        value={form.color}
+                        onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
+                    />
+                </div>
+                <div className="flex gap-1">
+                    <div className="grid gap-3">
+                        <Label htmlFor="currency_id">&nbsp;</Label>
+                        <Select
+                            onValueChange={value => setForm(f => ({ ...f, currency_id: Number(value) }))}
+                            value={currencyIdExists ? form.currency_id.toString() : ''}
+                            disabled={isCurrencySelectDisabled}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue
+                                    placeholder={
+                                        isLoadingCurrency
+                                            ? 'Loading...'
+                                            : isErrorCurrency
+                                              ? 'Error loading currencies'
+                                              : 'Select currency'
+                                    }
+                                />
+                            </SelectTrigger>
+                            <SelectContent className="w-16">
+                                {!isLoadingCurrency &&
+                                    !isErrorCurrency &&
+                                    currencyList.map((currency: Currency) => (
+                                        <SelectItem key={currency.id} value={String(currency.id)}>
+                                            {currency.symbol}
+                                        </SelectItem>
+                                    ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-            <div className="grid gap-3">
-                <Label htmlFor="color">Color</Label>
-                <Input
-                    id="color"
-                    type="color"
-                    required
-                    value={form.color}
-                    onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
-                />
-            </div>
-
-            <div className="grid gap-3">
-                <Label htmlFor="currency_id">Currency ID</Label>
-                <Input
-                    id="currency_id"
-                    type="number"
-                    placeholder="Enter currency ID"
-                    required
-                    value={form.currency_id}
-                    onChange={e => setForm(f => ({ ...f, currency_id: Number(e.target.value) }))}
-                />
+                    <div className="grid gap-3">
+                        <Label htmlFor="balance">Balance</Label>
+                        <Input
+                            id="balance"
+                            type="number"
+                            placeholder="Enter account balance"
+                            required
+                            value={form.balance}
+                            onChange={e => setForm(f => ({ ...f, balance: Number(e.target.value) }))}
+                        />
+                    </div>
+                </div>
             </div>
 
             <div className="grid gap-3">
