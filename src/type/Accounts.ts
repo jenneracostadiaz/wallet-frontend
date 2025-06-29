@@ -5,9 +5,9 @@ export type Account = {
     name: string;
     type: string;
     balance: number;
-    color: string;
+    color?: string;
     currency_id: number;
     currency?: Currency;
-    description: string;
-    order: number;
+    description?: string;
+    order?: number;
 };
