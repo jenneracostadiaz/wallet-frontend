@@ -2,6 +2,7 @@
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { categoriesColumn } from '@/components/categories/CategoriesColumn';
+import { CreateCategory } from '@/components/categories/CreateCategory';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useCategoriesTableData, useGetCategories } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
@@ -25,8 +26,9 @@ export default function CategoriesPage() {
         <>
             <Header breadcrumbs={breadcrumbs} />
             <section className="px-4">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Categories</h1>
+                    <CreateCategory />
                 </div>
 
                 {isError && (
