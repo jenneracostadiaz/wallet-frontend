@@ -1,6 +1,6 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
-import { LatestTransactionsColumns } from '@/components/transactions/LatestTransactionsColumns';
+import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import type { Transaction } from '@/type/Transactions';
@@ -42,7 +42,7 @@ export const LatestTransactions = () => {
                     </div>
                 ) : (
                     transactions &&
-                    transactions.length > 0 && <DataTable columns={LatestTransactionsColumns} data={transactions} />
+                    transactions.length > 0 && <DataTable columns={TransactionsColum} data={transactions} />
                 ))}
         </section>
     );
