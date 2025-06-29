@@ -66,8 +66,7 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
 
     const currencyList = Array.isArray(currencies) ? currencies : (currencies?.data ?? []);
     const isCurrencySelectDisabled = isLoadingCurrency || isErrorCurrency;
-    // @ts-ignore
-    const currencyIdExists = currencyList.some(c => String(c.id) === String(form.currency_id));
+    const currencyIdExists = currencyList.some((c: Currency) => String(c.id) === String(form.currency_id));
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
