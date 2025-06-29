@@ -66,6 +66,7 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
 
     const currencyList = Array.isArray(currencies) ? currencies : (currencies?.data ?? []);
     const isCurrencySelectDisabled = isLoadingCurrency || isErrorCurrency;
+    // @ts-ignore
     const currencyIdExists = currencyList.some(c => String(c.id) === String(form.currency_id));
 
     return (
@@ -110,15 +111,15 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                         onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
                     />
                 </div>
-                <div className="flex gap-1">
-                    <div className="grid gap-3">
-                        <Label htmlFor="currency_id">&nbsp;</Label>
+                <div className="grid gap-3">
+                    <Label htmlFor="balance">Balance</Label>
+                    <div className="flex gap-2">
                         <Select
                             onValueChange={value => setForm(f => ({ ...f, currency_id: Number(value) }))}
                             value={currencyIdExists ? form.currency_id.toString() : ''}
                             disabled={isCurrencySelectDisabled}
                         >
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger className="w-16">
                                 <SelectValue
                                     placeholder={
                                         isLoadingCurrency
@@ -129,7 +130,7 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                                     }
                                 />
                             </SelectTrigger>
-                            <SelectContent className="w-16">
+                            <SelectContent>
                                 {!isLoadingCurrency &&
                                     !isErrorCurrency &&
                                     currencyList.map((currency: Currency) => (
@@ -139,10 +140,6 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                                     ))}
                             </SelectContent>
                         </Select>
-                    </div>
-
-                    <div className="grid gap-3">
-                        <Label htmlFor="balance">Balance</Label>
                         <Input
                             id="balance"
                             type="number"
