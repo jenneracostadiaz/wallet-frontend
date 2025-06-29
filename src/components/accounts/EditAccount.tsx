@@ -13,7 +13,7 @@ export const EditAccount = ({ account }: { account: Account }) => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit Account</DialogTitle>
+                    <DialogTitle className="mb-4">Edit Account</DialogTitle>
                     <FormAccount account={account} onSuccess={() => setEditModalOpen(false)} />
                 </DialogHeader>
             </DialogContent>
