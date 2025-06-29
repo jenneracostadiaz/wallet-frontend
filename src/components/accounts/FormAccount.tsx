@@ -23,9 +23,9 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
             setName(account.name);
             setType(account.type);
             setBalance(account.balance);
-            setColor(account.color);
+            setColor(account.color || '');
             setCurrencyId(account.currency_id);
-            setDescription(account.description);
+            setDescription(account.description || '');
         }
     }, [account]);
 
@@ -43,14 +43,13 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         mutate({
+            id: account?.id || 0,
             name,
             type,
             balance,
             color,
             currency_id,
             description,
-            id: 0,
-            order: 0,
         });
     };
 
@@ -65,6 +64,58 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                     required
                     value={name}
                     onChange={e => setName(e.target.value)}
+                />
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="type">Account Type</Label>
+                <Input
+                    id="type"
+                    type="text"
+                    placeholder="Enter account type"
+                    required
+                    value={type}
+                    onChange={e => setType(e.target.value)}
+                />
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="balance">Balance</Label>
+                <Input
+                    id="balance"
+                    type="number"
+                    placeholder="Enter account balance"
+                    required
+                    value={balance}
+                    onChange={e => setBalance(Number(e.target.value))}
+                />
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="color">Color</Label>
+                <Input id="color" type="color" required value={color} onChange={e => setColor(e.target.value)} />
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="currency_id">Currency ID</Label>
+                <Input
+                    id="currency_id"
+                    type="number"
+                    placeholder="Enter currency ID"
+                    required
+                    value={currency_id}
+                    onChange={e => setCurrencyId(Number(e.target.value))}
+                />
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="description">Description</Label>
+                <Input
+                    id="description"
+                    type="text"
+                    placeholder="Enter account description"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
                 />
             </div>
 
