@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 interface CategoriesSelectProps {
     value: string;
     onChange: (value: string) => void;
-    category: Category;
+    category?: Category;
 }
 
 export const CategoriesSelect = ({ value, onChange, category }: CategoriesSelectProps) => {
