@@ -1,4 +1,3 @@
-import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
