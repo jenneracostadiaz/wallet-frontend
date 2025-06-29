@@ -2,6 +2,7 @@
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { AccountsColumns } from '@/components/accounts/AccountsColumns';
+import { CreateAccount } from '@/components/accounts/CreateAccount';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useAccountsTableData, useGetAccounts } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
@@ -26,6 +27,13 @@ export default function AccountsPage() {
             <Header breadcrumbs={breadcrumbs} />
 
             <section className="px-4">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-2xl font-bold mb-4">Accounts</h1>
+                    <div className="flex items-center gap-2">
+                        <CreateAccount />
+                    </div>
+                </div>
+
                 {isError && (
                     <Alert variant="destructive">
                         <Terminal />
