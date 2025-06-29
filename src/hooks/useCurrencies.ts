@@ -29,3 +29,13 @@ export const useGetCurrencies = () => {
         isError,
     };
 };
+
+export const useCurrencyList = () => {
+    const { data, isLoading, isError } = useGetCurrencies();
+    const list = Array.isArray(data) ? data : (data?.data ?? []);
+    return {
+        currencyList: list,
+        isLoadingCurrency: isLoading,
+        isErrorCurrency: isError,
+    };
+};
