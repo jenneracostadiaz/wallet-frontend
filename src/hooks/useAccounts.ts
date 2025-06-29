@@ -1,5 +1,5 @@
 import type { Account } from '@/type/Accounts';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 
@@ -32,11 +32,7 @@ export const useGetAccounts = () => {
     };
 };
 
-interface useAccountsTableDataProps {
-    accounts?: Account[];
-}
-
-export const useAccountsTableData = ({ accounts }: useAccountsTableDataProps) => {
+export const useAccountsTableData = ({ accounts }: { accounts: Account[] }) => {
     return useMemo(() => {
         if (!accounts) return [];
         return accounts.map((account: Account) => {
@@ -45,4 +41,37 @@ export const useAccountsTableData = ({ accounts }: useAccountsTableDataProps) =>
             };
         });
     }, [accounts]);
+};
+
+interface useAccountsDeleteProps {
+    account: Account;
+    setOpen: (open: boolean) => void;
+}
+
+export const useAccountsDelete = ({ account, setOpen }: useAccountsDeleteProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accounts/${account.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to delete account');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['accounts'] }).then(r => console.log(r));
+            setOpen(false);
+        },
+    });
+
+    return { mutate, isPending };
 };
