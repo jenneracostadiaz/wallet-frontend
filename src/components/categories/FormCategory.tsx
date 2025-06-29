@@ -14,7 +14,7 @@ import {
 } from '@/components/ui';
 import { useCategoryMutation } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
-import { Terminal } from 'lucide-react';
+import { Terminal, TrendingDown, TrendingUp } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (category?: Category) => {
@@ -27,7 +27,7 @@ const getInitialState = (category?: Category) => {
 };
 
 interface FormCategoryProps {
-    category: Category;
+    category?: Category;
     onSuccess: () => void;
 }
 
@@ -43,7 +43,7 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         mutate({
-            id: category.id,
+            id: category?.id || 0,
             ...form,
         });
     };
@@ -89,8 +89,12 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
                         <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="expense">Expense</SelectItem>
-                        <SelectItem value="income">Income</SelectItem>
+                        <SelectItem value="expense">
+                            Expense <TrendingDown className="text-red-400" />
+                        </SelectItem>
+                        <SelectItem value="income">
+                            Income <TrendingUp className="text-green-400" />
+                        </SelectItem>
                     </SelectContent>
                 </Select>
             </div>
