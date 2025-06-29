@@ -45,7 +45,7 @@ export const useCategoriesTableData = ({ categories }: { categories: Category[] 
     }, [categories]);
 };
 
-export const useGetParentCategories = ({ category }: { category: Category }) => {
+export const useGetParentCategories = ({ category }: { category?: Category }) => {
     const { data: session } = useSession();
 
     const { data, isLoading, isError } = useQuery({
@@ -57,9 +57,9 @@ export const useGetParentCategories = ({ category }: { category: Category }) => 
 
     const parentCategories = useMemo(() => {
         if (!data || !data.data) return [];
-        const type = category.type;
+        const type = category?.type;
         return data.data.filter(
-            (cat: Category) => cat.type === type && cat.parent_id === null && cat.id !== category.id
+            (cat: Category) => cat.type === type && cat.parent_id === null && cat.id !== category?.id
         );
     }, [data, category]);
 
