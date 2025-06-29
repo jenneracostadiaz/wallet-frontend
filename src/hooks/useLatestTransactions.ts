@@ -45,7 +45,6 @@ export const useTransactionsTableData = ({ transactions }: UseGetLatestTransacti
             const totalAmount = `
                 ${account.currency} ${transaction.amount}
             `;
-
             return {
                 ...transaction,
                 totalAmount,

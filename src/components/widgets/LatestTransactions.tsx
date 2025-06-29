@@ -9,7 +9,6 @@ import { Terminal } from 'lucide-react';
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
     const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
-    // console.log(transactions);
 
     return (
         <section className="flex flex-col">
