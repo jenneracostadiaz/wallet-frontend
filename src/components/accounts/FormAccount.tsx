@@ -43,12 +43,6 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
     const { mutate, isPending, error } = useAccountsMutation({
         account,
         onSuccess,
-        setName: (v: string) => setForm(f => ({ ...f, name: v })),
-        setType: (v: string) => setForm(f => ({ ...f, type: v })),
-        setBalance: (v: number) => setForm(f => ({ ...f, balance: v })),
-        setColor: (v: string) => setForm(f => ({ ...f, color: v })),
-        setCurrencyId: (v: number) => setForm(f => ({ ...f, currency_id: v })),
-        setDescription: (v: string) => setForm(f => ({ ...f, description: v })),
     });
 
     const handleSubmit = async (e: FormEvent) => {
