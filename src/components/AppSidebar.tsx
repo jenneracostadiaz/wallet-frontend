@@ -49,7 +49,7 @@ export async function AppSidebar() {
         },
         {
             title: 'Categories',
-            url: '#',
+            url: '/categories',
             icon: WalletCards,
         },
     ];
