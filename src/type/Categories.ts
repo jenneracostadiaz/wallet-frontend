@@ -4,4 +4,5 @@ export type Category = {
     type: 'income' | 'expense';
     icon: string;
     subcategories?: Category[];
+    parent_id?: number | null;
 };
