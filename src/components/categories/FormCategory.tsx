@@ -1,3 +1,4 @@
+import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import {
     Alert,
     AlertDescription,
@@ -96,12 +97,10 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
 
             <div className="grid gap-3">
                 <Label htmlFor="parent_id">Parent Category</Label>
-                <Input
-                    id="parent_id"
-                    type="number"
-                    placeholder="Enter parent category ID"
-                    value={form.parent_id ?? ''}
-                    onChange={e => setForm(f => ({ ...f, parent_id: e.target.value ? Number(e.target.value) : null }))}
+                <CategoriesSelect
+                    value={form.parent_id?.toString() ?? ''}
+                    onChange={value => setForm(f => ({ ...f, parent_id: value ? Number(value) : null }))}
+                    category={category}
                 />
             </div>
 
