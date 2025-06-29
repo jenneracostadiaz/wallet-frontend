@@ -1,5 +1,5 @@
 import type { Category } from '@/type/Categories';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 
@@ -39,4 +39,36 @@ export const useCategoriesTableData = ({ categories }: { categories: Category[] 
             ...category,
         }));
     }, [categories]);
+};
+
+interface useCategoriesDeleteProps {
+    category: Category;
+    setOpen: (open: boolean) => void;
+}
+
+export const useCategoriesDelete = ({ category, setOpen }: useCategoriesDeleteProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${category.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Could not delete category');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['categories', session?.accessToken] }).then(r => console.log(r));
+            setOpen(false);
+        },
+    });
+
+    return { mutate, isPending };
 };
