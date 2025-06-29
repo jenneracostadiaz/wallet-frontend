@@ -27,8 +27,8 @@ export default function AccountsPage() {
             <Header breadcrumbs={breadcrumbs} />
 
             <section className="px-4">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-2xl font-bold mb-4">Accounts</h1>
+                <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-2xl font-bold">Accounts</h1>
                     <div className="flex items-center gap-2">
                         <CreateAccount />
                     </div>
