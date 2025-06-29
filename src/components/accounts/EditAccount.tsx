@@ -1,4 +1,5 @@
 'use client';
+import { FormAccount } from '@/components/accounts/FormAccount';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DropdownMenuItem } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
 import { useState } from 'react';
@@ -13,6 +14,7 @@ export const EditAccount = ({ account }: { account: Account }) => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Edit Account</DialogTitle>
+                    <FormAccount account={account} onSuccess={() => setEditModalOpen(false)} />
                 </DialogHeader>
             </DialogContent>
         </Dialog>
