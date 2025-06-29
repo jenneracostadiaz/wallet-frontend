@@ -6,7 +6,8 @@ export type Account = {
     type: string;
     balance: number;
     color: string;
-    currency: Currency;
+    currency_id: number;
+    currency?: Currency;
     description: string;
     order: number;
 };
