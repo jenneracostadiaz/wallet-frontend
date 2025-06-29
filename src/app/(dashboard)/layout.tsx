@@ -1,4 +1,4 @@
-import { AppSidebar } from '@/app/(dashboard)/components/AppSidebar';
+import { AppSidebar } from '@/components/AppSidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui';
 import type { ReactNode } from 'react';
 
