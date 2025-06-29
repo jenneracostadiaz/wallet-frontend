@@ -1,6 +1,7 @@
-import { Input, Label } from '@/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
 import { useAccountsMutation } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
+import { Terminal } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
@@ -54,19 +55,37 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
-                <div className="grid gap-3">
-                    <Label htmlFor="name">Account Name</Label>
-                    <Input
-                        id="name"
-                        type="text"
-                        placeholder="Enter account name"
-                        required
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    />
-                </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="grid gap-3">
+                <Label htmlFor="name">Account Name</Label>
+                <Input
+                    id="name"
+                    type="text"
+                    placeholder="Enter account name"
+                    required
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                />
+            </div>
+
+            {error && (
+                <Alert variant="destructive">
+                    <Terminal />
+                    <AlertTitle>Error to {account ? 'update' : 'create'} account</AlertTitle>
+                    <AlertDescription>{error.message}</AlertDescription>
+                </Alert>
+            )}
+
+            <div className="grid gap-3">
+                <Button type="submit" className="w-full" disabled={isPending} aria-haspopup="dialog">
+                    {isPending
+                        ? account
+                            ? 'Updating...'
+                            : 'Creating...'
+                        : account
+                          ? 'Update Account'
+                          : 'Create Account'}
+                </Button>
             </div>
         </form>
     );
