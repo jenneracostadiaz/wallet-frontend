@@ -59,11 +59,9 @@ export const LatestTransactionsColumns: ColumnDef<Transaction>[] = [
             const amount = row.getValue('totalAmount');
             return (
                 <span className="flex items-center gap-2">
-                    {type === 'income' ? (
-                        <TrendingUp color="green" size={16} />
-                    ) : (
-                        <TrendingDown color="red" size={16} />
-                    )}
+                    {type === 'income' && <TrendingUp className="size-4 text-green-400" />}
+                    {type === 'expense' && <TrendingDown className="size-4 text-red-400" />}
+                    {type === 'transfer' && <CircleDashed className="size-4 text-blue-400" />}
                     {String(amount)}
                 </span>
             );
