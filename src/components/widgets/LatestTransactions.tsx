@@ -27,10 +27,18 @@ export const LatestTransactions = () => {
             {!isError &&
                 (isLoading ? (
                     <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        {Array.from({ length: 18 }).map((_, idx: number) => (
-                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                            <Skeleton key={idx} className="w-full h-6" />
-                        ))}
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
+                        <Skeleton className="w-full h-6" />
                     </div>
                 ) : (
                     transactions &&
