@@ -57,9 +57,11 @@ export const useGetParentCategories = ({ category }: { category?: Category }) =>
 
     const parentCategories = useMemo(() => {
         if (!data || !data.data) return [];
-        const type = category?.type;
+        if (!category) {
+            return data.data.filter((cat: Category) => cat.parent_id === null);
+        }
         return data.data.filter(
-            (cat: Category) => cat.type === type && cat.parent_id === null && cat.id !== category?.id
+            (cat: Category) => cat.type === category.type && cat.parent_id === null && cat.id !== category.id
         );
     }, [data, category]);
 
