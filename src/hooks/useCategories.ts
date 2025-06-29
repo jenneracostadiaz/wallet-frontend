@@ -1,3 +1,4 @@
+import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -71,4 +72,43 @@ export const useCategoriesDelete = ({ category, setOpen }: useCategoriesDeletePr
     });
 
     return { mutate, isPending };
+};
+
+interface useCategoryMutationProps {
+    category?: Category;
+    onSuccess?: () => void;
+}
+
+export const useCategoryMutation = ({ category, onSuccess }: useCategoryMutationProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
+    const { mutate, isPending, error } = useMutation({
+        mutationFn: async (newCategory: Category) => {
+            const method = category ? 'PUT' : 'POST';
+            const url = category
+                ? `${process.env.NEXT_PUBLIC_API_URL}/categories/${category.id}`
+                : `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+                body: JSON.stringify(newCategory),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not save category');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['categories', session?.accessToken] }).then(r => console.log(r));
+            onSuccess?.();
+        },
+    });
+
+    return { mutate, isPending, error };
 };
