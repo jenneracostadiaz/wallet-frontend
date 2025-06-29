@@ -1,8 +1,9 @@
 'use client';
+import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
-import { TrendingDown, TrendingUp } from 'lucide-react';
+import { CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
 
 export const LatestTransactionsColumns: ColumnDef<Transaction>[] = [
     {
@@ -28,6 +29,24 @@ export const LatestTransactionsColumns: ColumnDef<Transaction>[] = [
                         Date: {date.toLocaleDateString()} - Time:{' '}
                         {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
+                </span>
+            );
+        },
+    },
+    {
+        accessorKey: 'account',
+        header: 'Account',
+        cell: ({ row }) => {
+            const account: Account = row.original.account;
+            return (
+                <span className="flex items-center gap-2 capitalize">
+                    <CircleDashed className="size-4" style={{ color: account.color }} /> {account.name}
+                    {row.original.to_account && (
+                        <span className="text-xs text-muted-foreground">
+                            &rarr; <CircleDashed className="size-4" style={{ color: account.color }} />{' '}
+                            {row.original.to_account.name}
+                        </span>
+                    )}
                 </span>
             );
         },
