@@ -1,8 +1,16 @@
 import { DeleteCategory } from '@/components/categories/DeleteCategory';
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
+import { EditCategory } from '@/components/categories/EditCategory';
+import {
+    Badge,
+    Button,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui';
 import type { Category } from '@/type/Categories';
 import type { ColumnDef } from '@tanstack/table-core';
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
 
 export const categoriesColumn: ColumnDef<Category>[] = [
     {
@@ -15,6 +23,20 @@ export const categoriesColumn: ColumnDef<Category>[] = [
                 <span className="font-semibold capitalize">
                     {icon} {value}
                 </span>
+            );
+        },
+    },
+    {
+        accessorKey: 'type',
+        header: 'Type',
+        cell: ({ getValue }) => {
+            const value = getValue() as string;
+            return (
+                <Badge variant={`${value === 'expense' ? 'default' : 'secondary'}`} className="capitalize">
+                    {value}
+                    {value === 'expense' && <TrendingDown />}
+                    {value === 'income' && <TrendingUp />}
+                </Badge>
             );
         },
     },
@@ -36,6 +58,7 @@ export const categoriesColumn: ColumnDef<Category>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
+                        <EditCategory category={category} />
                         <DropdownMenuSeparator />
                         <DeleteCategory category={category} />
                     </DropdownMenuContent>
