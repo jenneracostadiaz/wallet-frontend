@@ -75,3 +75,69 @@ export const useAccountsDelete = ({ account, setOpen }: useAccountsDeleteProps) 
 
     return { mutate, isPending };
 };
+
+interface useAccountsMutationProps {
+    account?: Account;
+    onSuccess?: () => void;
+    setName: (s: string) => void;
+    setType: (type: string) => void;
+    setBalance: (balance: number) => void;
+    setColor: (color: string) => void;
+    setCurrencyId: (currencyId: number) => void;
+    setDescription: (description: string) => void;
+}
+
+export const useAccountsMutation = ({
+    account,
+    onSuccess,
+    setName,
+    setType,
+    setBalance,
+    setColor,
+    setCurrencyId,
+    setDescription,
+}: useAccountsMutationProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
+    function getMutationFn() {
+        return async (newAccount: Account) => {
+            const method = account ? 'PUT' : 'POST';
+            const body = account ? JSON.stringify({ ...newAccount, id: account.id }) : JSON.stringify(newAccount);
+
+            const url = account
+                ? `${process.env.NEXT_PUBLIC_API_URL}/accounts/${account.id}`
+                : `${process.env.NEXT_PUBLIC_API_URL}/accounts`;
+
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+                body,
+            });
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || `Failed to ${account ? 'update' : 'create'} account`);
+            }
+            return res.json();
+        };
+    }
+
+    const { mutate, isPending, error } = useMutation({
+        mutationFn: getMutationFn(),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['accounts'] }).then(r => console.log(r));
+            setName('');
+            setType('');
+            setBalance(0);
+            setColor('');
+            setCurrencyId(0);
+            setDescription('');
+            if (onSuccess) onSuccess();
+        },
+    });
+
+    return { mutate, isPending, error };
+};
