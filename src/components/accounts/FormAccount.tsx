@@ -1,4 +1,16 @@
-import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Button,
+    Input,
+    Label,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui';
 import { useAccountsMutation } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
 import { Terminal } from 'lucide-react';
@@ -55,28 +67,33 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div className="grid gap-3">
-                <Label htmlFor="name">Account Name</Label>
-                <Input
-                    id="name"
-                    type="text"
-                    placeholder="Enter account name"
-                    required
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                />
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid gap-3">
+                    <Label htmlFor="name">Account Name</Label>
+                    <Input
+                        id="name"
+                        type="text"
+                        placeholder="Enter account name"
+                        required
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                    />
+                </div>
 
-            <div className="grid gap-3">
-                <Label htmlFor="type">Account Type</Label>
-                <Input
-                    id="type"
-                    type="text"
-                    placeholder="Enter account type"
-                    required
-                    value={type}
-                    onChange={e => setType(e.target.value)}
-                />
+                <div className="grid gap-3">
+                    <Label htmlFor="type">Account Type</Label>
+                    <Select onValueChange={value => setType(value)} value={type}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select account type" />
+                        </SelectTrigger>
+                        <SelectContent className="w-full">
+                            <SelectItem value="checking">Checking</SelectItem>
+                            <SelectItem value="savings">Savings</SelectItem>
+                            <SelectItem value="credit_card">Credit Card</SelectItem>
+                            <SelectItem value="cash">Cash</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
 
             <div className="grid gap-3">
