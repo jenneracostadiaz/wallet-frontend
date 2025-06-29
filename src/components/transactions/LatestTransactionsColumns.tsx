@@ -1,4 +1,5 @@
 'use client';
+import type { Category } from '@/type/Categories';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
 import { TrendingDown, TrendingUp } from 'lucide-react';
@@ -6,10 +7,29 @@ import { TrendingDown, TrendingUp } from 'lucide-react';
 export const LatestTransactionsColumns: ColumnDef<Transaction>[] = [
     {
         accessorKey: 'date',
-        header: 'Date',
+        header: 'Transaction',
         cell: ({ row }) => {
             const date = new Date(row.getValue('date'));
-            return <span>{date.toLocaleDateString()}</span>;
+            const category: Category = row.original.category;
+            return (
+                <span className="flex flex-col gap-1">
+                    <span className="font-semibold capitalize">
+                        {category.parent ? (
+                            <>
+                                {category.parent.icon} {category.parent.name} &rarr; {category.icon} {category.name}
+                            </>
+                        ) : (
+                            <>
+                                {category.icon} {category.name}
+                            </>
+                        )}
+                    </span>
+                    <span className="text-muted-foreground text-xs">
+                        Date: {date.toLocaleDateString()} - Time:{' '}
+                        {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </span>
+            );
         },
     },
     {
