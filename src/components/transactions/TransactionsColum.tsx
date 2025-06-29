@@ -1,11 +1,10 @@
-'use client';
 import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
 import { CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
 
-export const LatestTransactionsColumns: ColumnDef<Transaction>[] = [
+export const TransactionsColum: ColumnDef<Transaction>[] = [
     {
         accessorKey: 'date',
         header: 'Transaction',
