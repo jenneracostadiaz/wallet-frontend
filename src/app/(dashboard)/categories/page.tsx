@@ -1,7 +1,6 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
-import { AccountsColumns } from '@/components/accounts/AccountsColumns';
 import { categoriesColumn } from '@/components/categories/CategoriesColumn';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useCategoriesTableData, useGetCategories } from '@/hooks/useCategories';
