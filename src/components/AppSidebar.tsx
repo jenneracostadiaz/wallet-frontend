@@ -10,9 +10,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui';
 
-import { NavSecondary } from '@/app/(dashboard)/components/NavSecondary';
-import { NavUser } from '@/app/(dashboard)/components/NavUser';
 import { auth } from '@/app/api/auth/[...nextauth]/route';
+import { NavSecondary } from '@/components/NavSecondary';
+import { NavUser } from '@/components/NavUser';
 import type { User } from '@/type/User';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -60,7 +60,7 @@ export async function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/">
+                            <Link href="/public">
                                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                                     <Wallet className="size-4" />
                                 </div>
