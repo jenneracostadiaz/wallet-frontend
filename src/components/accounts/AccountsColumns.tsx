@@ -1,5 +1,6 @@
 'use client';
 import { DeleteAccount } from '@/components/accounts/DeleteAccount';
+import { EditAccount } from '@/components/accounts/EditAccount';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
 import type { Currency } from '@/type/Currencies';
@@ -59,6 +60,7 @@ export const AccountsColumns: ColumnDef<Account>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
+                        <EditAccount account={account} />
                         <DropdownMenuSeparator />
                         <DeleteAccount account={account} />
                     </DropdownMenuContent>
