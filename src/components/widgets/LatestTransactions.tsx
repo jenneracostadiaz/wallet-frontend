@@ -1,7 +1,7 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
 import { LatestTransactionsColumns } from '@/components/transactions/LatestTransactionsColumns';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import type { Transaction } from '@/type/Transactions';
 import { Terminal } from 'lucide-react';
@@ -26,7 +26,12 @@ export const LatestTransactions = () => {
 
             {!isError &&
                 (isLoading ? (
-                    <p>Loading...</p>
+                    <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {Array.from({ length: 18 }).map((_, idx: number) => (
+                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                            <Skeleton key={idx} className="w-full h-6" />
+                        ))}
+                    </div>
                 ) : (
                     transactions &&
                     transactions.length > 0 && <DataTable columns={LatestTransactionsColumns} data={transactions} />
