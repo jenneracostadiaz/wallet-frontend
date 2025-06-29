@@ -1,3 +1,4 @@
+import { CurrencySelect } from '@/components/accounts/CurrencySelect';
 import {
     Alert,
     AlertDescription,
@@ -12,9 +13,7 @@ import {
     SelectValue,
 } from '@/components/ui';
 import { useAccountsMutation } from '@/hooks/useAccounts';
-import { useGetCurrencies } from '@/hooks/useCurrencies';
 import type { Account } from '@/type/Accounts';
-import type { Currency } from '@/type/Currencies';
 import { Terminal } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -54,19 +53,13 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
             ...form,
             currency: {
                 id: 0,
-                symbol: '',
-                name: '',
                 code: '',
-                decimal_places: 2,
+                name: '',
+                symbol: '',
+                decimal_places: 0,
             },
         });
     };
-
-    const { data: currencies, isLoading: isLoadingCurrency, isError: isErrorCurrency } = useGetCurrencies();
-
-    const currencyList = Array.isArray(currencies) ? currencies : (currencies?.data ?? []);
-    const isCurrencySelectDisabled = isLoadingCurrency || isErrorCurrency;
-    const currencyIdExists = currencyList.some((c: Currency) => String(c.id) === String(form.currency_id));
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -110,35 +103,14 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                         onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
                     />
                 </div>
+
                 <div className="grid gap-3">
                     <Label htmlFor="balance">Balance</Label>
                     <div className="flex gap-2">
-                        <Select
-                            onValueChange={value => setForm(f => ({ ...f, currency_id: Number(value) }))}
-                            value={currencyIdExists ? form.currency_id.toString() : ''}
-                            disabled={isCurrencySelectDisabled}
-                        >
-                            <SelectTrigger className="w-16">
-                                <SelectValue
-                                    placeholder={
-                                        isLoadingCurrency
-                                            ? 'Loading...'
-                                            : isErrorCurrency
-                                              ? 'Error loading currencies'
-                                              : 'Select currency'
-                                    }
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {!isLoadingCurrency &&
-                                    !isErrorCurrency &&
-                                    currencyList.map((currency: Currency) => (
-                                        <SelectItem key={currency.id} value={String(currency.id)}>
-                                            {currency.symbol}
-                                        </SelectItem>
-                                    ))}
-                            </SelectContent>
-                        </Select>
+                        <CurrencySelect
+                            value={form.currency_id.toString()}
+                            onChange={value => setForm(f => ({ ...f, currency_id: Number(value) }))}
+                        />
                         <Input
                             id="balance"
                             type="number"
