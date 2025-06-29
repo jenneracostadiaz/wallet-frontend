@@ -30,7 +30,7 @@ export const AccountsColumns: ColumnDef<Account>[] = [
         cell: ({ row, getValue }) => {
             const value = getValue() as number;
             const currency: Currency = row.original.currency;
-            return new Intl.NumberFormat('es-PE', {
+            return new Intl.NumberFormat(navigator.language, {
                 style: 'currency',
                 currency: currency.code,
             }).format(value);

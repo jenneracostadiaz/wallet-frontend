@@ -60,7 +60,7 @@ export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
                     label: (tooltipItem: any) => {
                         const label = tooltipItem.dataset.label || '';
                         const value = tooltipItem.raw;
-                        return `${label}: ${value.toLocaleString('es-PE', { style: 'currency', currency: 'PEN' })}`;
+                        return `${label}: ${value.toLocaleString(navigator.language, { style: 'currency', currency: 'PEN' })}`;
                     },
                 },
             },
