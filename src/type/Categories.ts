@@ -1,5 +1,8 @@
 export type Category = {
-    icon: string;
+    id: number;
     name: string;
-    parent?: Category;
+    type: 'income' | 'expense';
+    icon: string;
+    subcategories?: Category[];
+    order: number;
 };
