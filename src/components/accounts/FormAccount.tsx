@@ -1,4 +1,4 @@
-import { CurrencySelect } from '@/components/accounts/CurrencySelect';
+import { CurrencySelect } from '@/components/commons/CurrencySelect';
 import {
     Alert,
     AlertDescription,
