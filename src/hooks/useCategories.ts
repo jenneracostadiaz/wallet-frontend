@@ -35,9 +35,13 @@ export const useGetCategories = () => {
 export const useCategoriesTableData = ({ categories }: { categories: Category[] }) => {
     return useMemo(() => {
         if (!categories) return [];
-        return categories.map((category: Category) => ({
-            ...category,
-        }));
+        const flatten = (cats: Category[], level: number): Category[] => {
+            return cats.flatMap(cat => [
+                { ...cat, level },
+                ...(cat.subcategories ? flatten(cat.subcategories, level + 1) : []),
+            ]);
+        };
+        return flatten(categories, 0);
     }, [categories]);
 };
 
