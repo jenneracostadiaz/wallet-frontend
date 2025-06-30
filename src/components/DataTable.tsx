@@ -1,9 +1,11 @@
 'use client';
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import {
+    type ColumnFiltersState,
     type SortingState,
     flexRender,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
@@ -19,6 +21,7 @@ interface DataTableProps<TData, TValue> {
 
 export const DataTable = <TData, TValue>({ columns, data, pageSize }: DataTableProps<TData, TValue>) => {
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
     const table = useReactTable({
         data,
@@ -33,13 +36,25 @@ export const DataTable = <TData, TValue>({ columns, data, pageSize }: DataTableP
         getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        onColumnFiltersChange: setColumnFilters,
+        getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting,
+            columnFilters,
         },
     });
 
     return (
         <div>
+            <div className="flex items-center py-4">
+                <Input
+                    placeholder="Filter By Description..."
+                    value={(table.getColumn('description')?.getFilterValue() as string) ?? ''}
+                    onChange={event => {
+                        table.getColumn('description')?.setFilterValue(event.target.value);
+                    }}
+                />
+            </div>
             <div className="rounded-md border overflow-hidden">
                 <Table>
                     <TableHeader className="bg-muted">
