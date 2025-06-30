@@ -20,7 +20,7 @@ export const useGetLatestTransactions = () => {
     const { data: session } = useSession();
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['latestTransactions', session?.accessToken],
+        queryKey: ['transactions', session?.accessToken],
         queryFn: () => fetchLatestTransactions(session?.accessToken || ''),
         enabled: !!session?.accessToken,
         refetchOnWindowFocus: false,
