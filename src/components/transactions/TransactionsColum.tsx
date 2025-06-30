@@ -5,14 +5,21 @@ import type { Category } from '@/type/Categories';
 import type { Currency } from '@/type/Currencies';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
-import { CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
+import { ArrowUpDown, CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
 
 export const TransactionsColum: ColumnDef<Transaction>[] = [
     {
-        accessorKey: 'date',
-        header: 'Transaction',
+        accessorKey: 'category',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Category
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
         cell: ({ row }) => {
-            const date = new Date(row.getValue('date'));
+            const date = new Date(row.original.date);
             const category: Category = row.original.category;
             return (
                 <span className="flex flex-col gap-1">
@@ -37,7 +44,14 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: 'account',
-        header: 'Account',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Account
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
         cell: ({ row }) => {
             const account: Account = row.original.account;
             return (
@@ -55,7 +69,14 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: 'amount',
-        header: 'Amount',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Amount
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
         cell: ({ row }) => {
             const type = row.original.type;
             const currency: Currency = row.original.currency;
@@ -74,7 +95,14 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: 'description',
-        header: 'Description',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Description
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
     },
     {
         id: 'actions',
