@@ -177,7 +177,7 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
-                        <EditTransaction />
+                        <EditTransaction transaction={transaction} />
                         <DropdownMenuSeparator />
                         <DeleteTransaction transaction={transaction} />
                     </DropdownMenuContent>
