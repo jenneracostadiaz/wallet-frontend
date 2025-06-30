@@ -54,7 +54,9 @@ export default function TransactionsPage() {
                         </div>
                     ) : (
                         transactions &&
-                        transactions.length > 0 && <DataTable columns={TransactionsColum} data={transactions} />
+                        transactions.length > 0 && (
+                            <DataTable columns={TransactionsColum} data={transactions} pageSize={20} />
+                        )
                     ))}
             </section>
         </>
