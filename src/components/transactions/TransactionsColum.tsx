@@ -44,16 +44,13 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
             );
         },
         filterFn: (row, _columnId, filterValue) => {
-            // Manejar filtros de categoría y fecha
             if (!filterValue) return true;
 
-            // Si es un filtro de categoría (string/number)
             if (typeof filterValue === 'string' || typeof filterValue === 'number') {
                 const category: Category = row.original.category;
                 return String(category.id) === String(filterValue);
             }
 
-            // Si es un filtro de fecha (DateRange)
             if (filterValue && typeof filterValue === 'object' && ('from' in filterValue || 'to' in filterValue)) {
                 const dateRange = filterValue as DateRange;
                 const transactionDate = new Date(row.original.date);
@@ -89,7 +86,6 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
             return true;
         },
         sortingFn: (rowA, rowB) => {
-            // Ordenar por fecha por defecto
             const dateA = new Date(rowA.original.date).getTime();
             const dateB = new Date(rowB.original.date).getTime();
             return dateA - dateB;
