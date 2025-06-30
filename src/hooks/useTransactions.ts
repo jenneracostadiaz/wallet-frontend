@@ -64,3 +64,46 @@ export const useTransactionDelete = ({ transaction, setOpen }: useTransactionDel
 
     return { mutate, isPending };
 };
+
+interface useTransactionMutationProps {
+    transaction?: Transaction;
+    onSuccess?: () => void;
+}
+
+export const useTransactionMutation = ({ transaction, onSuccess }: useTransactionMutationProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
+    const { mutate, isPending, error } = useMutation({
+        mutationFn: async (newTransaction: Transaction) => {
+            const method = transaction ? 'PUT' : 'POST';
+            const url = transaction
+                ? `${process.env.NEXT_PUBLIC_API_URL}/transactions/${transaction.id}`
+                : `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
+
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+                body: JSON.stringify(newTransaction),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not save transaction');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient
+                .invalidateQueries({ queryKey: ['transactions', session?.accessToken] })
+                .then(r => console.log(r));
+            queryClient.invalidateQueries({ queryKey: ['balance'] }).then(r => console.log(r));
+            queryClient.invalidateQueries({ queryKey: ['monthlyReport'] }).then(r => console.log(r));
+            onSuccess?.();
+        },
+    });
+
+    return { mutate, isPending, error };
+};
