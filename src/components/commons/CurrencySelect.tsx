@@ -1,7 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 import { useCurrencyList } from '@/hooks/useCurrencies';
 import type { Currency } from '@/type/Currencies';
-import { useEffect } from 'react';
 
 interface CurrencySelectProps {
     value: string;
