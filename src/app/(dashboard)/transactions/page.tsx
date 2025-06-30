@@ -1,6 +1,7 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
+import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { Alert, AlertDescription, AlertTitle, Input, Skeleton } from '@/components/ui';
 import { useGetTransactions } from '@/hooks/useTransactions';
@@ -47,6 +48,10 @@ export default function TransactionsPage() {
                         value={(columnFilters.find(f => f.id === 'description')?.value as string) ?? ''}
                         onChange={event => onFilterChange('description', event.target.value)}
                         className="w-full lg:col-span-2"
+                    />
+                    <CategoriesSelect
+                        value={(columnFilters.find(f => f.id === 'category')?.value as string) ?? ''}
+                        onChange={value => onFilterChange('category', value)}
                     />
                 </div>
 
