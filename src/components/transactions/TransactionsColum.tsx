@@ -41,6 +41,11 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
+        filterFn: (row, columnId, filterValue) => {
+            const category: Category = row.getValue(columnId);
+            if (!filterValue) return true;
+            return String(category.id) === String(filterValue);
+        },
     },
     {
         accessorKey: 'account',
