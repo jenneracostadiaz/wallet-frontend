@@ -12,19 +12,13 @@ export const CurrencySelect = ({ value, onChange }: CurrencySelectProps) => {
     const { currencyList, isLoadingCurrency, isErrorCurrency } = useCurrencyList();
     const currencyIdExists = currencyList.some((c: Currency) => String(c.id) === String(value));
 
-    useEffect(() => {
-        if (!isLoadingCurrency && !isErrorCurrency && currencyList.length > 0 && !currencyIdExists) {
-            onChange(String(currencyList[0].id));
-        }
-    }, [isLoadingCurrency, isErrorCurrency, currencyList, currencyIdExists, onChange]);
-
     return (
         <Select
-            onValueChange={onChange}
+            onValueChange={val => onChange(val === 'none' ? '' : val)}
             value={currencyIdExists ? value : ''}
             disabled={isLoadingCurrency || isErrorCurrency}
         >
-            <SelectTrigger className="w-16">
+            <SelectTrigger className="w-full">
                 <SelectValue
                     placeholder={
                         isLoadingCurrency
@@ -36,6 +30,7 @@ export const CurrencySelect = ({ value, onChange }: CurrencySelectProps) => {
                 />
             </SelectTrigger>
             <SelectContent>
+                <SelectItem value="none">No Currencies</SelectItem>
                 {!isLoadingCurrency &&
                     !isErrorCurrency &&
                     currencyList.map((currency: Currency) => (
