@@ -26,7 +26,7 @@ export const EditTransaction = () => {
                 <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={e => e.preventDefault()}>Edit</DropdownMenuItem>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Edit Transaction</DialogTitle>
                     </DialogHeader>
