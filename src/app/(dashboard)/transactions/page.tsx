@@ -54,24 +54,24 @@ export default function TransactionsPage() {
         setDateRange(range);
         if (range?.from || range?.to) {
             setColumnFilters(prev => {
-                const newFilters = prev.filter(f => f.id !== 'date');
-                newFilters.push({ id: 'date', value: range });
+                const newFilters = prev.filter(f => f.id !== 'category_date');
+                newFilters.push({ id: 'category_date', value: range });
                 return newFilters;
             });
         } else {
-            setColumnFilters(prev => prev.filter(f => f.id !== 'date'));
+            setColumnFilters(prev => prev.filter(f => f.id !== 'category_date'));
         }
     };
 
     const clearDateRange = () => {
         setDateRange(undefined);
-        setColumnFilters(prev => prev.filter(f => f.id !== 'date'));
+        setColumnFilters(prev => prev.filter(f => f.id !== 'category_date'));
     };
 
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
-            <section className="px-4 flex flex-col gap-4 w-full max-w-5xl 2xl:max-w-none">
+            <section className="px-4 flex flex-col gap-4 w-full">
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl font-bold">Transactions</h1>
                 </div>
@@ -83,8 +83,8 @@ export default function TransactionsPage() {
                         className="w-full"
                     />
                     <CategoriesSelect
-                        value={(columnFilters.find(f => f.id === 'category')?.value as string) ?? ''}
-                        onChange={value => onFilterChange('category', value)}
+                        value={(columnFilters.find(f => f.id === 'category_date')?.value as string) ?? ''}
+                        onChange={value => onFilterChange('category_date', value)}
                     />
                     <CurrencySelect
                         value={(columnFilters.find(f => f.id === 'amount')?.value as string) ?? ''}

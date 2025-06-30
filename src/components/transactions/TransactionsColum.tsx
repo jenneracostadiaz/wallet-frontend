@@ -10,73 +10,21 @@ import type { DateRange } from 'react-day-picker';
 
 export const TransactionsColum: ColumnDef<Transaction>[] = [
     {
-        accessorKey: 'date',
-        id: 'date',
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                    Date
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const date = new Date(row.original.date);
-            return (
-                <span className="text-sm">
-                    {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-            );
-        },
-        filterFn: (row, _columnId, filterValue: DateRange) => {
-            if (!filterValue) return true;
-
-            const transactionDate = new Date(row.original.date);
-
-            // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
-            if (isNaN(transactionDate.getTime())) {
-                return true;
-            }
-
-            const { from, to } = filterValue;
-
-            const normalizeToLocalDate = (date: Date) => {
-                return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-            };
-
-            const normalizedTransactionDate = normalizeToLocalDate(transactionDate);
-
-            if (from && !to) {
-                const normalizedFrom = normalizeToLocalDate(from);
-                return normalizedTransactionDate.getTime() >= normalizedFrom.getTime();
-            }
-
-            if (from && to) {
-                const normalizedFrom = normalizeToLocalDate(from);
-                const normalizedTo = normalizeToLocalDate(to);
-                return (
-                    normalizedTransactionDate.getTime() >= normalizedFrom.getTime() &&
-                    normalizedTransactionDate.getTime() <= normalizedTo.getTime()
-                );
-            }
-
-            return true;
-        },
-    },
-    {
         accessorKey: 'category',
+        id: 'category_date',
         header: ({ column }) => {
             return (
                 <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                    Category
+                    Category & Date
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
             const category: Category = row.original.category;
+            const date = new Date(row.original.date);
             return (
-                <span className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1">
                     <span className="font-semibold capitalize">
                         {category.parent ? (
                             <>
@@ -88,13 +36,63 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                             </>
                         )}
                     </span>
-                </span>
+                    <span className="text-xs text-muted-foreground">
+                        {date.toLocaleDateString()}{' '}
+                        {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
             );
         },
-        filterFn: (row, columnId, filterValue) => {
-            const category: Category = row.getValue(columnId);
+        filterFn: (row, _columnId, filterValue) => {
+            // Manejar filtros de categoría y fecha
             if (!filterValue) return true;
-            return String(category.id) === String(filterValue);
+
+            // Si es un filtro de categoría (string/number)
+            if (typeof filterValue === 'string' || typeof filterValue === 'number') {
+                const category: Category = row.original.category;
+                return String(category.id) === String(filterValue);
+            }
+
+            // Si es un filtro de fecha (DateRange)
+            if (filterValue && typeof filterValue === 'object' && ('from' in filterValue || 'to' in filterValue)) {
+                const dateRange = filterValue as DateRange;
+                const transactionDate = new Date(row.original.date);
+
+                // biome-ignore lint/suspicious/noGlobalIsNan: Valid check for Date validity
+                if (isNaN(transactionDate.getTime())) {
+                    return true;
+                }
+
+                const { from, to } = dateRange;
+
+                const normalizeToLocalDate = (date: Date) => {
+                    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                };
+
+                const normalizedTransactionDate = normalizeToLocalDate(transactionDate);
+
+                if (from && !to) {
+                    const normalizedFrom = normalizeToLocalDate(from);
+                    return normalizedTransactionDate.getTime() >= normalizedFrom.getTime();
+                }
+
+                if (from && to) {
+                    const normalizedFrom = normalizeToLocalDate(from);
+                    const normalizedTo = normalizeToLocalDate(to);
+                    return (
+                        normalizedTransactionDate.getTime() >= normalizedFrom.getTime() &&
+                        normalizedTransactionDate.getTime() <= normalizedTo.getTime()
+                    );
+                }
+            }
+
+            return true;
+        },
+        sortingFn: (rowA, rowB) => {
+            // Ordenar por fecha por defecto
+            const dateA = new Date(rowA.original.date).getTime();
+            const dateB = new Date(rowB.original.date).getTime();
+            return dateA - dateB;
         },
     },
     {
