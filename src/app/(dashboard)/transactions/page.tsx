@@ -4,11 +4,24 @@ import { Header } from '@/components/Header';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { Alert, AlertDescription, AlertTitle, Input, Skeleton } from '@/components/ui';
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Button,
+    Calendar,
+    Input,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Skeleton,
+} from '@/components/ui';
 import { useGetTransactions } from '@/hooks/useTransactions';
 import type { ColumnFiltersState } from '@tanstack/react-table';
-import { Terminal } from 'lucide-react';
+import { format } from 'date-fns';
+import { CalendarIcon, Terminal } from 'lucide-react';
 import { useState } from 'react';
+import type { DateRange } from 'react-day-picker';
 
 const breadcrumbs = [
     {
@@ -25,6 +38,7 @@ export default function TransactionsPage() {
     const { data, isLoading, isError } = useGetTransactions();
     const transactions = data?.data || [];
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [date, setDate] = useState<Date>();
 
     const onFilterChange = (id: string, value: string) => {
         setColumnFilters(prev => {
@@ -58,6 +72,21 @@ export default function TransactionsPage() {
                         value={(columnFilters.find(f => f.id === 'amount')?.value as string) ?? ''}
                         onChange={value => onFilterChange('amount', value)}
                     />
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                data-empty={!date}
+                                className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal"
+                            >
+                                <CalendarIcon />
+                                {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                            <Calendar mode="single" selected={date} onSelect={setDate} />
+                        </PopoverContent>
+                    </Popover>
                 </div>
 
                 {isError && (
