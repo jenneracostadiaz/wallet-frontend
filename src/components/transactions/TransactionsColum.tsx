@@ -1,8 +1,12 @@
+import { DeleteAccount } from '@/components/accounts/DeleteAccount';
+import { EditAccount } from '@/components/accounts/EditAccount';
+import { DeleteTransaction } from '@/components/transactions/DeleteTransaction';
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
-import { CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
+import { CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
 
 export const TransactionsColum: ColumnDef<Transaction>[] = [
     {
@@ -69,5 +73,30 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
     {
         accessorKey: 'description',
         header: 'Description',
+    },
+    {
+        id: 'actions',
+        cell: ({ row }) => {
+            const transaction: Transaction = row.original;
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <div className="flex justify-end">
+                            <Button
+                                variant="ghost"
+                                className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+                            >
+                                <span className="sr-only">Open Menu</span>
+                                <MoreVertical className="h-4 w-4" />
+                            </Button>
+                        </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-32">
+                        <DropdownMenuSeparator />
+                        <DeleteTransaction transaction={transaction} />
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        },
     },
 ];
