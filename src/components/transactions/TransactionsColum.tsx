@@ -2,6 +2,7 @@ import { DeleteTransaction } from '@/components/transactions/DeleteTransaction';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
+import type { Currency } from '@/type/Currencies';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
 import { CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
@@ -53,17 +54,20 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
         },
     },
     {
-        accessorKey: 'totalAmount',
+        accessorKey: 'amount',
         header: 'Amount',
         cell: ({ row }) => {
             const type = row.original.type;
-            const amount = row.getValue('totalAmount');
+            const currency: Currency = row.original.currency;
+            const amount: number = row.getValue('amount');
             return (
                 <span className="flex items-center gap-2">
                     {type === 'income' && <TrendingUp className="size-4 text-green-400" />}
                     {type === 'expense' && <TrendingDown className="size-4 text-red-400" />}
                     {type === 'transfer' && <CircleDashed className="size-4 text-blue-400" />}
-                    {String(amount)}
+                    {new Intl.NumberFormat(navigator.language, { style: 'currency', currency: currency.code }).format(
+                        amount
+                    )}
                 </span>
             );
         },
