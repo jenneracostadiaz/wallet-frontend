@@ -2,6 +2,7 @@
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
+import { CurrencySelect } from '@/components/commons/CurrencySelect';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { Alert, AlertDescription, AlertTitle, Input, Skeleton } from '@/components/ui';
 import { useGetTransactions } from '@/hooks/useTransactions';
@@ -52,6 +53,10 @@ export default function TransactionsPage() {
                     <CategoriesSelect
                         value={(columnFilters.find(f => f.id === 'category')?.value as string) ?? ''}
                         onChange={value => onFilterChange('category', value)}
+                    />
+                    <CurrencySelect
+                        value={(columnFilters.find(f => f.id === 'amount')?.value as string) ?? ''}
+                        onChange={value => onFilterChange('amount', value)}
                     />
                 </div>
 
