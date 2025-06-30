@@ -8,6 +8,7 @@ export * from './calendar';
 export * from './card';
 export * from './collapsible';
 export * from './dialog';
+export * from './drawer';
 export * from './dropdown-menu';
 export * from './input';
 export * from './label';
