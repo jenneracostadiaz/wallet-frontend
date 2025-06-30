@@ -97,6 +97,11 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
+        filterFn: (row, columnId, filterValue) => {
+            const currency: Currency = row.original.currency;
+            if (!filterValue) return true;
+            return String(currency.id) === String(filterValue);
+        },
     },
     {
         accessorKey: 'description',
