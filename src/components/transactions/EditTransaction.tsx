@@ -1,43 +1,26 @@
 'use client';
 
 import {
-    Button,
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
     Drawer,
-    DrawerClose,
     DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
     DropdownMenuItem,
 } from '@/components/ui';
-import { useEffect, useState } from 'react';
-
-function useMediaQuery(media: string) {
-    const [matches, setMatches] = useState(() => window.matchMedia(media).matches);
-
-    useEffect(() => {
-        const mediaQueryList = window.matchMedia(media);
-        const documentChangeHandler = () => setMatches(mediaQueryList.matches);
-        mediaQueryList.addEventListener('change', documentChangeHandler);
-        return () => mediaQueryList.removeEventListener('change', documentChangeHandler);
-    }, [media]);
-
-    return matches;
-}
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useState } from 'react';
 
 export const EditTransaction = () => {
     const [open, setOpen] = useState(false);
-    const isDesktop = useMediaQuery('(min-width: 768px)');
+    const isMobile = useIsMobile();
 
-    if (isDesktop) {
+    if (!isMobile) {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
