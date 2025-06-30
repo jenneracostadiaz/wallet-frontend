@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import type { Transaction } from '@/type/Transactions';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 
 const fetchTransactions = async (token: string) => {
@@ -28,4 +29,36 @@ export const useGetTransactions = () => {
         isLoading,
         isError,
     };
+};
+
+interface useTransactionDeleteProps {
+    transaction: Transaction;
+    setOpen: (open: boolean) => void;
+}
+
+export const useTransactionDelete = ({ transaction, setOpen }: useTransactionDeleteProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${transaction.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Could not delete transaction');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['transaction'] }).then(r => console.log(r));
+            setOpen(false);
+        },
+    });
+
+    return { mutate, isPending };
 };
