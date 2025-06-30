@@ -1,4 +1,5 @@
 import { DeleteTransaction } from '@/components/transactions/DeleteTransaction';
+import { EditTransaction } from '@/components/transactions/EditTransaction';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
@@ -176,6 +177,7 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
+                        <EditTransaction />
                         <DropdownMenuSeparator />
                         <DeleteTransaction transaction={transaction} />
                     </DropdownMenuContent>
