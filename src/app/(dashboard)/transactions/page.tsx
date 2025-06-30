@@ -90,13 +90,13 @@ export default function TransactionsPage() {
                         value={(columnFilters.find(f => f.id === 'amount')?.value as string) ?? ''}
                         onChange={value => onFilterChange('amount', value)}
                     />
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 relative">
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
                                     data-empty={!dateRange?.from}
-                                    className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal flex-1"
+                                    className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal w-full"
                                 >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                     {dateRange?.from ? (
@@ -124,8 +124,13 @@ export default function TransactionsPage() {
                             </PopoverContent>
                         </Popover>
                         {dateRange?.from && (
-                            <Button variant="outline" size="icon" onClick={clearDateRange} className="shrink-0">
-                                <X className="h-4 w-4" />
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={clearDateRange}
+                                className="absolute right-0 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-muted-foreground"
+                            >
+                                <X className="size-4" />
                             </Button>
                         )}
                     </div>
