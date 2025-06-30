@@ -7,12 +7,19 @@ import { type ColumnDef, getCoreRowModel } from '@tanstack/table-core';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    pageSize: number;
 }
 
-export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
+export const DataTable = <TData, TValue>({ columns, data, pageSize }: DataTableProps<TData, TValue>) => {
     const table = useReactTable({
         data,
         columns,
+        initialState: {
+            pagination: {
+                pageSize: pageSize || 10, // Default page size
+                pageIndex: 0, // Start at the first page
+            },
+        },
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     });
