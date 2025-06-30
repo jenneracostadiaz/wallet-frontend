@@ -20,9 +20,7 @@ export const CategoriesSelect = ({ value, onChange, category }: CategoriesSelect
         >
             <SelectTrigger className="w-full">
                 <SelectValue
-                    placeholder={
-                        isLoading ? 'Loading...' : isError ? 'Error loading categories' : 'Sin categoría padre'
-                    }
+                    placeholder={isLoading ? 'Loading...' : isError ? 'Error loading categories' : 'No category'}
                 />
             </SelectTrigger>
             <SelectContent>
