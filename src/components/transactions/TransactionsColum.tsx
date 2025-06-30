@@ -6,8 +6,63 @@ import type { Currency } from '@/type/Currencies';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef } from '@tanstack/table-core';
 import { ArrowUpDown, CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
+import type { DateRange } from 'react-day-picker';
 
 export const TransactionsColum: ColumnDef<Transaction>[] = [
+    {
+        accessorKey: 'date',
+        id: 'date',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Date
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            const date = new Date(row.original.date);
+            return (
+                <span className="text-sm">
+                    {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+            );
+        },
+        filterFn: (row, _columnId, filterValue: DateRange) => {
+            if (!filterValue) return true;
+
+            const transactionDate = new Date(row.original.date);
+
+            // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
+            if (isNaN(transactionDate.getTime())) {
+                return true;
+            }
+
+            const { from, to } = filterValue;
+
+            const normalizeToLocalDate = (date: Date) => {
+                return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            };
+
+            const normalizedTransactionDate = normalizeToLocalDate(transactionDate);
+
+            if (from && !to) {
+                const normalizedFrom = normalizeToLocalDate(from);
+                return normalizedTransactionDate.getTime() >= normalizedFrom.getTime();
+            }
+
+            if (from && to) {
+                const normalizedFrom = normalizeToLocalDate(from);
+                const normalizedTo = normalizeToLocalDate(to);
+                return (
+                    normalizedTransactionDate.getTime() >= normalizedFrom.getTime() &&
+                    normalizedTransactionDate.getTime() <= normalizedTo.getTime()
+                );
+            }
+
+            return true;
+        },
+    },
     {
         accessorKey: 'category',
         header: ({ column }) => {
@@ -19,7 +74,6 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
             );
         },
         cell: ({ row }) => {
-            const date = new Date(row.original.date);
             const category: Category = row.original.category;
             return (
                 <span className="flex flex-col gap-1">
@@ -33,10 +87,6 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                                 {category.icon} {category.name}
                             </>
                         )}
-                    </span>
-                    <span className="text-muted-foreground text-xs">
-                        Date: {date.toLocaleDateString()} - Time:{' '}
-                        {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                 </span>
             );
@@ -97,7 +147,7 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
-        filterFn: (row, columnId, filterValue) => {
+        filterFn: (row, _columnId, filterValue) => {
             const currency: Currency = row.original.currency;
             if (!filterValue) return true;
             return String(currency.id) === String(filterValue);
