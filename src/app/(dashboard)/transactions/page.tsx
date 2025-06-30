@@ -71,11 +71,11 @@ export default function TransactionsPage() {
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
-            <section className="px-4">
-                <div className="flex justify-between items-center mb-4">
+            <section className="px-4 flex flex-col gap-4 w-full max-w-5xl 2xl:max-w-none">
+                <div className="flex justify-between items-center">
                     <h1 className="text-2xl font-bold">Transactions</h1>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-4 items-center py-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                     <Input
                         placeholder="Filter descriptions..."
                         value={(columnFilters.find(f => f.id === 'description')?.value as string) ?? ''}
