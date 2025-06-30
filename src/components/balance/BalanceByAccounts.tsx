@@ -25,7 +25,7 @@ export const BalanceByAccounts = ({ loading, accounts }: BalanceByAccountsProps)
                 <ScrollArea className="lg:col-span-2 md:h-[202px] w-full">
                     <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
                         {accounts?.map((account: Account) => (
-                            <Card key={account.name} className="@container/card py-2">
+                            <Card key={account.id} className="@container/card py-2">
                                 <CardHeader className="px-4">
                                     <CardDescription>
                                         <span>{account.name}</span>
