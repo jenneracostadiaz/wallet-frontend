@@ -55,7 +55,9 @@ export const useTransactionDelete = ({ transaction, setOpen }: useTransactionDel
             return response.json();
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['transaction'] }).then(r => console.log(r));
+            queryClient.invalidateQueries({ queryKey: ['transactions'] }).then(r => console.log(r));
+            queryClient.invalidateQueries({ queryKey: ['balance'] }).then(r => console.log(r));
+            queryClient.invalidateQueries({ queryKey: ['monthlyReport'] }).then(r => console.log(r));
             setOpen(false);
         },
     });
