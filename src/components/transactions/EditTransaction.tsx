@@ -1,5 +1,6 @@
 'use client';
 
+import { FormTransaction } from '@/components/transactions/FormTransaction';
 import {
     Dialog,
     DialogContent,
@@ -14,9 +15,10 @@ import {
     DropdownMenuItem,
 } from '@/components/ui';
 import { useIsMobile } from '@/hooks/use-mobile';
+import type { Transaction } from '@/type/Transactions';
 import { useState } from 'react';
 
-export const EditTransaction = () => {
+export const EditTransaction = ({ transaction }: { transaction: Transaction }) => {
     const [open, setOpen] = useState(false);
     const isMobile = useIsMobile();
 
@@ -29,6 +31,7 @@ export const EditTransaction = () => {
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Edit Transaction</DialogTitle>
+                        <FormTransaction transaction={transaction} onSuccess={() => setOpen(false)} />
                     </DialogHeader>
                 </DialogContent>
             </Dialog>
@@ -36,10 +39,11 @@ export const EditTransaction = () => {
     }
     return (
         <Drawer>
-            <DrawerTrigger className="text-sm p-1">Edit</DrawerTrigger>
+            <DrawerTrigger className="text-sm py-1 px-2 w-full text-left">Edit</DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle>Edit Transaction</DrawerTitle>
+                    <FormTransaction transaction={transaction} onSuccess={() => setOpen(false)} />
                 </DrawerHeader>
             </DrawerContent>
         </Drawer>
