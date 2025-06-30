@@ -1,5 +1,3 @@
-import { DeleteAccount } from '@/components/accounts/DeleteAccount';
-import { EditAccount } from '@/components/accounts/EditAccount';
 import { DeleteTransaction } from '@/components/transactions/DeleteTransaction';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
