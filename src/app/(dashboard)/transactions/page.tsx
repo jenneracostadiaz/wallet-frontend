@@ -21,7 +21,6 @@ import type { ColumnFiltersState } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { CalendarIcon, Terminal } from 'lucide-react';
 import { useState } from 'react';
-import type { DateRange } from 'react-day-picker';
 
 const breadcrumbs = [
     {
