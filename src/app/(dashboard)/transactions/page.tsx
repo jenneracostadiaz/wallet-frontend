@@ -1,8 +1,10 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
+import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
+import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import {
     Alert,
@@ -16,6 +18,7 @@ import {
     PopoverTrigger,
     Skeleton,
 } from '@/components/ui';
+import { Balance } from '@/components/widgets';
 import { useGetTransactions } from '@/hooks/useTransactions';
 import type { ColumnFiltersState } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -72,8 +75,11 @@ export default function TransactionsPage() {
         <>
             <Header breadcrumbs={breadcrumbs} />
             <section className="px-4 flex flex-col gap-4 w-full">
+                <Balance />
+
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl font-bold">Transactions</h1>
+                    <CreateTransaction />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                     <Input
@@ -81,6 +87,10 @@ export default function TransactionsPage() {
                         value={(columnFilters.find(f => f.id === 'description')?.value as string) ?? ''}
                         onChange={event => onFilterChange('description', event.target.value)}
                         className="w-full"
+                    />
+                    <AccountsSelect
+                        value={(columnFilters.find(f => f.id === 'account')?.value as string) ?? ''}
+                        onChange={value => onFilterChange('account', value)}
                     />
                     <CategoriesSelect
                         value={(columnFilters.find(f => f.id === 'category_date')?.value as string) ?? ''}

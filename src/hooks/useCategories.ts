@@ -45,7 +45,10 @@ export const useCategoriesTableData = ({ categories }: { categories: Category[] 
     }, [categories]);
 };
 
-export const useGetParentCategories = ({ category }: { category?: Category }) => {
+export const useGetParentCategories = ({
+    category,
+    transactionType,
+}: { category?: Category; transactionType?: string }) => {
     const { data: session } = useSession();
 
     const { data, isLoading, isError } = useQuery({
@@ -57,13 +60,24 @@ export const useGetParentCategories = ({ category }: { category?: Category }) =>
 
     const parentCategories = useMemo(() => {
         if (!data || !data.data) return [];
+
+        if (
+            transactionType &&
+            (transactionType === 'income' || transactionType === 'expense' || transactionType === 'transfer')
+        ) {
+            return data.data.filter(
+                (cat: Category) => cat.type === transactionType && cat.parent_id === null && cat.id !== category?.id
+            );
+        }
+
         if (!category) {
             return data.data.filter((cat: Category) => cat.parent_id === null);
         }
+
         return data.data.filter(
             (cat: Category) => cat.type === category.type && cat.parent_id === null && cat.id !== category.id
         );
-    }, [data, category]);
+    }, [data, category, transactionType]);
 
     return {
         parentCategories,
@@ -142,3 +156,13 @@ export const useCategoryMutation = ({ category, onSuccess }: useCategoryMutation
 
     return { mutate, isPending, error };
 };
+
+export const createEmptyCategory = () => ({
+    id: 0,
+    name: '',
+    type: 'income' as const,
+    icon: '',
+    subcategories: undefined,
+    parent: undefined,
+    parent_id: undefined,
+});

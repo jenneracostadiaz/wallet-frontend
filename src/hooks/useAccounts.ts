@@ -1,3 +1,4 @@
+import { createEmptyCurrency } from '@/hooks/useCurrencies';
 import type { Account } from '@/type/Accounts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -41,6 +42,16 @@ export const useAccountsTableData = ({ accounts }: { accounts: Account[] }) => {
             };
         });
     }, [accounts]);
+};
+
+export const useAccountsList = () => {
+    const { data, isLoading, isError } = useGetAccounts();
+    const list = Array.isArray(data) ? data : (data?.data ?? []);
+    return {
+        accountsList: list,
+        isLoadingAccounts: isLoading,
+        isErrorAccounts: isError,
+    };
 };
 
 interface useAccountsDeleteProps {
@@ -118,3 +129,15 @@ export const useAccountsMutation = ({ account, onSuccess }: useAccountsMutationP
 
     return { mutate, isPending, error, reset };
 };
+
+export const createEmptyAccount = () => ({
+    id: 0,
+    name: '',
+    type: '',
+    balance: 0,
+    color: '',
+    currency_id: 0,
+    currency: createEmptyCurrency(),
+    description: undefined,
+    order: undefined,
+});

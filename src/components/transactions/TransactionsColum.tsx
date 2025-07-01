@@ -1,4 +1,5 @@
 import { DeleteTransaction } from '@/components/transactions/DeleteTransaction';
+import { EditTransaction } from '@/components/transactions/EditTransaction';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
@@ -115,6 +116,11 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
+        filterFn: (row, _columnId, filterValue) => {
+            const account: Account = row.original.account;
+            if (!filterValue) return true;
+            return String(account.id) === String(filterValue);
+        },
     },
     {
         accessorKey: 'amount',
@@ -176,6 +182,7 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
+                        <EditTransaction transaction={transaction} />
                         <DropdownMenuSeparator />
                         <DeleteTransaction transaction={transaction} />
                     </DropdownMenuContent>
