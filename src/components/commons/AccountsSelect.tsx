@@ -20,16 +20,12 @@ export const AccountsSelect = ({ value, onChange }: AccountsSelectProps) => {
 
     const selectValue = isValidValue && (accounts.length === 0 || accountIdExists) ? value : '';
 
-    const handleValueChange = (val: string) => {
-        if (val === 'none') {
-            onChange('0');
-        } else {
-            onChange(val);
-        }
-    };
-
     return (
-        <Select onValueChange={handleValueChange} value={selectValue} disabled={isLoading || isError}>
+        <Select
+            onValueChange={val => onChange(val === 'none' ? '' : val)}
+            value={selectValue}
+            disabled={isLoading || isError}
+        >
             <SelectTrigger className="w-full">
                 <SelectValue
                     placeholder={isLoading ? 'Loading...' : isError ? 'Error loading accounts' : 'Select account'}
