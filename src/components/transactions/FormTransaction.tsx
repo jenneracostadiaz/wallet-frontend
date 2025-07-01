@@ -11,11 +11,8 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+    RadioGroup,
+    RadioGroupItem,
 } from '@/components/ui';
 import { createEmptyAccount, useAccountsList } from '@/hooks/useAccounts';
 import { createEmptyCategory } from '@/hooks/useCategories';
@@ -34,7 +31,7 @@ const getInitialState = (transaction?: Transaction) => {
         account_id: transaction?.account_id || 0,
         to_account_id: transaction?.to_account_id || 0,
         category_id: transaction?.category_id || 0,
-        type: transaction?.type || '',
+        type: transaction?.type || 'income',
         account: createEmptyAccount(),
         category: createEmptyCategory(),
         currency: createEmptyCurrency(),
@@ -89,6 +86,57 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
+            <div className="grid gap-3">
+                <RadioGroup
+                    value={form.type}
+                    onValueChange={value => setForm({ ...form, type: value })}
+                    className="grid grid-cols-3 gap-3"
+                >
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="income" id="income" className="sr-only" />
+                        <Label
+                            htmlFor="income"
+                            className={`flex items-center justify-center gap-2 w-full p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                form.type === 'income'
+                                    ? 'border-green-500 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400'
+                                    : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                            }`}
+                        >
+                            <TrendingUp className="w-4 h-4" />
+                            Income
+                        </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="expense" id="expense" className="sr-only" />
+                        <Label
+                            htmlFor="expense"
+                            className={`flex items-center justify-center gap-2 w-full p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                form.type === 'expense'
+                                    ? 'border-red-500 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400'
+                                    : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                            }`}
+                        >
+                            <TrendingDown className="w-4 h-4" />
+                            Expense
+                        </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="transfer" id="transfer" className="sr-only" />
+                        <Label
+                            htmlFor="transfer"
+                            className={`flex items-center justify-center gap-2 w-full p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                form.type === 'transfer'
+                                    ? 'border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-400'
+                                    : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                            }`}
+                        >
+                            <CircleDashed className="w-4 h-4" />
+                            Transfer
+                        </Label>
+                    </div>
+                </RadioGroup>
+            </div>
+
             <div className="grid lg:grid-cols-2 gap-3">
                 <div className="grid gap-3">
                     <Label htmlFor="accountId">Account</Label>
@@ -108,26 +156,6 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                         />
                     </div>
                 </div>
-            </div>
-
-            <div className="grid gap-3">
-                <Label htmlFor="type">Type</Label>
-                <Select value={form.type} onValueChange={value => setForm({ ...form, type: value })} required>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="income">
-                            Income <TrendingUp className="text-green-400" />
-                        </SelectItem>
-                        <SelectItem value="expense">
-                            Expense <TrendingDown className="text-red-400" />
-                        </SelectItem>
-                        <SelectItem value="transfer">
-                            Transfer <CircleDashed className="text-blue-400" />
-                        </SelectItem>
-                    </SelectContent>
-                </Select>
             </div>
 
             <div className="grid gap-3">
