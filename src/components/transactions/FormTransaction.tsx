@@ -73,14 +73,13 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+
         mutate({
             id: transaction?.id || 0,
             ...form,
-            date: form.date,
+            date: form.date ? new Date(form.date) : new Date(),
         });
     };
-
-    console.log(form.date);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
