@@ -5,28 +5,39 @@ import {
     AlertDescription,
     AlertTitle,
     Button,
+    Calendar,
     Input,
     Label,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui';
+import { createEmptyAccount } from '@/hooks/useAccounts';
+import { createEmptyCategory } from '@/hooks/useCategories';
+import { createEmptyCurrency } from '@/hooks/useCurrencies';
 import { useTransactionMutation } from '@/hooks/useTransactions';
 import type { Transaction } from '@/type/Transactions';
-import { Terminal } from 'lucide-react';
+import { format } from 'date-fns';
+import { CalendarIcon, Terminal } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (transaction?: Transaction) => {
     return {
-        date: transaction?.date || '',
+        date: transaction?.date || new Date(),
         amount: transaction?.amount || 0,
         description: transaction?.description || '',
         account_id: transaction?.account_id || 0,
         to_account_id: transaction?.to_account_id || 0,
         category_id: transaction?.category_id || 0,
         type: transaction?.type || '',
+        account: createEmptyAccount(),
+        category: createEmptyCategory(),
+        currency: createEmptyCurrency(),
     };
 };
 
@@ -44,56 +55,38 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
 
     const { mutate, isPending, error } = useTransactionMutation({ transaction, onSuccess });
 
+    const handleAccountChange = (value: string) => {
+        const accountId = value === '0' || value === '' ? 0 : Number.parseInt(value);
+        setForm(prev => ({
+            ...prev,
+            account_id: Number.isNaN(accountId) ? 0 : accountId,
+        }));
+    };
+
+    const handleCategoryChange = (value: string) => {
+        const categoryId = value === '0' || value === '' ? 0 : Number.parseInt(value);
+        setForm(prev => ({
+            ...prev,
+            category_id: Number.isNaN(categoryId) ? 0 : categoryId,
+        }));
+    };
+
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         mutate({
             id: transaction?.id || 0,
             ...form,
-            date: typeof form.date === 'string' ? new Date(form.date) : form.date,
-            account: {
-                id: 0,
-                name: '',
-                type: '',
-                balance: 0,
-                color: '',
-                currency_id: 0,
-                currency: {
-                    id: 0,
-                    code: '',
-                    name: '',
-                    symbol: '',
-                    decimal_places: 0,
-                },
-                description: undefined,
-                order: undefined,
-            },
-            category: {
-                id: 0,
-                name: '',
-                type: 'income',
-                icon: '',
-                subcategories: undefined,
-                parent: undefined,
-                parent_id: undefined,
-            },
-            currency: {
-                id: 0,
-                code: '',
-                name: '',
-                symbol: '',
-                decimal_places: 0,
-            },
+            date: form.date,
         });
     };
+
+    console.log(form.date);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
             <div className="grid gap-3">
                 <Label htmlFor="accountId">Account</Label>
-                <AccountsSelect
-                    value={form.account_id.toString()}
-                    onChange={value => setForm({ ...form, account_id: Number.parseInt(value) })}
-                />
+                <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
             </div>
 
             <div className="grid gap-3">
@@ -125,10 +118,60 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
             </div>
 
             <div className="grid gap-3">
-                <Label htmlFor="accountId">Category</Label>
-                <CategoriesSelect
-                    value={form.category_id.toString()}
-                    onChange={value => setForm({ ...form, category_id: Number.parseInt(value) })}
+                <Label htmlFor="categoryId">Category</Label>
+                <CategoriesSelect value={form.category_id.toString()} onChange={handleCategoryChange} />
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="date">Date & Time</Label>
+                <div className="flex gap-2">
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline" className="flex-1 justify-start text-left" aria-haspopup="dialog">
+                                {form.date ? format(new Date(form.date), 'PPP') : 'Select a date'}
+                                <CalendarIcon className="w-4 h-4 ml-auto" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                            <Calendar
+                                mode="single"
+                                selected={form.date ? new Date(form.date) : undefined}
+                                onSelect={date => {
+                                    if (date) {
+                                        const currentDate = form.date ? new Date(form.date) : new Date();
+                                        date.setHours(currentDate.getHours());
+                                        date.setMinutes(currentDate.getMinutes());
+                                        setForm({ ...form, date });
+                                    }
+                                }}
+                            />
+                        </PopoverContent>
+                    </Popover>
+                    <Input
+                        type="time"
+                        className="w-auto"
+                        value={form.date ? format(new Date(form.date), 'HH:mm') : ''}
+                        onChange={e => {
+                            if (form.date && e.target.value) {
+                                const [hours, minutes] = e.target.value.split(':');
+                                const newDate = new Date(form.date);
+                                newDate.setHours(Number.parseInt(hours, 10));
+                                newDate.setMinutes(Number.parseInt(minutes, 10));
+                                setForm({ ...form, date: newDate });
+                            }
+                        }}
+                    />
+                </div>
+            </div>
+
+            <div className="grid gap-3">
+                <Label htmlFor="description">Description</Label>
+                <Input
+                    id="description"
+                    type="text"
+                    placeholder="Enter description"
+                    value={form.description}
+                    onChange={e => setForm({ ...form, description: e.target.value })}
                 />
             </div>
 
