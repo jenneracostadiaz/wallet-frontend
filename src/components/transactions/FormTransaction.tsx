@@ -66,6 +66,15 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
         }));
     };
 
+    const handleTypeChange = (value: string) => {
+        setForm(prev => ({
+            ...prev,
+            type: value,
+            // Resetear la categoría cuando cambie el tipo si no es transfer
+            category_id: value === 'transfer' ? prev.category_id : 0,
+        }));
+    };
+
     const handleCategoryChange = (value: string) => {
         const categoryId = value === '0' || value === '' ? 0 : Number.parseInt(value);
         setForm(prev => ({
@@ -87,11 +96,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
             <div className="grid gap-3">
-                <RadioGroup
-                    value={form.type}
-                    onValueChange={value => setForm({ ...form, type: value })}
-                    className="grid grid-cols-3 gap-3"
-                >
+                <RadioGroup value={form.type} onValueChange={handleTypeChange} className="grid grid-cols-3 gap-3">
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="income" id="income" className="sr-only" />
                         <Label
@@ -160,7 +165,11 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
 
             <div className="grid gap-3">
                 <Label htmlFor="categoryId">Category</Label>
-                <CategoriesSelect value={form.category_id.toString()} onChange={handleCategoryChange} />
+                <CategoriesSelect
+                    value={form.category_id.toString()}
+                    onChange={handleCategoryChange}
+                    transactionType={form.type}
+                />
             </div>
 
             <div className="grid gap-3">
