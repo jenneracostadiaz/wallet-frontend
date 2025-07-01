@@ -70,7 +70,6 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
         setForm(prev => ({
             ...prev,
             type: value,
-            // Resetear la categoría cuando cambie el tipo si no es transfer
             category_id: value === 'transfer' ? prev.category_id : 0,
         }));
     };
@@ -142,7 +141,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                 </RadioGroup>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-3">
                     <Label htmlFor="accountId">Account</Label>
                     <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
