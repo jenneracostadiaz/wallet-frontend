@@ -1,7 +1,7 @@
 export type Category = {
     id: number;
     name: string;
-    type: 'income' | 'expense';
+    type: 'income' | 'expense' | 'transfer';
     icon: string;
     subcategories?: Category[];
     parent?: Category | null;
