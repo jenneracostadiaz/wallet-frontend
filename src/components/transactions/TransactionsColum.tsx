@@ -116,6 +116,11 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
+        filterFn: (row, _columnId, filterValue) => {
+            const account: Account = row.original.account;
+            if (!filterValue) return true;
+            return String(account.id) === String(filterValue);
+        },
     },
     {
         accessorKey: 'amount',
