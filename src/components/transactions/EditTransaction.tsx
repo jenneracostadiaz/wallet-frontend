@@ -9,6 +9,7 @@ import {
     DialogTrigger,
     Drawer,
     DrawerContent,
+    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
@@ -37,14 +38,17 @@ export const EditTransaction = ({ transaction }: { transaction: Transaction }) =
             </Dialog>
         );
     }
+
     return (
         <Drawer>
             <DrawerTrigger className="text-sm py-1 px-2 w-full text-left">Edit</DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle>Edit Transaction</DrawerTitle>
-                    <FormTransaction transaction={transaction} onSuccess={() => setOpen(false)} />
                 </DrawerHeader>
+                <DrawerFooter>
+                    <FormTransaction transaction={transaction} onSuccess={() => setOpen(false)} />
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     );
