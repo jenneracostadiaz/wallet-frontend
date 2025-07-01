@@ -142,3 +142,13 @@ export const useCategoryMutation = ({ category, onSuccess }: useCategoryMutation
 
     return { mutate, isPending, error };
 };
+
+export const createEmptyCategory = () => ({
+    id: 0,
+    name: '',
+    type: 'income' as const,
+    icon: '',
+    subcategories: undefined,
+    parent: undefined,
+    parent_id: undefined,
+});
