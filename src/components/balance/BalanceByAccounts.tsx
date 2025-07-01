@@ -28,8 +28,7 @@ export const BalanceByAccounts = ({ loading, accounts }: BalanceByAccountsProps)
                             <Card key={account.id} className="@container/card py-2">
                                 <CardHeader className="px-4">
                                     <CardDescription>
-                                        <span>{account.name}</span>
-                                        <span className="text-muted-foreground  text-xs">({account.type})</span>
+                                        {account.name} <span className="text-xs">({account.type})</span>
                                     </CardDescription>
                                     <CardTitle>
                                         {account.currency.symbol}
