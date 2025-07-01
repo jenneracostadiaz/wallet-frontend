@@ -1,3 +1,4 @@
+import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import {
     Alert,
@@ -40,8 +41,6 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
     useEffect(() => {
         setForm(getInitialState(transaction));
     }, [transaction]);
-
-    console.log(form);
 
     const { mutate, isPending, error } = useTransactionMutation({ transaction, onSuccess });
 
@@ -89,6 +88,14 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
+            <div className="grid gap-3">
+                <Label htmlFor="accountId">Account</Label>
+                <AccountsSelect
+                    value={form.account_id.toString()}
+                    onChange={value => setForm({ ...form, account_id: Number.parseInt(value) })}
+                />
+            </div>
+
             <div className="grid gap-3">
                 <Label htmlFor="type">Type</Label>
                 <Select value={form.type} onValueChange={value => setForm({ ...form, type: value })} required>
