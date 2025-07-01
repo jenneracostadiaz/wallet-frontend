@@ -1,3 +1,4 @@
+import { createEmptyCurrency } from '@/hooks/useCurrencies';
 import type { Account } from '@/type/Accounts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -128,3 +129,15 @@ export const useAccountsMutation = ({ account, onSuccess }: useAccountsMutationP
 
     return { mutate, isPending, error, reset };
 };
+
+export const createEmptyAccount = () => ({
+    id: 0,
+    name: '',
+    type: '',
+    balance: 0,
+    color: '',
+    currency_id: 0,
+    currency: createEmptyCurrency(),
+    description: undefined,
+    order: undefined,
+});
