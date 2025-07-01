@@ -6,10 +6,11 @@ interface CategoriesSelectProps {
     value: string;
     onChange: (value: string) => void;
     category?: Category;
+    transactionType?: string;
 }
 
-export const CategoriesSelect = ({ value, onChange, category }: CategoriesSelectProps) => {
-    const { parentCategories, isLoading, isError } = useGetParentCategories({ category });
+export const CategoriesSelect = ({ value, onChange, category, transactionType }: CategoriesSelectProps) => {
+    const { parentCategories, isLoading, isError } = useGetParentCategories({ category, transactionType });
     const categoryIdExists = parentCategories?.some((c: Category) => String(c.id) === String(value));
 
     return (
