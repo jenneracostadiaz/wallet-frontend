@@ -10,9 +10,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui';
 
-import { auth } from '@/app/api/auth/[...nextauth]/route';
 import { NavSecondary } from '@/components/NavSecondary';
 import { NavUser } from '@/components/NavUser';
+import { auth } from '@/lib/auth';
 import type { User } from '@/type/User';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
