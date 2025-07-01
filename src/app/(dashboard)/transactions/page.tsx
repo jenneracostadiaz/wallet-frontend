@@ -3,6 +3,7 @@ import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
+import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import {
     Alert,
@@ -74,6 +75,7 @@ export default function TransactionsPage() {
             <section className="px-4 flex flex-col gap-4 w-full">
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl font-bold">Transactions</h1>
+                    <CreateTransaction />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                     <Input
