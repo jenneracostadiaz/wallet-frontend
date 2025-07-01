@@ -1,6 +1,7 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
+import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
 import { CreateTransaction } from '@/components/transactions/CreateTransaction';
@@ -83,6 +84,10 @@ export default function TransactionsPage() {
                         value={(columnFilters.find(f => f.id === 'description')?.value as string) ?? ''}
                         onChange={event => onFilterChange('description', event.target.value)}
                         className="w-full"
+                    />
+                    <AccountsSelect
+                        value={(columnFilters.find(f => f.id === 'account')?.value as string) ?? ''}
+                        onChange={value => onFilterChange('account', value)}
                     />
                     <CategoriesSelect
                         value={(columnFilters.find(f => f.id === 'category_date')?.value as string) ?? ''}
