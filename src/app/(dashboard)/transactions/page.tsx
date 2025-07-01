@@ -18,6 +18,7 @@ import {
     PopoverTrigger,
     Skeleton,
 } from '@/components/ui';
+import { Balance } from '@/components/widgets';
 import { useGetTransactions } from '@/hooks/useTransactions';
 import type { ColumnFiltersState } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -74,6 +75,8 @@ export default function TransactionsPage() {
         <>
             <Header breadcrumbs={breadcrumbs} />
             <section className="px-4 flex flex-col gap-4 w-full">
+                <Balance />
+
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl font-bold">Transactions</h1>
                     <CreateTransaction />
