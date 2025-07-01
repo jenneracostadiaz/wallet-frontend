@@ -6,7 +6,9 @@ import { CreateCategory } from '@/components/categories/CreateCategory';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useCategoriesTableData, useGetCategories } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
+import type { ColumnFiltersState } from '@tanstack/react-table';
 import { Terminal } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs = [
     {
@@ -22,6 +24,8 @@ const breadcrumbs = [
 export default function CategoriesPage() {
     const { data, isLoading, isError } = useGetCategories();
     const categories: Category[] = useCategoriesTableData({ categories: data?.data });
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
@@ -57,7 +61,15 @@ export default function CategoriesPage() {
                         </div>
                     ) : (
                         categories &&
-                        categories.length > 0 && <DataTable columns={categoriesColumn} data={categories} />
+                        categories.length > 0 && (
+                            <DataTable
+                                columns={categoriesColumn}
+                                data={categories}
+                                pageSize={10}
+                                columnFilters={columnFilters}
+                                onColumnFiltersChange={setColumnFilters}
+                            />
+                        )
                     ))}
             </section>
         </>
