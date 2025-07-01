@@ -39,3 +39,11 @@ export const useCurrencyList = () => {
         isErrorCurrency: isError,
     };
 };
+
+export const createEmptyCurrency = () => ({
+    id: 0,
+    code: '',
+    name: '',
+    symbol: '',
+    decimal_places: 0,
+});
