@@ -17,13 +17,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui';
-import { createEmptyAccount } from '@/hooks/useAccounts';
+import { createEmptyAccount, useAccountsList } from '@/hooks/useAccounts';
 import { createEmptyCategory } from '@/hooks/useCategories';
 import { createEmptyCurrency } from '@/hooks/useCurrencies';
 import { useTransactionMutation } from '@/hooks/useTransactions';
 import type { Transaction } from '@/type/Transactions';
 import { format } from 'date-fns';
-import { CalendarIcon, Terminal } from 'lucide-react';
+import { CalendarIcon, CircleDashed, Terminal, TrendingDown, TrendingUp } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (transaction?: Transaction) => {
@@ -48,12 +48,18 @@ interface FormTransactionProps {
 
 export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps) => {
     const [form, setForm] = useState(() => getInitialState(transaction));
+    const { accountsList } = useAccountsList();
 
     useEffect(() => {
         setForm(getInitialState(transaction));
     }, [transaction]);
 
     const { mutate, isPending, error } = useTransactionMutation({ transaction, onSuccess });
+
+    const selectedAccount = accountsList.find(
+        (account: { id: number; currency?: { symbol?: string } }) => account.id === form.account_id
+    );
+    const currencySymbol = selectedAccount?.currency?.symbol;
 
     const handleAccountChange = (value: string) => {
         const accountId = value === '0' || value === '' ? 0 : Number.parseInt(value);
@@ -83,9 +89,25 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
-            <div className="grid gap-3">
-                <Label htmlFor="accountId">Account</Label>
-                <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
+            <div className="grid lg:grid-cols-2 gap-3">
+                <div className="grid gap-3">
+                    <Label htmlFor="accountId">Account</Label>
+                    <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
+                </div>
+
+                <div className="grid gap-3">
+                    <Label htmlFor="amount">Amount</Label>
+                    <div className="flex gap-3 items-center">
+                        <p>{currencySymbol}</p>
+                        <Input
+                            type="number"
+                            id="amount"
+                            value={form.amount}
+                            onChange={e => setForm({ ...form, amount: Number.parseFloat(e.target.value) })}
+                            required
+                        />
+                    </div>
+                </div>
             </div>
 
             <div className="grid gap-3">
@@ -95,25 +117,17 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                         <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="income">Income</SelectItem>
-                        <SelectItem value="expense">Expense</SelectItem>
-                        <SelectItem value="transfer">Transfer</SelectItem>
+                        <SelectItem value="income">
+                            Income <TrendingUp className="text-green-400" />
+                        </SelectItem>
+                        <SelectItem value="expense">
+                            Expense <TrendingDown className="text-red-400" />
+                        </SelectItem>
+                        <SelectItem value="transfer">
+                            Transfer <CircleDashed className="text-blue-400" />
+                        </SelectItem>
                     </SelectContent>
                 </Select>
-            </div>
-
-            <div className="grid gap-3">
-                <Label htmlFor="amount">Amount</Label>
-                <div className="flex gap-3 items-center">
-                    <p>$/.</p>
-                    <Input
-                        type="number"
-                        id="amount"
-                        value={form.amount}
-                        onChange={e => setForm({ ...form, amount: Number.parseFloat(e.target.value) })}
-                        required
-                    />
-                </div>
             </div>
 
             <div className="grid gap-3">
