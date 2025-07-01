@@ -1,5 +1,6 @@
 import type { Transaction } from '@/type/Transactions';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 
 const fetchTransactions = async (token: string) => {
@@ -81,13 +82,20 @@ export const useTransactionMutation = ({ transaction, onSuccess }: useTransactio
                 ? `${process.env.NEXT_PUBLIC_API_URL}/transactions/${transaction.id}`
                 : `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
 
+            const formattedTransaction = {
+                ...newTransaction,
+                date: newTransaction.date
+                    ? format(new Date(newTransaction.date), 'yyyy-MM-dd HH:mm:ss')
+                    : format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+            };
+
             const response = await fetch(url, {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${session?.accessToken}`,
                 },
-                body: JSON.stringify(newTransaction),
+                body: JSON.stringify(formattedTransaction),
             });
 
             if (!response.ok) {
