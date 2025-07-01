@@ -11,7 +11,6 @@ interface CategoriesSelectProps {
 export const CategoriesSelect = ({ value, onChange, category }: CategoriesSelectProps) => {
     const { parentCategories, isLoading, isError } = useGetParentCategories({ category });
     const categoryIdExists = parentCategories?.some((c: Category) => String(c.id) === String(value));
-    console.log(value);
 
     return (
         <Select
