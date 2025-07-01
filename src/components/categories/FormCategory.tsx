@@ -14,7 +14,7 @@ import {
 } from '@/components/ui';
 import { useCategoryMutation } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
-import { Terminal, TrendingDown, TrendingUp } from 'lucide-react';
+import { CircleDashed, Terminal, TrendingDown, TrendingUp } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (category?: Category) => {
@@ -94,6 +94,9 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
                         </SelectItem>
                         <SelectItem value="income">
                             Income <TrendingUp className="text-green-400" />
+                        </SelectItem>
+                        <SelectItem value="transfer">
+                            Transfer <CircleDashed className="text-blue-400" />
                         </SelectItem>
                     </SelectContent>
                 </Select>
