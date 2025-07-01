@@ -4,11 +4,14 @@ import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import type { Transaction } from '@/type/Transactions';
+import type { ColumnFiltersState } from '@tanstack/react-table';
 import { Terminal } from 'lucide-react';
+import { useState } from 'react';
 
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
     const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
     return (
         <section className="flex flex-col">
@@ -42,7 +45,15 @@ export const LatestTransactions = () => {
                     </div>
                 ) : (
                     transactions &&
-                    transactions.length > 0 && <DataTable columns={TransactionsColum} data={transactions} />
+                    transactions.length > 0 && (
+                        <DataTable
+                            columns={TransactionsColum}
+                            data={transactions}
+                            pageSize={10}
+                            columnFilters={columnFilters}
+                            onColumnFiltersChange={setColumnFilters}
+                        />
+                    )
                 ))}
         </section>
     );
