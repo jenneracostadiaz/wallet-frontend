@@ -43,6 +43,16 @@ export const useAccountsTableData = ({ accounts }: { accounts: Account[] }) => {
     }, [accounts]);
 };
 
+export const useAccountsList = () => {
+    const { data, isLoading, isError } = useGetAccounts();
+    const list = Array.isArray(data) ? data : (data?.data ?? []);
+    return {
+        accountsList: list,
+        isLoadingAccounts: isLoading,
+        isErrorAccounts: isError,
+    };
+};
+
 interface useAccountsDeleteProps {
     account: Account;
     setOpen: (open: boolean) => void;
