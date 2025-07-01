@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
-import { useAccountsList, useGetAccounts } from '@/hooks/useAccounts';
+import { useGetAccounts } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
 import { CircleDashed } from 'lucide-react';
 
