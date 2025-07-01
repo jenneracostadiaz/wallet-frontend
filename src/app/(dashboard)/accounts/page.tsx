@@ -6,7 +6,9 @@ import { CreateAccount } from '@/components/accounts/CreateAccount';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useAccountsTableData, useGetAccounts } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
+import type { ColumnFiltersState } from '@tanstack/react-table';
 import { Terminal } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs = [
     {
@@ -22,6 +24,8 @@ const breadcrumbs = [
 export default function AccountsPage() {
     const { data, isLoading, isError } = useGetAccounts();
     const accounts: Account[] = useAccountsTableData({ accounts: data?.data });
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
@@ -59,7 +63,16 @@ export default function AccountsPage() {
                             <Skeleton className="w-full h-6" />
                         </div>
                     ) : (
-                        accounts && accounts.length > 0 && <DataTable columns={AccountsColumns} data={accounts} />
+                        accounts &&
+                        accounts.length > 0 && (
+                            <DataTable
+                                columns={AccountsColumns}
+                                data={accounts}
+                                pageSize={10}
+                                columnFilters={columnFilters}
+                                onColumnFiltersChange={setColumnFilters}
+                            />
+                        )
                     ))}
             </section>
         </>
