@@ -10,6 +10,7 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
+import type { TooltipItem } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -25,7 +26,12 @@ export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
     }
 
     const data = {
-        labels: balance.map(item => `${new Date(item.date).getDate()}/${new Date(item.date).getMonth() + 1}`),
+        labels: balance.map(item => {
+            const date = new Date(item.date);
+            const day = date.getUTCDate();
+            const month = date.getUTCMonth() + 1;
+            return `${day}/${month}`;
+        }),
         datasets: [
             {
                 label: 'Income',
@@ -56,10 +62,9 @@ export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
             },
             tooltip: {
                 callbacks: {
-                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                    label: (tooltipItem: any) => {
+                    label: (tooltipItem: TooltipItem<'line'>) => {
                         const label = tooltipItem.dataset.label || '';
-                        const value = tooltipItem.raw;
+                        const value = tooltipItem.raw as number;
                         return `${label}: ${value.toLocaleString(navigator.language, { style: 'currency', currency: 'PEN' })}`;
                     },
                 },
