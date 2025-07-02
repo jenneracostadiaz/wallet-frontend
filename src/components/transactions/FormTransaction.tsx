@@ -141,24 +141,35 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                 </RadioGroup>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-                <div className="grid gap-3">
+            <div className="flex gap-3">
+                <div className="flex-1 grid gap-3">
                     <Label htmlFor="accountId">Account</Label>
                     <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
                 </div>
-
-                <div className="grid gap-3">
-                    <Label htmlFor="amount">Amount</Label>
-                    <div className="flex gap-3 items-center">
-                        <p>{currencySymbol}</p>
-                        <Input
-                            type="number"
-                            id="amount"
-                            value={form.amount}
-                            onChange={e => setForm({ ...form, amount: Number.parseFloat(e.target.value) })}
-                            required
-                        />
-                    </div>
+                {form.type === 'transfer' && (
+                    <>
+                        <div className="pt-7">&rarr;</div>
+                        <div className="flex-1 grid gap-3">
+                            <Label htmlFor="toAccountId">To Account</Label>
+                            <AccountsSelect
+                                value={form.to_account_id.toString()}
+                                onChange={value => setForm({ ...form, to_account_id: Number.parseInt(value) })}
+                            />
+                        </div>
+                    </>
+                )}
+            </div>
+            <div className="grid gap-3">
+                <Label htmlFor="amount">Amount</Label>
+                <div className="flex gap-3 items-center">
+                    <p>{currencySymbol}</p>
+                    <Input
+                        type="number"
+                        id="amount"
+                        value={form.amount}
+                        onChange={e => setForm({ ...form, amount: Number.parseFloat(e.target.value) })}
+                        required
+                    />
                 </div>
             </div>
 
