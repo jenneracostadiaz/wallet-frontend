@@ -41,13 +41,8 @@ export const useTransactionsTableData = ({ transactions }: UseGetLatestTransacti
     return useMemo(() => {
         if (!transactions) return [];
         return transactions.map(transaction => {
-            const account: Account = transaction.account;
-            const totalAmount = `
-                ${account.currency} ${transaction.amount}
-            `;
             return {
                 ...transaction,
-                totalAmount,
             };
         });
     }, [transactions]);
