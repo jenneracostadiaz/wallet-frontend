@@ -1,7 +1,7 @@
 import { Card, Skeleton } from '@/components/ui';
 import type { ExpenseByCategory } from '@/type/MonthlyReport';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -69,7 +69,6 @@ export const ExpensesByCategory = ({ loading, expenses }: ExpensesByCategoryProp
             {!loading && (
                 <Card className="w-full rounded-2xl p-4">
                     <Pie data={data} options={options} />
-                    {/*<Doughnut data={data} options={options} />*/}
                 </Card>
             )}
         </>
