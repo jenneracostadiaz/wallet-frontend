@@ -1,4 +1,3 @@
-import type { Account } from '@/type/Accounts';
 import type { Transaction } from '@/type/Transactions';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
