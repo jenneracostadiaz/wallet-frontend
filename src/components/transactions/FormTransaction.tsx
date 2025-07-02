@@ -63,6 +63,8 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
         setForm(prev => ({
             ...prev,
             account_id: Number.isNaN(accountId) ? 0 : accountId,
+            // Clear to_account_id if it's the same as the newly selected account_id
+            to_account_id: prev.to_account_id === accountId ? 0 : prev.to_account_id,
         }));
     };
 
@@ -154,6 +156,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                             <AccountsSelect
                                 value={form.to_account_id.toString()}
                                 onChange={value => setForm({ ...form, to_account_id: Number.parseInt(value) })}
+                                excludeAccountId={form.account_id || undefined}
                             />
                         </div>
                     </>
