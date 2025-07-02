@@ -51,7 +51,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                     : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                             }`}
                         >
-                            <TrendingUp className="w-4 h-4" />
+                            <TrendingUp className="w-4 h-4 hidden md:block" />
                             Income
                         </Label>
                     </div>
@@ -65,7 +65,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                     : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                             }`}
                         >
-                            <TrendingDown className="w-4 h-4" />
+                            <TrendingDown className="w-4 h-4 hidden md:block" />
                             Expense
                         </Label>
                     </div>
@@ -79,21 +79,21 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                     : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                             }`}
                         >
-                            <CircleDashed className="w-4 h-4" />
+                            <CircleDashed className="w-4 h-4 hidden md:block" />
                             Transfer
                         </Label>
                     </div>
                 </RadioGroup>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex-1 grid gap-3">
                     <Label htmlFor="accountId">Account</Label>
                     <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
                 </div>
                 {form.type === 'transfer' && (
                     <>
-                        <div className="pt-7">&rarr;</div>
+                        <div className="pt-7 hidden lg:block">&rarr;</div>
                         <div className="flex-1 grid gap-3">
                             <Label htmlFor="toAccountId">To Account</Label>
                             <AccountsSelect
@@ -108,7 +108,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
             <div className="grid gap-3">
                 <Label htmlFor="amount">Amount</Label>
                 <div className="flex gap-3 items-center">
-                    <p>{currencySymbol}</p>
+                    {currencySymbol && <p>{currencySymbol}</p>}
                     <Input
                         type="number"
                         id="amount"
