@@ -2,12 +2,10 @@
 
 import { DailyBalance } from '@/components/reports/DailyBalance';
 import { Summary } from '@/components/reports/Summary';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { ExpensesByCategory } from '@/components/widgets/ExpensesByCategory';
 import { useGetMonthlyReport } from '@/hooks/useMonthlyReport';
 import type { monthlyReport as monthlyReportType } from '@/type/MonthlyReport';
-import { Terminal } from 'lucide-react';
 
 export const MonthlyReport = () => {
     const { data, isLoading, isError } = useGetMonthlyReport();

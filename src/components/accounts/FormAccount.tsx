@@ -1,21 +1,8 @@
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-    Button,
-    Input,
-    Label,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui';
+import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { useAccountsMutation } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
-import { Terminal } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
