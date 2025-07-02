@@ -4,13 +4,13 @@ import { Header } from '@/components/Header';
 import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
+import { TypeSelect } from '@/components/commons/TypeSelect';
 import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import {
     Alert,
     AlertDescription,
     AlertTitle,
-    Button,
     Calendar,
     Input,
     Popover,
@@ -18,6 +18,7 @@ import {
     PopoverTrigger,
     Skeleton,
 } from '@/components/ui';
+import { Button } from '@/components/ui/button';
 import { Balance } from '@/components/widgets';
 import { useGetTransactions } from '@/hooks/useTransactions';
 import type { ColumnFiltersState } from '@tanstack/react-table';
@@ -37,18 +38,34 @@ const breadcrumbs = [
     },
 ];
 
+type AmountFilter = {
+    currency?: string;
+    type?: string;
+};
+
 export default function TransactionsPage() {
     const { data, isLoading, isError } = useGetTransactions();
     const transactions = data?.data || [];
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
-    const onFilterChange = (id: string, value: string) => {
+    const onFilterChange = (id: string, value: string | AmountFilter) => {
         setColumnFilters(prev => {
             const newFilters = prev.filter(f => f.id !== id);
-            if (value) {
+
+            let shouldAddNewFilter = false;
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                if (Object.values(value).some(v => v)) {
+                    shouldAddNewFilter = true;
+                }
+            } else if (value) {
+                shouldAddNewFilter = true;
+            }
+
+            if (shouldAddNewFilter) {
                 newFilters.push({ id, value });
             }
+
             return newFilters;
         });
     };
@@ -97,9 +114,24 @@ export default function TransactionsPage() {
                         onChange={value => onFilterChange('category_date', value)}
                     />
                     <CurrencySelect
-                        value={(columnFilters.find(f => f.id === 'amount')?.value as string) ?? ''}
-                        onChange={value => onFilterChange('amount', value)}
+                        value={(columnFilters.find(f => f.id === 'amount')?.value as AmountFilter)?.currency ?? ''}
+                        onChange={value =>
+                            onFilterChange('amount', {
+                                ...((columnFilters.find(f => f.id === 'amount')?.value as AmountFilter) ?? {}),
+                                currency: value,
+                            })
+                        }
                     />
+                    <TypeSelect
+                        value={(columnFilters.find(f => f.id === 'amount')?.value as AmountFilter)?.type ?? ''}
+                        onChange={value =>
+                            onFilterChange('amount', {
+                                ...((columnFilters.find(f => f.id === 'amount')?.value as AmountFilter) ?? {}),
+                                type: value,
+                            })
+                        }
+                    />
+
                     <div className="flex gap-2 relative">
                         <Popover>
                             <PopoverTrigger asChild>
