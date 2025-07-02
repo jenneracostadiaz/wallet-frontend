@@ -1,8 +1,10 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
+import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
+import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnFiltersState } from '@tanstack/react-table';
 import { Terminal } from 'lucide-react';
@@ -11,13 +13,29 @@ import { useState } from 'react';
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
     const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const {
+        columnFilters,
+        dateRange,
+        onFilterChange,
+        onDateRangeChange,
+        clearDateRange,
+        getFilterValue,
+        setColumnFilters,
+    } = useTransactionFilters();
 
     return (
-        <section className="flex flex-col">
-            <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 mb-4">
+        <section className="flex flex-col gap-4">
+            <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
                 Latest Transactions
             </h2>
+
+            <TransactionFilters
+                onFilterChange={onFilterChange}
+                onDateRangeChange={onDateRangeChange}
+                clearDateRange={clearDateRange}
+                getFilterValue={getFilterValue}
+                dateRange={dateRange}
+            />
 
             {isError && (
                 <Alert variant="destructive">
