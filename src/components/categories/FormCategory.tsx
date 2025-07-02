@@ -20,7 +20,7 @@ import { type FormEvent, useEffect, useState } from 'react';
 const getInitialState = (category?: Category) => {
     return {
         name: category?.name || '',
-        type: category?.type || 'expense',
+        type: category?.type || 'income',
         icon: category?.icon || '',
         parent_id: category?.parent_id || null,
     };
@@ -89,11 +89,11 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
                         <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="expense">
-                            Expense <TrendingDown className="text-red-400" />
-                        </SelectItem>
                         <SelectItem value="income">
                             Income <TrendingUp className="text-green-400" />
+                        </SelectItem>
+                        <SelectItem value="expense">
+                            Expense <TrendingDown className="text-red-400" />
                         </SelectItem>
                         <SelectItem value="transfer">
                             Transfer <CircleDashed className="text-blue-400" />
