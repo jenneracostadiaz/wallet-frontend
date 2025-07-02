@@ -6,9 +6,7 @@ import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import type { Transaction } from '@/type/Transactions';
-import type { ColumnFiltersState } from '@tanstack/react-table';
 import { Terminal } from 'lucide-react';
-import { useState } from 'react';
 
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
