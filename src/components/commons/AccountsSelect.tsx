@@ -6,9 +6,10 @@ import { CircleDashed } from 'lucide-react';
 interface AccountsSelectProps {
     value: string;
     onChange: (value: string) => void;
+    excludeAccountId?: number;
 }
 
-export const AccountsSelect = ({ value, onChange }: AccountsSelectProps) => {
+export const AccountsSelect = ({ value, onChange, excludeAccountId }: AccountsSelectProps) => {
     const { data, isLoading, isError } = useGetAccounts();
     const accounts = data?.data || [];
 
@@ -19,6 +20,10 @@ export const AccountsSelect = ({ value, onChange }: AccountsSelectProps) => {
         accounts.length > 0 ? isValidValue && accounts.some((a: Account) => a.id === numericValue) : isValidValue; // If accounts aren't loaded yet, trust the value if it's valid
 
     const selectValue = isValidValue && (accounts.length === 0 || accountIdExists) ? value : '';
+
+    const filteredAccounts = excludeAccountId
+        ? accounts.filter((account: Account) => account.id !== excludeAccountId)
+        : accounts;
 
     return (
         <Select
@@ -35,7 +40,7 @@ export const AccountsSelect = ({ value, onChange }: AccountsSelectProps) => {
                 <SelectItem value="none">No Account</SelectItem>
                 {!isLoading &&
                     !isError &&
-                    accounts.map((account: Account) => (
+                    filteredAccounts.map((account: Account) => (
                         <SelectItem key={account.id} value={String(account.id)}>
                             <div className="flex items-center gap-2">
                                 <CircleDashed style={{ color: account.color }} />
