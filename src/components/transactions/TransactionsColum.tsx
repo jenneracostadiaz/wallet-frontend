@@ -108,8 +108,8 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 <span className="flex items-center gap-2 capitalize">
                     <CircleDashed className="size-4" style={{ color: account.color }} /> {account.name}
                     {row.original.to_account && (
-                        <span className="text-xs text-muted-foreground">
-                            &rarr; <CircleDashed className="size-4" style={{ color: account.color }} />{' '}
+                        <span className="text-xs text-muted-foreground flex gap-2">
+                            &rarr; <CircleDashed className="size-4" style={{ color: row.original.to_account.color }} />{' '}
                             {row.original.to_account.name}
                         </span>
                     )}
