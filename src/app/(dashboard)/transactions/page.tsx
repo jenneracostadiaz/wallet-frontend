@@ -2,10 +2,12 @@
 import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { CreateTransaction } from '@/components/transactions/CreateTransaction';
+import { DrawerTransactionFilters } from '@/components/transactions/DrawerTransactionFilters';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { Balance } from '@/components/widgets';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import { useGetTransactions, useTransactionsTableData } from '@/hooks/useTransactions';
 import type { Transaction } from '@/type/Transactions';
@@ -33,6 +35,7 @@ export default function TransactionsPage() {
         getFilterValue,
         setColumnFilters,
     } = useTransactionFilters();
+    const isMobile = useIsMobile();
 
     return (
         <>
@@ -40,18 +43,30 @@ export default function TransactionsPage() {
             <section className="px-4 flex flex-col gap-4 w-full max-w-7xl mx-auto">
                 <Balance />
 
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between items-center gap-4">
                     <h1 className="text-2xl font-bold">Transactions</h1>
+
+                    {isMobile && (
+                        <DrawerTransactionFilters
+                            onFilterChange={onFilterChange}
+                            onDateRangeChange={onDateRangeChange}
+                            clearDateRange={clearDateRange}
+                            getFilterValue={getFilterValue}
+                            dateRange={dateRange}
+                        />
+                    )}
                     <CreateTransaction />
                 </div>
 
-                <TransactionFilters
-                    onFilterChange={onFilterChange}
-                    onDateRangeChange={onDateRangeChange}
-                    clearDateRange={clearDateRange}
-                    getFilterValue={getFilterValue}
-                    dateRange={dateRange}
-                />
+                {!isMobile && (
+                    <TransactionFilters
+                        onFilterChange={onFilterChange}
+                        onDateRangeChange={onDateRangeChange}
+                        clearDateRange={clearDateRange}
+                        getFilterValue={getFilterValue}
+                        dateRange={dateRange}
+                    />
+                )}
 
                 {isError && (
                     <ErrorMessage
