@@ -43,34 +43,16 @@ export default function CategoriesPage() {
                     </Alert>
                 )}
 
-                {!isError &&
-                    (isLoading ? (
-                        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                        </div>
-                    ) : (
-                        categories &&
-                        categories.length > 0 && (
-                            <DataTable
-                                columns={categoriesColumn}
-                                data={categories}
-                                pageSize={10}
-                                columnFilters={columnFilters}
-                                onColumnFiltersChange={setColumnFilters}
-                            />
-                        )
-                    ))}
+                {!isError && (
+                    <DataTable
+                        columns={categoriesColumn}
+                        isLoading={isLoading}
+                        data={categories}
+                        pageSize={10}
+                        columnFilters={columnFilters}
+                        onColumnFiltersChange={setColumnFilters}
+                    />
+                )}
             </section>
         </>
     );

@@ -46,34 +46,16 @@ export default function AccountsPage() {
                     </Alert>
                 )}
 
-                {!isError &&
-                    (isLoading ? (
-                        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                        </div>
-                    ) : (
-                        accounts &&
-                        accounts.length > 0 && (
-                            <DataTable
-                                columns={AccountsColumns}
-                                data={accounts}
-                                pageSize={10}
-                                columnFilters={columnFilters}
-                                onColumnFiltersChange={setColumnFilters}
-                            />
-                        )
-                    ))}
+                {!isError && (
+                    <DataTable
+                        columns={AccountsColumns}
+                        isLoading={isLoading}
+                        data={accounts}
+                        pageSize={10}
+                        columnFilters={columnFilters}
+                        onColumnFiltersChange={setColumnFilters}
+                    />
+                )}
             </section>
         </>
     );
