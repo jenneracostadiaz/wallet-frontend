@@ -1,9 +1,6 @@
 import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
     Button,
     Calendar,
     Input,
@@ -14,29 +11,11 @@ import {
     RadioGroup,
     RadioGroupItem,
 } from '@/components/ui';
-import { createEmptyAccount, useAccountsList } from '@/hooks/useAccounts';
-import { createEmptyCategory } from '@/hooks/useCategories';
-import { createEmptyCurrency } from '@/hooks/useCurrencies';
-import { useTransactionMutation } from '@/hooks/useTransactions';
+import { ErrorMessage } from '@/components/ui/error-message';
+import { useTransactionForm } from '@/hooks/use-transaction-form';
 import type { Transaction } from '@/type/Transactions';
 import { format } from 'date-fns';
-import { CalendarIcon, CircleDashed, Terminal, TrendingDown, TrendingUp } from 'lucide-react';
-import { type FormEvent, useEffect, useState } from 'react';
-
-const getInitialState = (transaction?: Transaction) => {
-    return {
-        date: transaction?.date || new Date(),
-        amount: transaction?.amount || 0,
-        description: transaction?.description || '',
-        account_id: transaction?.account_id || 0,
-        to_account_id: transaction?.to_account_id || 0,
-        category_id: transaction?.category_id || 0,
-        type: transaction?.type || 'income',
-        account: createEmptyAccount(),
-        category: createEmptyCategory(),
-        currency: createEmptyCurrency(),
-    };
-};
+import { CalendarIcon, CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
 
 interface FormTransactionProps {
     transaction?: Transaction;
@@ -44,55 +23,19 @@ interface FormTransactionProps {
 }
 
 export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps) => {
-    const [form, setForm] = useState(() => getInitialState(transaction));
-    const { accountsList } = useAccountsList();
-
-    useEffect(() => {
-        setForm(getInitialState(transaction));
-    }, [transaction]);
-
-    const { mutate, isPending, error } = useTransactionMutation({ transaction, onSuccess });
-
-    const selectedAccount = accountsList.find(
-        (account: { id: number; currency?: { symbol?: string } }) => account.id === form.account_id
-    );
-    const currencySymbol = selectedAccount?.currency?.symbol;
-
-    const handleAccountChange = (value: string) => {
-        const accountId = value === '0' || value === '' ? 0 : Number.parseInt(value);
-        setForm(prev => ({
-            ...prev,
-            account_id: Number.isNaN(accountId) ? 0 : accountId,
-            // Clear to_account_id if it's the same as the newly selected account_id
-            to_account_id: prev.to_account_id === accountId ? 0 : prev.to_account_id,
-        }));
-    };
-
-    const handleTypeChange = (value: string) => {
-        setForm(prev => ({
-            ...prev,
-            type: value,
-            category_id: value === 'transfer' ? prev.category_id : 0,
-        }));
-    };
-
-    const handleCategoryChange = (value: string) => {
-        const categoryId = value === '0' || value === '' ? 0 : Number.parseInt(value);
-        setForm(prev => ({
-            ...prev,
-            category_id: Number.isNaN(categoryId) ? 0 : categoryId,
-        }));
-    };
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-
-        mutate({
-            id: transaction?.id || 0,
-            ...form,
-            date: form.date ? new Date(form.date) : new Date(),
-        });
-    };
+    const {
+        form,
+        isPending,
+        error,
+        currencySymbol,
+        handleInputChange,
+        handleAccountChange,
+        handleTypeChange,
+        handleCategoryChange,
+        handleDateChange,
+        handleTimeChange,
+        handleSubmit,
+    } = useTransactionForm(transaction, onSuccess);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
@@ -108,7 +51,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                     : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                             }`}
                         >
-                            <TrendingUp className="w-4 h-4" />
+                            <TrendingUp className="w-4 h-4 hidden md:block" />
                             Income
                         </Label>
                     </div>
@@ -122,7 +65,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                     : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                             }`}
                         >
-                            <TrendingDown className="w-4 h-4" />
+                            <TrendingDown className="w-4 h-4 hidden md:block" />
                             Expense
                         </Label>
                     </div>
@@ -136,26 +79,26 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                     : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                             }`}
                         >
-                            <CircleDashed className="w-4 h-4" />
+                            <CircleDashed className="w-4 h-4 hidden md:block" />
                             Transfer
                         </Label>
                     </div>
                 </RadioGroup>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex-1 grid gap-3">
                     <Label htmlFor="accountId">Account</Label>
                     <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
                 </div>
                 {form.type === 'transfer' && (
                     <>
-                        <div className="pt-7">&rarr;</div>
+                        <div className="pt-7 hidden lg:block">&rarr;</div>
                         <div className="flex-1 grid gap-3">
                             <Label htmlFor="toAccountId">To Account</Label>
                             <AccountsSelect
                                 value={form.to_account_id.toString()}
-                                onChange={value => setForm({ ...form, to_account_id: Number.parseInt(value) })}
+                                onChange={value => handleInputChange('to_account_id', Number.parseInt(value))}
                                 excludeAccountId={form.account_id || undefined}
                             />
                         </div>
@@ -165,12 +108,12 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
             <div className="grid gap-3">
                 <Label htmlFor="amount">Amount</Label>
                 <div className="flex gap-3 items-center">
-                    <p>{currencySymbol}</p>
+                    {currencySymbol && <p>{currencySymbol}</p>}
                     <Input
                         type="number"
                         id="amount"
                         value={form.amount}
-                        onChange={e => setForm({ ...form, amount: Number.parseFloat(e.target.value) })}
+                        onChange={e => handleInputChange('amount', Number.parseFloat(e.target.value))}
                         required
                     />
                 </div>
@@ -199,14 +142,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                             <Calendar
                                 mode="single"
                                 selected={form.date ? new Date(form.date) : undefined}
-                                onSelect={date => {
-                                    if (date) {
-                                        const currentDate = form.date ? new Date(form.date) : new Date();
-                                        date.setHours(currentDate.getHours());
-                                        date.setMinutes(currentDate.getMinutes());
-                                        setForm({ ...form, date });
-                                    }
-                                }}
+                                onSelect={handleDateChange}
                             />
                         </PopoverContent>
                     </Popover>
@@ -214,15 +150,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                         type="time"
                         className="w-auto"
                         value={form.date ? format(new Date(form.date), 'HH:mm') : ''}
-                        onChange={e => {
-                            if (form.date && e.target.value) {
-                                const [hours, minutes] = e.target.value.split(':');
-                                const newDate = new Date(form.date);
-                                newDate.setHours(Number.parseInt(hours, 10));
-                                newDate.setMinutes(Number.parseInt(minutes, 10));
-                                setForm({ ...form, date: newDate });
-                            }
-                        }}
+                        onChange={handleTimeChange}
                     />
                 </div>
             </div>
@@ -234,16 +162,15 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                     type="text"
                     placeholder="Enter description"
                     value={form.description}
-                    onChange={e => setForm({ ...form, description: e.target.value })}
+                    onChange={e => handleInputChange('description', e.target.value)}
                 />
             </div>
 
             {error && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Error to {transaction ? 'update' : 'create'} transaction</AlertTitle>
-                    <AlertDescription>{error.message}</AlertDescription>
-                </Alert>
+                <ErrorMessage
+                    title={`Error to ${transaction ? 'update' : 'create'} transaction`}
+                    message={error.message}
+                />
             )}
 
             <div className="grid gap-3">

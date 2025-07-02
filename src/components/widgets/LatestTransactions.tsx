@@ -1,60 +1,74 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
+import { CreateTransaction } from '@/components/transactions/CreateTransaction';
+import { DrawerTransactionFilters } from '@/components/transactions/DrawerTransactionFilters';
+import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
+import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import type { Transaction } from '@/type/Transactions';
-import type { ColumnFiltersState } from '@tanstack/react-table';
-import { Terminal } from 'lucide-react';
-import { useState } from 'react';
 
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
     const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const {
+        columnFilters,
+        dateRange,
+        onFilterChange,
+        onDateRangeChange,
+        clearDateRange,
+        getFilterValue,
+        setColumnFilters,
+    } = useTransactionFilters();
+    const isMobile = useIsMobile();
 
     return (
-        <section className="flex flex-col">
-            <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 mb-4">
-                Latest Transactions
-            </h2>
+        <section className="flex flex-col gap-4">
+            <div className="flex flex-wrap justify-between items-center">
+                <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
+                    Latest Transactions
+                </h2>
+                {isMobile && (
+                    <DrawerTransactionFilters
+                        onFilterChange={onFilterChange}
+                        onDateRangeChange={onDateRangeChange}
+                        clearDateRange={clearDateRange}
+                        getFilterValue={getFilterValue}
+                        dateRange={dateRange}
+                    />
+                )}
+                <CreateTransaction />
+            </div>
 
-            {isError && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Latest Transactions Error</AlertTitle>
-                    <AlertDescription>Error fetching latest transactions. Please try again later.</AlertDescription>
-                </Alert>
+            {!isMobile && (
+                <TransactionFilters
+                    onFilterChange={onFilterChange}
+                    onDateRangeChange={onDateRangeChange}
+                    clearDateRange={clearDateRange}
+                    getFilterValue={getFilterValue}
+                    dateRange={dateRange}
+                />
             )}
 
-            {!isError &&
-                (isLoading ? (
-                    <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                        <Skeleton className="w-full h-6" />
-                    </div>
-                ) : (
-                    transactions &&
-                    transactions.length > 0 && (
-                        <DataTable
-                            columns={TransactionsColum}
-                            data={transactions}
-                            pageSize={10}
-                            columnFilters={columnFilters}
-                            onColumnFiltersChange={setColumnFilters}
-                        />
-                    )
-                ))}
+            {isError && (
+                <ErrorMessage
+                    title="Latest Transactions Error"
+                    message="Error fetching latest transactions. Please try again later."
+                />
+            )}
+
+            {!isError && (
+                <DataTable
+                    columns={TransactionsColum}
+                    isLoading={isLoading}
+                    data={transactions}
+                    pageSize={10}
+                    columnFilters={columnFilters}
+                    onColumnFiltersChange={setColumnFilters}
+                />
+            )}
         </section>
     );
 };

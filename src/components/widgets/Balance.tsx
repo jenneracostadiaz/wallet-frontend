@@ -1,10 +1,9 @@
 'use client';
 
 import { BalanceByAccounts, BalancesByCurrency, TotalBalance } from '@/components/balance';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useGetBalance } from '@/hooks/useBalance';
 import type { Balance as BalanceType } from '@/type/Balance';
-import { Terminal } from 'lucide-react';
 
 export const Balance = () => {
     const { balance, isLoading, isError } = useGetBalance();
@@ -13,13 +12,10 @@ export const Balance = () => {
     return (
         <>
             {isError && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Balance Error</AlertTitle>
-                    <AlertDescription>
-                        There was a problem fetching your balance. Please try again later.
-                    </AlertDescription>
-                </Alert>
+                <ErrorMessage
+                    title="Balance Error"
+                    message="There was a problem fetching your balance. Please try again later."
+                />
             )}
 
             {!isError && (

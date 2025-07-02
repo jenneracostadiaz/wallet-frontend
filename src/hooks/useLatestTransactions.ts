@@ -1,4 +1,3 @@
-import type { Account } from '@/type/Accounts';
 import type { Transaction } from '@/type/Transactions';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -41,13 +40,8 @@ export const useTransactionsTableData = ({ transactions }: UseGetLatestTransacti
     return useMemo(() => {
         if (!transactions) return [];
         return transactions.map(transaction => {
-            const account: Account = transaction.account;
-            const totalAmount = `
-                ${account.currency} ${transaction.amount}
-            `;
             return {
                 ...transaction,
-                totalAmount,
             };
         });
     }, [transactions]);

@@ -1,20 +1,8 @@
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-    Button,
-    Input,
-    Label,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui';
+import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useAccountsMutation } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
-import { Terminal } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
@@ -135,11 +123,7 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
             </div>
 
             {error && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Error to {account ? 'update' : 'create'} account</AlertTitle>
-                    <AlertDescription>{error.message}</AlertDescription>
-                </Alert>
+                <ErrorMessage title={`Error to ${account ? 'update' : 'create'} account`} message={error.message} />
             )}
 
             <div className="grid gap-3">

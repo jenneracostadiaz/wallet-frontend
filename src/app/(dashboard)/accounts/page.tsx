@@ -3,11 +3,10 @@ import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { AccountsColumns } from '@/components/accounts/AccountsColumns';
 import { CreateAccount } from '@/components/accounts/CreateAccount';
-import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useAccountsTableData, useGetAccounts } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
 import type { ColumnFiltersState } from '@tanstack/react-table';
-import { Terminal } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs = [
@@ -39,41 +38,19 @@ export default function AccountsPage() {
                 </div>
 
                 {isError && (
-                    <Alert variant="destructive">
-                        <Terminal />
-                        <AlertTitle>Account Error</AlertTitle>
-                        <AlertDescription>Error fetching accounts. Please try again later.</AlertDescription>
-                    </Alert>
+                    <ErrorMessage title="Account Error" message="Error fetching accounts. Please try again later." />
                 )}
 
-                {!isError &&
-                    (isLoading ? (
-                        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                            <Skeleton className="w-full h-6" />
-                        </div>
-                    ) : (
-                        accounts &&
-                        accounts.length > 0 && (
-                            <DataTable
-                                columns={AccountsColumns}
-                                data={accounts}
-                                pageSize={10}
-                                columnFilters={columnFilters}
-                                onColumnFiltersChange={setColumnFilters}
-                            />
-                        )
-                    ))}
+                {!isError && (
+                    <DataTable
+                        columns={AccountsColumns}
+                        isLoading={isLoading}
+                        data={accounts}
+                        pageSize={10}
+                        columnFilters={columnFilters}
+                        onColumnFiltersChange={setColumnFilters}
+                    />
+                )}
             </section>
         </>
     );
