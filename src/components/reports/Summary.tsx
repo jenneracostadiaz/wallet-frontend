@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle, Separator, Skeleton } from '@/components/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Separator, Skeleton } from '@/components/ui';
 import type { Currency } from '@/type/Currencies';
 import type { Summary as SummaryType } from '@/type/MonthlyReport';
 import { TrendingDown, TrendingUp } from 'lucide-react';
@@ -15,10 +15,10 @@ export const Summary = ({ summary, currency, loading }: SummaryProps) => {
             {loading && <Skeleton className="h-44 w-full rounded-2xl" />}
 
             {!loading && (
-                <Card className="@container/card">
-                    <CardHeader>
+                <Card className="@container/card gap-0 p-0">
+                    <CardHeader className="p-4">
                         <CardDescription>Summary</CardDescription>
-                        <CardTitle className="text-xl font-semibold flex items-baseline gap-1">
+                        <CardTitle className="text-xl font-semibold flex items-baseline gap-1 border-b">
                             {currency?.symbol}
                             {summary?.net_income}{' '}
                             <span className="text-muted-foreground text-xs">{currency?.code}</span>
@@ -28,23 +28,23 @@ export const Summary = ({ summary, currency, loading }: SummaryProps) => {
                                 <TrendingDown className="size-4 text-red-400" />
                             )}
                         </CardTitle>
-                        <Separator className="my-4" />
+                    </CardHeader>
+
+                    <CardContent className="p-4 pt-0">
                         <div className="flex justify-between gap-4 h-5 text-sm font-semibold">
                             <div className="flex items-baseline gap-1">
                                 {currency?.symbol}
-                                {summary?.total_expenses}
-                                <span className="text-muted-foreground text-xs">{currency?.code}</span>
+                                {summary?.total_income}
                                 <TrendingDown className="size-4 text-red-400" />
                             </div>
                             <Separator orientation="vertical" />
                             <div className="flex items-baseline gap-1">
                                 {currency?.symbol}
                                 {summary?.total_income}
-                                <span className="text-muted-foreground text-xs">{currency?.code}</span>
                                 <TrendingUp className="size-4 text-green-400" />
                             </div>
                         </div>
-                    </CardHeader>
+                    </CardContent>
                 </Card>
             )}
         </>
