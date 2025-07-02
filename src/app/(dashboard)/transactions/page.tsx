@@ -98,13 +98,7 @@ export default function TransactionsPage() {
                     <h1 className="text-2xl font-bold">Transactions</h1>
                     <CreateTransaction />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
-                    <Input
-                        placeholder="Filter descriptions..."
-                        value={(columnFilters.find(f => f.id === 'description')?.value as string) ?? ''}
-                        onChange={event => onFilterChange('description', event.target.value)}
-                        className="w-full"
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 2xl:grid-cols-6 items-center">
                     <AccountsSelect
                         value={(columnFilters.find(f => f.id === 'account')?.value as string) ?? ''}
                         onChange={value => onFilterChange('account', value)}
@@ -131,7 +125,12 @@ export default function TransactionsPage() {
                             })
                         }
                     />
-
+                    <Input
+                        placeholder="Filter descriptions..."
+                        value={(columnFilters.find(f => f.id === 'description')?.value as string) ?? ''}
+                        onChange={event => onFilterChange('description', event.target.value)}
+                        className="w-full lg:col-span-3 2xl:col-span-1"
+                    />
                     <div className="flex gap-2 relative">
                         <Popover>
                             <PopoverTrigger asChild>
