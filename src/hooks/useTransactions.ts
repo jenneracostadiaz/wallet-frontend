@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 
 const fetchTransactions = async (token: string) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
