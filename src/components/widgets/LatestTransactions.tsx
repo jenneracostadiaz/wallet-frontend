@@ -2,11 +2,10 @@
 import { DataTable } from '@/components/DataTable';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import type { Transaction } from '@/type/Transactions';
-import { Terminal } from 'lucide-react';
 
 export const LatestTransactions = () => {
     const { data, isLoading, isError } = useGetLatestTransactions();
@@ -36,11 +35,10 @@ export const LatestTransactions = () => {
             />
 
             {isError && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Latest Transactions Error</AlertTitle>
-                    <AlertDescription>Error fetching latest transactions. Please try again later.</AlertDescription>
-                </Alert>
+                <ErrorMessage
+                    title="Latest Transactions Error"
+                    message="Error fetching latest transactions. Please try again later."
+                />
             )}
 
             {!isError && (

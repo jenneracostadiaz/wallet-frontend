@@ -1,9 +1,10 @@
 'use client';
 
 import { ModeToggle } from '@/components/ModeToggle';
-import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import { Button, Input, Label } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useMutation } from '@tanstack/react-query';
-import { AlertCircleIcon, GalleryVerticalEnd } from 'lucide-react';
+import { GalleryVerticalEnd } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -24,8 +25,6 @@ export default function RegisterPage() {
         event.preventDefault();
 
         if (password !== passwordConfirmation) {
-            // This should be handled by a validation library like zod
-            // but for now, we'll just set an error
             return;
         }
 
@@ -116,13 +115,10 @@ export default function RegisterPage() {
                         </div>
 
                         {isError && (
-                            <Alert variant="destructive">
-                                <AlertCircleIcon />
-                                <AlertTitle>Error</AlertTitle>
-                                <AlertDescription>
-                                    <p>{error?.message}</p>
-                                </AlertDescription>
-                            </Alert>
+                            <ErrorMessage
+                                title="Registration Error"
+                                message={error?.message || 'An error occurred during registration. Please try again.'}
+                            />
                         )}
                     </div>
 

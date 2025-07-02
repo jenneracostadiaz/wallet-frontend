@@ -3,11 +3,10 @@ import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { categoriesColumn } from '@/components/categories/CategoriesColumn';
 import { CreateCategory } from '@/components/categories/CreateCategory';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useCategoriesTableData, useGetCategories } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
 import type { ColumnFiltersState } from '@tanstack/react-table';
-import { Terminal } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs = [
@@ -36,11 +35,10 @@ export default function CategoriesPage() {
                 </div>
 
                 {isError && (
-                    <Alert variant="destructive">
-                        <Terminal />
-                        <AlertTitle>Categories Error</AlertTitle>
-                        <AlertDescription>Error fetching categories. Please try again later.</AlertDescription>
-                    </Alert>
+                    <ErrorMessage
+                        title="Categories Error"
+                        message="Error fetching categories. Please try again later."
+                    />
                 )}
 
                 {!isError && (

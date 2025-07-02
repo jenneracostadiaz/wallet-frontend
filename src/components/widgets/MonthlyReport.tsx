@@ -3,6 +3,7 @@
 import { DailyBalance } from '@/components/reports/DailyBalance';
 import { Summary } from '@/components/reports/Summary';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { ExpensesByCategory } from '@/components/widgets/ExpensesByCategory';
 import { useGetMonthlyReport } from '@/hooks/useMonthlyReport';
 import type { monthlyReport as monthlyReportType } from '@/type/MonthlyReport';
@@ -18,11 +19,10 @@ export const MonthlyReport = () => {
                 Monthly Report ({monthlyReport?.period?.month_name})
             </h2>
             {isError && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Monthly Report Error</AlertTitle>
-                    <AlertDescription>Error fetching monthly report. Please try again later.</AlertDescription>
-                </Alert>
+                <ErrorMessage
+                    title="Monthly Report Error"
+                    message="Error fetching monthly report. Please try again later."
+                />
             )}
             {!isError && (
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">

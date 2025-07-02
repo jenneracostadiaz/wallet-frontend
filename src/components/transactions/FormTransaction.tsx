@@ -1,9 +1,6 @@
 import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
     Button,
     Calendar,
     Input,
@@ -14,13 +11,14 @@ import {
     RadioGroup,
     RadioGroupItem,
 } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { createEmptyAccount, useAccountsList } from '@/hooks/useAccounts';
 import { createEmptyCategory } from '@/hooks/useCategories';
 import { createEmptyCurrency } from '@/hooks/useCurrencies';
 import { useTransactionMutation } from '@/hooks/useTransactions';
 import type { Transaction } from '@/type/Transactions';
 import { format } from 'date-fns';
-import { CalendarIcon, CircleDashed, Terminal, TrendingDown, TrendingUp } from 'lucide-react';
+import { CalendarIcon, CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (transaction?: Transaction) => {
@@ -239,11 +237,10 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
             </div>
 
             {error && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Error to {transaction ? 'update' : 'create'} transaction</AlertTitle>
-                    <AlertDescription>{error.message}</AlertDescription>
-                </Alert>
+                <ErrorMessage
+                    title={`Error to ${transaction ? 'update' : 'create'} transaction`}
+                    message={error.message}
+                />
             )}
 
             <div className="grid gap-3">

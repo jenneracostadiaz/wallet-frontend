@@ -1,9 +1,10 @@
 'use client';
 
 import { ModeToggle } from '@/components/ModeToggle';
-import { Alert, AlertDescription, AlertTitle, Button, Input, Label } from '@/components/ui';
+import { Button, Input, Label } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useMutation } from '@tanstack/react-query';
-import { AlertCircleIcon, GalleryVerticalEnd } from 'lucide-react';
+import { GalleryVerticalEnd } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -87,13 +88,12 @@ export default function LoginPage() {
                             </Button>
                         </div>
                         {isError && (
-                            <Alert variant="destructive">
-                                <AlertCircleIcon />
-                                <AlertTitle>Error</AlertTitle>
-                                <AlertDescription>
-                                    <p>{error?.message}</p>
-                                </AlertDescription>
-                            </Alert>
+                            <ErrorMessage
+                                title="Login Error"
+                                message={
+                                    error?.message || 'An error occurred while logging in. Please try again later.'
+                                }
+                            />
                         )}
                         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                             <span className="bg-background text-muted-foreground relative z-10 px-2">Or</span>

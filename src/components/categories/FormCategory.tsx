@@ -1,20 +1,9 @@
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-    Button,
-    Input,
-    Label,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui';
+import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
+import { ErrorMessage } from '@/components/ui/error-message';
 import { useCategoryMutation } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
-import { CircleDashed, Terminal, TrendingDown, TrendingUp } from 'lucide-react';
+import { CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (category?: Category) => {
@@ -114,11 +103,7 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
             </div>
 
             {error && (
-                <Alert variant="destructive">
-                    <Terminal />
-                    <AlertTitle>Error to {category ? 'update' : 'create'} category</AlertTitle>
-                    <AlertDescription>{error.message}</AlertDescription>
-                </Alert>
+                <ErrorMessage title={`Error to ${category ? 'update' : 'create'} category`} message={error.message} />
             )}
 
             <div className="grid gap-3">
