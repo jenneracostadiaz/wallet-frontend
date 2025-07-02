@@ -1,5 +1,6 @@
 'use client';
 import { DataTable } from '@/components/DataTable';
+import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { ErrorMessage } from '@/components/ui/error-message';
@@ -22,9 +23,12 @@ export const LatestTransactions = () => {
 
     return (
         <section className="flex flex-col gap-4">
-            <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-                Latest Transactions
-            </h2>
+            <div className="flex flex-wrap justify-between items-center">
+                <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
+                    Latest Transactions
+                </h2>
+                <CreateTransaction />
+            </div>
 
             <TransactionFilters
                 onFilterChange={onFilterChange}
