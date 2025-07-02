@@ -108,6 +108,8 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
                     value={form.parent_id?.toString() ?? ''}
                     onChange={value => setForm(f => ({ ...f, parent_id: value ? Number(value) : null }))}
                     category={category}
+                    showSubcategories={false}
+                    transactionType={form.type}
                 />
             </div>
 
