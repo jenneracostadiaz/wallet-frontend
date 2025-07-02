@@ -148,9 +148,12 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
             );
         },
         filterFn: (row, _columnId, filterValue) => {
-            const currency: Currency = row.original.currency;
-            if (!filterValue) return true;
-            return String(currency.id) === String(filterValue);
+            const { currency, type } = (filterValue as { currency?: string; type?: string }) || {};
+
+            const currencyMatch = currency ? String(row.original.currency.id) === String(currency) : true;
+            const typeMatch = type ? row.original.type === type : true;
+
+            return currencyMatch && typeMatch;
         },
     },
     {
