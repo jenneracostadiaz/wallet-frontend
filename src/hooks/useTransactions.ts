@@ -99,7 +99,32 @@ export const useTransactionMutation = ({ transaction, onSuccess }: useTransactio
             });
 
             if (!response.ok) {
-                throw new Error('Could not save transaction');
+                const errorData = await response.json().catch(() => ({}));
+
+                // Check if it's a validation error with specific field errors
+                if (errorData.errors && typeof errorData.errors === 'object') {
+                    const validationMessages: string[] = [];
+                    for (const [, messages] of Object.entries(errorData.errors)) {
+                        if (Array.isArray(messages)) {
+                            validationMessages.push(...messages);
+                        } else if (typeof messages === 'string') {
+                            validationMessages.push(messages);
+                        }
+                    }
+
+                    if (validationMessages.length > 0) {
+                        const error = new Error(validationMessages.join('. ')) as Error & {
+                            isValidationError: boolean;
+                            validationErrors: Record<string, unknown>;
+                        };
+                        error.isValidationError = true;
+                        error.validationErrors = errorData.errors;
+                        throw error;
+                    }
+                }
+
+                // Fallback to generic error message
+                throw new Error(errorData.message || 'Could not save transaction');
             }
             return response.json();
         },
