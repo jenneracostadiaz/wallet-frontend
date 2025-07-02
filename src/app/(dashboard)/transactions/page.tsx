@@ -7,7 +7,8 @@ import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
 import { Balance } from '@/components/widgets';
 import { useTransactionFilters } from '@/hooks/useTransactionFilters';
-import { useGetTransactions } from '@/hooks/useTransactions';
+import { useGetTransactions, useTransactionsTableData } from '@/hooks/useTransactions';
+import type { Transaction } from '@/type/Transactions';
 import { Terminal } from 'lucide-react';
 
 const breadcrumbs = [
@@ -23,7 +24,7 @@ const breadcrumbs = [
 
 export default function TransactionsPage() {
     const { data, isLoading, isError } = useGetTransactions();
-    const transactions = data?.data || [];
+    const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
     const {
         columnFilters,
         dateRange,
