@@ -15,9 +15,16 @@ interface CategoriesSelectProps {
     onChange: (value: string) => void;
     category?: Category;
     transactionType?: string;
+    showSubcategories?: boolean;
 }
 
-export const CategoriesSelect = ({ value, onChange, category, transactionType }: CategoriesSelectProps) => {
+export const CategoriesSelect = ({
+    value,
+    onChange,
+    category,
+    transactionType,
+    showSubcategories = true,
+}: CategoriesSelectProps) => {
     const { parentCategories, isLoading, isError } = useGetParentCategories({ category, transactionType });
     const categoryIdExists = parentCategories?.some(
         (c: Category) =>
@@ -40,7 +47,7 @@ export const CategoriesSelect = ({ value, onChange, category, transactionType }:
                 {!isLoading &&
                     !isError &&
                     parentCategories?.map((category: Category) =>
-                        category.subcategories && category.subcategories.length > 0 ? (
+                        showSubcategories && category.subcategories && category.subcategories.length > 0 ? (
                             <SelectGroup key={category.id}>
                                 <SelectLabel className="capitalize">
                                     {category.icon} {category.name}
