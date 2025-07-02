@@ -25,15 +25,15 @@ export const MonthlyReport = () => {
                 </Alert>
             )}
             {!isError && (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="flex flex-col gap-4">
                         <Summary
                             summary={monthlyReport?.summary}
                             currency={monthlyReport?.currency}
                             loading={isLoading}
                         />
-                        <ExpensesByCategory expenses={monthlyReport?.expenses_by_category} loading={isLoading} />
                     </div>
+                    <ExpensesByCategory expenses={monthlyReport?.expenses_by_category} loading={isLoading} />
                     <DailyBalance balance={monthlyReport?.daily_balance} loading={isLoading} />
                 </div>
             )}
