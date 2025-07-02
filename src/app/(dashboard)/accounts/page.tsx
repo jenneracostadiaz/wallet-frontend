@@ -3,7 +3,7 @@ import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { AccountsColumns } from '@/components/accounts/AccountsColumns';
 import { CreateAccount } from '@/components/accounts/CreateAccount';
-import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 import { useAccountsTableData, useGetAccounts } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
 import type { ColumnFiltersState } from '@tanstack/react-table';

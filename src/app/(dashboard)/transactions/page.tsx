@@ -4,7 +4,7 @@ import { Header } from '@/components/Header';
 import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 import { Balance } from '@/components/widgets';
 import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import { useGetTransactions, useTransactionsTableData } from '@/hooks/useTransactions';

@@ -2,7 +2,7 @@
 import { DataTable } from '@/components/DataTable';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 import { useGetLatestTransactions, useTransactionsTableData } from '@/hooks/useLatestTransactions';
 import { useTransactionFilters } from '@/hooks/useTransactionFilters';
 import type { Transaction } from '@/type/Transactions';

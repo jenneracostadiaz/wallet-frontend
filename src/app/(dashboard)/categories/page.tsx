@@ -3,7 +3,7 @@ import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
 import { categoriesColumn } from '@/components/categories/CategoriesColumn';
 import { CreateCategory } from '@/components/categories/CreateCategory';
-import { Alert, AlertDescription, AlertTitle, Skeleton } from '@/components/ui';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui';
 import { useCategoriesTableData, useGetCategories } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
 import type { ColumnFiltersState } from '@tanstack/react-table';
