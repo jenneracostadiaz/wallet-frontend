@@ -2,6 +2,7 @@ import type { Transaction } from '@/type/Transactions';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
 
 const fetchTransactions = async (token: string) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
@@ -30,6 +31,21 @@ export const useGetTransactions = () => {
         isLoading,
         isError,
     };
+};
+
+interface UseTransactionsTableDataProps {
+    transactions?: Transaction[];
+}
+
+export const useTransactionsTableData = ({ transactions }: UseTransactionsTableDataProps) => {
+    return useMemo(() => {
+        if (!transactions) return [];
+        return transactions.map(transaction => {
+            return {
+                ...transaction,
+            };
+        });
+    }, [transactions]);
 };
 
 interface useTransactionDeleteProps {
