@@ -90,9 +90,11 @@ export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
         <>
             {loading && <Skeleton className="h-72 w-full rounded-2xl lg:col-span-2" />}
             {!loading && (
-                <Card className="w-full rounded-2xl p-4 lg:col-span-2">
-                    <Line data={data} options={options} />
-                </Card>
+                <div className="overflow-auto lg:col-span-2">
+                    <Card className="w-xl lg:w-full rounded-2xl p-4 ">
+                        <Line data={data} options={options} />
+                    </Card>
+                </div>
             )}
         </>
     );
