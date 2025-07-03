@@ -1,3 +1,4 @@
+import type { Balance } from '@/type/Balance';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 
@@ -13,7 +14,7 @@ export const fetchBalance = async (token: string) => {
     return response.json();
 };
 
-export const useGetBalance = () => {
+export const useGetBalance = (initialData?: Balance[]) => {
     const { data: session } = useSession();
 
     const {
@@ -25,6 +26,7 @@ export const useGetBalance = () => {
         queryFn: () => fetchBalance(session?.accessToken || ''),
         enabled: !!session?.accessToken,
         refetchOnWindowFocus: false,
+        initialData,
     });
 
     return {
