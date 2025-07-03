@@ -1,16 +1,4 @@
-import { Header } from '@/components/Header';
 import { Skeleton } from '@/components/ui/skeleton';
-
-const breadcrumbs = [
-    {
-        title: 'Dashboard',
-        href: '/',
-    },
-    {
-        title: 'Transactions',
-        href: '/transactions',
-    },
-];
 
 export function TransactionsSkeleton() {
     return (
