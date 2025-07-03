@@ -16,7 +16,7 @@ const fetchTransactions = async (token: string) => {
     return response.json();
 };
 
-export const useGetTransactions = () => {
+export const useGetTransactions = (initialData?: Transaction[]) => {
     const { data: session } = useSession();
 
     const { data, isLoading, isError } = useQuery({
@@ -24,6 +24,7 @@ export const useGetTransactions = () => {
         queryFn: () => fetchTransactions(session?.accessToken || ''),
         enabled: !!session?.accessToken,
         refetchOnWindowFocus: false,
+        initialData,
     });
 
     return {
