@@ -5,8 +5,12 @@ import { ErrorMessage } from '@/components/ui/error-message';
 import { useGetBalance } from '@/hooks/useBalance';
 import type { Balance as BalanceType } from '@/type/Balance';
 
-export const Balance = () => {
-    const { balance, isLoading, isError } = useGetBalance();
+interface BalanceProps {
+    initialBalance: BalanceType[];
+}
+
+export const Balance = ({ initialBalance }: BalanceProps) => {
+    const { balance, isLoading, isError } = useGetBalance(initialBalance);
     const balanceData: BalanceType = balance?.data;
 
     return (
