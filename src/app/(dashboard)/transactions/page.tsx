@@ -1,16 +1,10 @@
-'use client';
-import { DataTable } from '@/components/DataTable';
 import { Header } from '@/components/Header';
-import { CreateTransaction } from '@/components/transactions/CreateTransaction';
-import { DrawerTransactionFilters } from '@/components/transactions/DrawerTransactionFilters';
-import { TransactionFilters } from '@/components/transactions/TransactionFilters';
-import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { ErrorMessage } from '@/components/ui/error-message';
-import { Balance } from '@/components/widgets';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useTransactionFilters } from '@/hooks/useTransactionFilters';
-import { useGetTransactions, useTransactionsTableData } from '@/hooks/useTransactions';
-import type { Transaction } from '@/type/Transactions';
+import { BalanceSkeleton } from '@/components/widgets/BalanceSkeleton';
+import { BalanceWidget } from '@/components/widgets/BalanceWidget';
+import { auth } from '@/lib/auth';
+import { Suspense } from 'react';
+import { TransactionsClient } from './components/TransactionsClient';
+import { TransactionsSkeleton } from './components/TransactionsSkeleton';
 
 const breadcrumbs = [
     {
@@ -23,69 +17,37 @@ const breadcrumbs = [
     },
 ];
 
-export default function TransactionsPage() {
-    const { data, isLoading, isError } = useGetTransactions();
-    const transactions: Transaction[] = useTransactionsTableData({ transactions: data?.data });
-    const {
-        columnFilters,
-        dateRange,
-        onFilterChange,
-        onDateRangeChange,
-        clearDateRange,
-        getFilterValue,
-        setColumnFilters,
-    } = useTransactionFilters();
-    const isMobile = useIsMobile();
+async function getTransactions(token: string) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        cache: 'no-store',
+    });
+    if (!response.ok) {
+        throw new Error('Could not fetch transactions');
+    }
+    return response.json();
+}
 
+async function TransactionsData() {
+    const session = await auth();
+    const transactions = await getTransactions(session?.accessToken || '');
+    return <TransactionsClient initialTransactions={transactions} />;
+}
+
+export default function TransactionsPage() {
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
-            <section className="px-4 flex flex-col gap-4 w-full max-w-7xl mx-auto">
-                <Balance />
-
-                <div className="flex flex-wrap justify-between items-center gap-4">
-                    <h1 className="text-2xl font-bold">Transactions</h1>
-
-                    {isMobile && (
-                        <DrawerTransactionFilters
-                            onFilterChange={onFilterChange}
-                            onDateRangeChange={onDateRangeChange}
-                            clearDateRange={clearDateRange}
-                            getFilterValue={getFilterValue}
-                            dateRange={dateRange}
-                        />
-                    )}
-                    <CreateTransaction />
-                </div>
-
-                {!isMobile && (
-                    <TransactionFilters
-                        onFilterChange={onFilterChange}
-                        onDateRangeChange={onDateRangeChange}
-                        clearDateRange={clearDateRange}
-                        getFilterValue={getFilterValue}
-                        dateRange={dateRange}
-                    />
-                )}
-
-                {isError && (
-                    <ErrorMessage
-                        title="Transactions Error"
-                        message="Error fetching transactions. Please try again later."
-                    />
-                )}
-
-                {!isError && (
-                    <DataTable
-                        columns={TransactionsColum}
-                        data={transactions}
-                        isLoading={isLoading}
-                        pageSize={20}
-                        columnFilters={columnFilters}
-                        onColumnFiltersChange={setColumnFilters}
-                    />
-                )}
-            </section>
+            <main className="p-4 grid gap-4 w-full max-w-7xl mx-auto">
+                <Suspense fallback={<BalanceSkeleton />}>
+                    <BalanceWidget />
+                </Suspense>
+                <Suspense fallback={<TransactionsSkeleton />}>
+                    <TransactionsData />
+                </Suspense>
+            </main>
         </>
     );
 }
