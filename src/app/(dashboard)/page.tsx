@@ -1,5 +1,8 @@
 import { Header } from '@/components/Header';
-import { Balance, LatestTransactions, MonthlyReport } from '@/components/widgets';
+import { LatestTransactions, MonthlyReport } from '@/components/widgets';
+import { BalanceSkeleton } from '@/components/widgets/BalanceSkeleton';
+import { BalanceWidget } from '@/components/widgets/BalanceWidget';
+import { Suspense } from 'react';
 
 const breadcrumbs = [
     {
@@ -13,7 +16,9 @@ export default function Home() {
         <>
             <Header breadcrumbs={breadcrumbs} />
             <section className="flex flex-col gap-12 p-4 pt-0 w-full max-w-7xl mx-auto">
-                <Balance />
+                <Suspense fallback={<BalanceSkeleton />}>
+                    <BalanceWidget />
+                </Suspense>
                 <MonthlyReport />
                 <LatestTransactions />
             </section>
