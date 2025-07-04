@@ -1,4 +1,7 @@
+import type { Account } from '@/type/Accounts';
 import type { Balance } from '@/type/Balance';
+import type { Category } from '@/type/Categories';
+import type { Currency } from '@/type/Currencies';
 import type { MonthlyReport } from '@/type/MonthlyReport';
 import type { Transaction } from '@/type/Transactions';
 
@@ -69,5 +72,49 @@ export const saveTransaction = (
     return fetchWithAuth(endpoint, token, {
         method,
         body: JSON.stringify(transactionData),
+    });
+};
+
+export const getAccounts = (token: string): Promise<{ data: Account[] }> => {
+    return fetchWithAuth('accounts', token);
+};
+
+export const getCategories = (token: string): Promise<{ data: Category[] }> => {
+    return fetchWithAuth('categories', token);
+};
+
+export const getCurrencies = (token: string): Promise<{ data: Currency[] }> => {
+    return fetchWithAuth('currencies', token);
+};
+
+export const deleteAccount = (token: string, accountId: number): Promise<null> => {
+    return fetchWithAuth(`accounts/${accountId}`, token, { method: 'DELETE' });
+};
+
+export const saveAccount = (token: string, accountData: Partial<Account>, accountId?: number): Promise<Account> => {
+    const method = accountId ? 'PUT' : 'POST';
+    const endpoint = accountId ? `accounts/${accountId}` : 'accounts';
+
+    return fetchWithAuth(endpoint, token, {
+        method,
+        body: JSON.stringify(accountData),
+    });
+};
+
+export const deleteCategory = (token: string, categoryId: number): Promise<null> => {
+    return fetchWithAuth(`categories/${categoryId}`, token, { method: 'DELETE' });
+};
+
+export const saveCategory = (
+    token: string,
+    categoryData: Partial<Category>,
+    categoryId?: number
+): Promise<Category> => {
+    const method = categoryId ? 'PUT' : 'POST';
+    const endpoint = categoryId ? `categories/${categoryId}` : 'categories';
+
+    return fetchWithAuth(endpoint, token, {
+        method,
+        body: JSON.stringify(categoryData),
     });
 };
