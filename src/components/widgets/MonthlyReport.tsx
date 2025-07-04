@@ -2,39 +2,22 @@
 
 import { DailyBalance } from '@/components/reports/DailyBalance';
 import { Summary } from '@/components/reports/Summary';
-import { ErrorMessage } from '@/components/ui/error-message';
 import { ExpensesByCategory } from '@/components/widgets/ExpensesByCategory';
-import { useGetMonthlyReport } from '@/hooks/useMonthlyReport';
-import type { monthlyReport as monthlyReportType } from '@/type/MonthlyReport';
+import type { MonthlyReport as MonthlyReportType } from '@/type/MonthlyReport';
 
-export const MonthlyReport = () => {
-    const { data, isLoading, isError } = useGetMonthlyReport();
-    const monthlyReport: monthlyReportType = data?.data;
-
+export const MonthlyReport = ({ initialMonthlyReport }: { initialMonthlyReport: MonthlyReportType }) => {
     return (
         <section className="flex flex-col">
             <h2 className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 mb-4">
-                Monthly Report ({monthlyReport?.period?.month_name})
+                Monthly Report ({initialMonthlyReport.period.month_name})
             </h2>
-            {isError && (
-                <ErrorMessage
-                    title="Monthly Report Error"
-                    message="Error fetching monthly report. Please try again later."
-                />
-            )}
-            {!isError && (
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="flex flex-col gap-4">
-                        <Summary
-                            summary={monthlyReport?.summary}
-                            currency={monthlyReport?.currency}
-                            loading={isLoading}
-                        />
-                    </div>
-                    <ExpensesByCategory expenses={monthlyReport?.expenses_by_category} loading={isLoading} />
-                    <DailyBalance balance={monthlyReport?.daily_balance} loading={isLoading} />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="flex flex-col gap-4">
+                    <Summary summary={initialMonthlyReport.summary} currency={initialMonthlyReport.currency} />
                 </div>
-            )}
+                <ExpensesByCategory expenses={initialMonthlyReport.expenses_by_category} />
+                <DailyBalance balance={initialMonthlyReport.daily_balance} />
+            </div>
         </section>
     );
 };
