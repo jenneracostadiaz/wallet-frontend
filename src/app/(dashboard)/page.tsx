@@ -2,8 +2,8 @@ import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { DashboardClient } from '@/components/dashboard/DashboardClient';
 import { getBalance, getLatestTransactions, getMonthlyReport } from '@/lib/api';
-import { DashboardClient } from './DashboardClient';
 
 import { Header } from '@/components/Header';
 import { DashboardSkeleton } from '@/components/dashboard/DashboardSkeleton';
