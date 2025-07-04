@@ -1,8 +1,9 @@
-import { Header } from '@/components/Header';
-import { BalanceSkeleton } from '@/components/widgets/BalanceSkeleton';
-import { BalanceWidget } from '@/components/widgets/BalanceWidget';
 import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+
+import { Header } from '@/components/Header';
+import { getBalance, getTransactions } from '@/lib/api';
 import { TransactionsClient } from './components/TransactionsClient';
 import { TransactionsSkeleton } from './components/TransactionsSkeleton';
 
@@ -17,37 +18,22 @@ const breadcrumbs = [
     },
 ];
 
-async function getTransactions(token: string) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        cache: 'no-store',
-    });
-    if (!response.ok) {
-        throw new Error('Could not fetch transactions');
-    }
-    return response.json();
-}
-
-async function TransactionsData() {
+export default async function TransactionsPage() {
     const session = await auth();
-    const transactions = await getTransactions(session?.accessToken || '');
-    return <TransactionsClient initialTransactions={transactions} />;
-}
+    if (!session?.accessToken) {
+        redirect('/login');
+    }
 
-export default function TransactionsPage() {
+    const token = session.accessToken;
+
+    const [initialTransactions, initialBalance] = await Promise.all([getTransactions(token), getBalance(token)]);
+
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
-            <main className="p-4 grid gap-4 w-full max-w-7xl mx-auto">
-                <Suspense fallback={<BalanceSkeleton />}>
-                    <BalanceWidget />
-                </Suspense>
-                <Suspense fallback={<TransactionsSkeleton />}>
-                    <TransactionsData />
-                </Suspense>
-            </main>
+            <Suspense fallback={<TransactionsSkeleton />}>
+                <TransactionsClient initialTransactions={initialTransactions} initialBalance={initialBalance} />
+            </Suspense>
         </>
     );
 }
