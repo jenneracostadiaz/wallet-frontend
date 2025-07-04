@@ -11,13 +11,17 @@ import {
     AlertDialogTrigger,
     DropdownMenuItem,
 } from '@/components/ui';
-import { useTransactionDelete } from '@/hooks/useTransactions';
+import { useTransactionDelete } from '@/hooks/useTransactions'; // Import the hook
 import type { Transaction } from '@/type/Transactions';
 import { useState } from 'react';
 
 export const DeleteTransaction = ({ transaction }: { transaction: Transaction }) => {
     const [open, setOpen] = useState(false);
-    const { mutate, isPending } = useTransactionDelete({ transaction, setOpen });
+    const { mutate, isPending } = useTransactionDelete({
+        onSuccess: () => {
+            setOpen(false); // Close the dialog on success
+        },
+    });
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
@@ -35,7 +39,7 @@ export const DeleteTransaction = ({ transaction }: { transaction: Transaction })
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => mutate()} disabled={isPending}>
+                    <AlertDialogAction onClick={() => mutate(transaction.id)} disabled={isPending}>
                         {isPending ? 'Deleting...' : 'Delete'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
