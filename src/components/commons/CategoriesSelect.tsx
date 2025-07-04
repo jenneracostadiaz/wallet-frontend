@@ -7,8 +7,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui';
-import { useGetParentCategories } from '@/hooks/useCategories';
+import { getCategories } from '@/lib/api';
 import type { Category } from '@/type/Categories';
+import { useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
 
 interface CategoriesSelectProps {
     value: string;
@@ -16,6 +19,7 @@ interface CategoriesSelectProps {
     category?: Category;
     transactionType?: string;
     showSubcategories?: boolean;
+    initialCategories: { data: Category[] };
 }
 
 export const CategoriesSelect = ({
@@ -24,8 +28,43 @@ export const CategoriesSelect = ({
     category,
     transactionType,
     showSubcategories = true,
+    initialCategories,
 }: CategoriesSelectProps) => {
-    const { parentCategories, isLoading, isError } = useGetParentCategories({ category, transactionType });
+    const { data: session } = useSession();
+    const token = session?.accessToken || '';
+
+    const {
+        data: categoriesData,
+        isLoading,
+        isError,
+    } = useQuery({
+        queryKey: ['categories', token],
+        queryFn: () => getCategories(token),
+        initialData: initialCategories,
+        enabled: !!token,
+    });
+
+    const allCategories = categoriesData?.data || [];
+
+    const parentCategories = useMemo(() => {
+        if (!allCategories) return [];
+
+        let filtered = allCategories.filter((cat: Category) => cat.parent_id === null);
+
+        if (
+            transactionType &&
+            (transactionType === 'income' || transactionType === 'expense' || transactionType === 'transfer')
+        ) {
+            filtered = filtered.filter((cat: Category) => cat.type === transactionType);
+        }
+
+        if (category) {
+            filtered = filtered.filter((cat: Category) => cat.id !== category.id);
+        }
+
+        return filtered;
+    }, [allCategories, category, transactionType]);
+
     const categoryIdExists = parentCategories?.some(
         (c: Category) =>
             String(c.id) === String(value) || c.subcategories?.some((sc: Category) => String(sc.id) === String(value))
@@ -44,34 +83,28 @@ export const CategoriesSelect = ({
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="none">No category</SelectItem>
-                {!isLoading &&
-                    !isError &&
-                    parentCategories?.map((category: Category) =>
-                        showSubcategories && category.subcategories && category.subcategories.length > 0 ? (
-                            <SelectGroup key={category.id}>
-                                <SelectLabel className="capitalize">
-                                    {category.icon} {category.name}
-                                </SelectLabel>
-                                {category.subcategories?.map((subcategory: Category) => (
-                                    <SelectItem
-                                        key={subcategory.id}
-                                        value={String(subcategory.id)}
-                                        className="flex items-center gap-2 capitalize"
-                                    >
-                                        {subcategory.icon} {subcategory.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectGroup>
-                        ) : (
-                            <SelectItem
-                                key={category.id}
-                                value={String(category.id)}
-                                className="flex items-center gap-2 capitalize"
-                            >
-                                {category.icon} {category.name}
-                            </SelectItem>
-                        )
-                    )}
+                {parentCategories?.map((cat: Category) =>
+                    showSubcategories && cat.subcategories && cat.subcategories.length > 0 ? (
+                        <SelectGroup key={cat.id}>
+                            <SelectLabel className="capitalize">
+                                {cat.icon} {cat.name}
+                            </SelectLabel>
+                            {cat.subcategories?.map((subcategory: Category) => (
+                                <SelectItem
+                                    key={subcategory.id}
+                                    value={String(subcategory.id)}
+                                    className="flex items-center gap-2 capitalize"
+                                >
+                                    {subcategory.icon} {subcategory.name}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    ) : (
+                        <SelectItem key={cat.id} value={String(cat.id)} className="flex items-center gap-2 capitalize">
+                            {cat.icon} {cat.name}
+                        </SelectItem>
+                    )
+                )}
             </SelectContent>
         </Select>
     );
