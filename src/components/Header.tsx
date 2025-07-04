@@ -20,7 +20,7 @@ interface HeaderProps {
 
 export const Header = ({ breadcrumbs }: HeaderProps) => {
     return (
-        <header className="w-11/12 mx-auto flex justify-between items-center h-16 shrink-0 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="w-11/12 lg:w-full mx-auto lg:px-4 flex justify-between items-center h-16 shrink-0 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2">
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
