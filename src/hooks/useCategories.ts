@@ -2,26 +2,16 @@ import type { Category } from '@/type/Categories';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
-
-const fetchCategories = async (token: string) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) {
-        throw new Error('Could not fetch categories');
-    }
-    return response.json();
-};
+import { getCategories, deleteCategory, saveCategory } from '@/lib/api';
 
 export const useGetCategories = () => {
     const { data: session } = useSession();
+    const token = session?.accessToken || '';
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['categories', session?.accessToken],
-        queryFn: () => fetchCategories(session?.accessToken || ''),
-        enabled: !!session?.accessToken,
+        queryKey: ['categories', token],
+        queryFn: () => getCategories(token),
+        enabled: !!token,
         refetchOnWindowFocus: false,
     });
 
@@ -50,11 +40,12 @@ export const useGetParentCategories = ({
     transactionType,
 }: { category?: Category; transactionType?: string }) => {
     const { data: session } = useSession();
+    const token = session?.accessToken || '';
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['categories', session?.accessToken],
-        queryFn: () => fetchCategories(session?.accessToken || ''),
-        enabled: !!session?.accessToken,
+        queryKey: ['categories', token],
+        queryFn: () => getCategories(token),
+        enabled: !!token,
         refetchOnWindowFocus: false,
     });
 
@@ -86,70 +77,40 @@ export const useGetParentCategories = ({
     };
 };
 
-interface useCategoriesDeleteProps {
-    category: Category;
-    setOpen: (open: boolean) => void;
+interface UseCategoriesDeleteProps {
+    onSuccess?: () => void;
 }
 
-export const useCategoriesDelete = ({ category, setOpen }: useCategoriesDeleteProps) => {
+export const useCategoriesDelete = ({ onSuccess }: UseCategoriesDeleteProps) => {
     const queryClient = useQueryClient();
     const { data: session } = useSession();
+    const token = session?.accessToken || '';
 
     const { mutate, isPending } = useMutation({
-        mutationFn: async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${category.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Could not delete category');
-            }
-            return response.json();
-        },
+        mutationFn: (categoryId: number) => deleteCategory(token, categoryId),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['categories', session?.accessToken] }).then(r => console.log(r));
-            setOpen(false);
+            void queryClient.invalidateQueries({ queryKey: ['categories'] });
+            onSuccess?.();
         },
     });
 
     return { mutate, isPending };
 };
 
-interface useCategoryMutationProps {
-    category?: Category;
+interface UseCategoryMutationProps {
+    categoryId?: number;
     onSuccess?: () => void;
 }
 
-export const useCategoryMutation = ({ category, onSuccess }: useCategoryMutationProps) => {
+export const useCategoryMutation = ({ categoryId, onSuccess }: UseCategoryMutationProps) => {
     const queryClient = useQueryClient();
     const { data: session } = useSession();
+    const token = session?.accessToken || '';
 
     const { mutate, isPending, error } = useMutation({
-        mutationFn: async (newCategory: Category) => {
-            const method = category ? 'PUT' : 'POST';
-            const url = category
-                ? `${process.env.NEXT_PUBLIC_API_URL}/categories/${category.id}`
-                : `${process.env.NEXT_PUBLIC_API_URL}/categories`;
-
-            const response = await fetch(url, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`,
-                },
-                body: JSON.stringify(newCategory),
-            });
-
-            if (!response.ok) {
-                throw new Error('Could not save category');
-            }
-            return response.json();
-        },
+        mutationFn: (categoryData: Partial<Category>) => saveCategory(token, categoryData, categoryId),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['categories', session?.accessToken] }).then(r => console.log(r));
+            void queryClient.invalidateQueries({ queryKey: ['categories'] });
             onSuccess?.();
         },
     });
@@ -166,3 +127,4 @@ export const createEmptyCategory = () => ({
     parent: undefined,
     parent_id: undefined,
 });
+
