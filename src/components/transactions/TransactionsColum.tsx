@@ -5,9 +5,36 @@ import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
 import type { Currency } from '@/type/Currencies';
 import type { Transaction } from '@/type/Transactions';
-import type { ColumnDef } from '@tanstack/table-core';
+import type { ColumnDef, FilterFn, SortingFn } from '@tanstack/table-core';
 import { ArrowUpDown, CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
-import type { DateRange } from 'react-day-picker';
+
+// Helper functions for filterFn and sortingFn
+const categoryFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
+    if (!filterValue) return true;
+    const category: Category = row.original.category;
+    return String(category.id) === String(filterValue);
+};
+
+const dateSortingFn: SortingFn<Transaction> = (rowA, rowB) => {
+    const dateA = new Date(rowA.original.date).getTime();
+    const dateB = new Date(rowB.original.date).getTime();
+    return dateA - dateB;
+};
+
+const accountFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
+    const account: Account = row.original.account;
+    if (!filterValue) return true;
+    return String(account.id) === String(filterValue);
+};
+
+const amountFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
+    const { currency, type } = (filterValue as { currency?: string; type?: string }) || {};
+
+    const currencyMatch = currency ? String(row.original.currency.id) === String(currency) : true;
+    const typeMatch = type ? row.original.type === type : true;
+
+    return currencyMatch && typeMatch;
+};
 
 export const TransactionsColum: ColumnDef<Transaction>[] = [
     {
@@ -44,53 +71,8 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </div>
             );
         },
-        filterFn: (row, _columnId, filterValue) => {
-            if (!filterValue) return true;
-
-            if (typeof filterValue === 'string' || typeof filterValue === 'number') {
-                const category: Category = row.original.category;
-                return String(category.id) === String(filterValue);
-            }
-
-            if (filterValue && typeof filterValue === 'object' && ('from' in filterValue || 'to' in filterValue)) {
-                const dateRange = filterValue as DateRange;
-                const transactionDate = new Date(row.original.date);
-
-                // biome-ignore lint/suspicious/noGlobalIsNan: Valid check for Date validity
-                if (isNaN(transactionDate.getTime())) {
-                    return true;
-                }
-
-                const { from, to } = dateRange;
-
-                const normalizeToLocalDate = (date: Date) => {
-                    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-                };
-
-                const normalizedTransactionDate = normalizeToLocalDate(transactionDate);
-
-                if (from && !to) {
-                    const normalizedFrom = normalizeToLocalDate(from);
-                    return normalizedTransactionDate.getTime() >= normalizedFrom.getTime();
-                }
-
-                if (from && to) {
-                    const normalizedFrom = normalizeToLocalDate(from);
-                    const normalizedTo = normalizeToLocalDate(to);
-                    return (
-                        normalizedTransactionDate.getTime() >= normalizedFrom.getTime() &&
-                        normalizedTransactionDate.getTime() <= normalizedTo.getTime()
-                    );
-                }
-            }
-
-            return true;
-        },
-        sortingFn: (rowA, rowB) => {
-            const dateA = new Date(rowA.original.date).getTime();
-            const dateB = new Date(rowB.original.date).getTime();
-            return dateA - dateB;
-        },
+        filterFn: categoryFilterFn,
+        sortingFn: dateSortingFn,
     },
     {
         accessorKey: 'account',
@@ -116,11 +98,7 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
-        filterFn: (row, _columnId, filterValue) => {
-            const account: Account = row.original.account;
-            if (!filterValue) return true;
-            return String(account.id) === String(filterValue);
-        },
+        filterFn: accountFilterFn,
     },
     {
         accessorKey: 'amount',
@@ -147,14 +125,7 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                 </span>
             );
         },
-        filterFn: (row, _columnId, filterValue) => {
-            const { currency, type } = (filterValue as { currency?: string; type?: string }) || {};
-
-            const currencyMatch = currency ? String(row.original.currency.id) === String(currency) : true;
-            const typeMatch = type ? row.original.type === type : true;
-
-            return currencyMatch && typeMatch;
-        },
+        filterFn: amountFilterFn,
     },
     {
         accessorKey: 'description',
