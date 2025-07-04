@@ -11,13 +11,25 @@ import { TransactionsColum } from '@/components/transactions/TransactionsColum';
 import { useTransactionsData } from '@/hooks/useTransactionsData';
 import type { Balance as BalanceType } from '@/type/Balance';
 import type { Transaction } from '@/type/Transactions';
+import type { Account } from '@/type/Accounts';
+import type { Category } from '@/type/Categories';
+import type { Currency } from '@/type/Currencies';
 
 interface TransactionsClientProps {
     initialBalance: BalanceType;
     initialTransactions: { data: Transaction[] };
+    initialAccounts: { data: Account[] };
+    initialCategories: { data: Category[] };
+    initialCurrencies: { data: Currency[] };
 }
 
-export function TransactionsClient({ initialBalance, initialTransactions }: TransactionsClientProps) {
+export function TransactionsClient({
+    initialBalance,
+    initialTransactions,
+    initialAccounts,
+    initialCategories,
+    initialCurrencies,
+}: TransactionsClientProps) {
     const { balance, transactions } = useTransactionsData({ initialBalance, initialTransactions });
 
     const {
@@ -48,6 +60,9 @@ export function TransactionsClient({ initialBalance, initialTransactions }: Tran
                         clearDateRange={clearDateRange}
                         getFilterValue={getFilterValue}
                         dateRange={dateRange}
+                        initialAccounts={initialAccounts}
+                        initialCategories={initialCategories}
+                        initialCurrencies={initialCurrencies}
                     />
                 )}
 
