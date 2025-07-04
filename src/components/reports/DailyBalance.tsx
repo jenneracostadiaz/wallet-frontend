@@ -1,5 +1,6 @@
 import { Card, Skeleton } from '@/components/ui';
-import type { DailyBalance as DailyBalanceType } from '@/type/MonthlyReport';
+import { Line } from 'react-chartjs-2';
+
 import {
     CategoryScale,
     Chart as ChartJS,
@@ -10,17 +11,13 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
+
+import type { DailyBalance as DailyBalanceType } from '@/type/MonthlyReport';
 import type { TooltipItem } from 'chart.js';
-import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-interface DailyBalanceProps {
-    loading: boolean;
-    balance: DailyBalanceType[];
-}
-
-export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
+export const DailyBalance = ({ balance }: { balance: DailyBalanceType[] }) => {
     if (!balance || balance.length === 0) {
         return <Skeleton className="h-72 w-full rounded-2xl lg:col-span-2" />;
     }
@@ -87,15 +84,10 @@ export const DailyBalance = ({ loading, balance }: DailyBalanceProps) => {
     };
 
     return (
-        <>
-            {loading && <Skeleton className="h-72 w-full rounded-2xl lg:col-span-2" />}
-            {!loading && (
-                <div className="overflow-auto lg:col-span-2">
-                    <Card className="w-xl lg:w-full rounded-2xl p-4 ">
-                        <Line data={data} options={options} />
-                    </Card>
-                </div>
-            )}
-        </>
+        <div className="overflow-auto lg:col-span-2">
+            <Card className="w-xl lg:w-full rounded-2xl p-4 ">
+                <Line data={data} options={options} />
+            </Card>
+        </div>
     );
 };
