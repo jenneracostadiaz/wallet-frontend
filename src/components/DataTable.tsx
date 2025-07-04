@@ -1,4 +1,4 @@
-import { Button, Skeleton, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import {
     type ColumnFiltersState,
     type OnChangeFn,
