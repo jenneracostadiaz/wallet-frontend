@@ -1,20 +1,11 @@
-import { Card, Skeleton } from '@/components/ui';
+import { Card } from '@/components/ui';
 import type { ExpenseByCategory } from '@/type/MonthlyReport';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface ExpensesByCategoryProps {
-    loading: boolean;
-    expenses: ExpenseByCategory[];
-}
-
-export const ExpensesByCategory = ({ loading, expenses }: ExpensesByCategoryProps) => {
-    if (!expenses || expenses.length === 0) {
-        return <Skeleton className="h-48 w-full rounded-2xl" />;
-    }
-
+export const ExpensesByCategory = ({ expenses }: { expenses: ExpenseByCategory[] }) => {
     const data = {
         labels: expenses.map(item => item.category),
         datasets: [
@@ -64,13 +55,8 @@ export const ExpensesByCategory = ({ loading, expenses }: ExpensesByCategoryProp
     };
 
     return (
-        <>
-            {loading && <Skeleton className="h-48 w-full rounded-2xl" />}
-            {!loading && (
-                <Card className="w-full rounded-2xl p-4">
-                    <Pie data={data} options={options} />
-                </Card>
-            )}
-        </>
+        <Card className="w-full rounded-2xl p-4">
+            <Pie data={data} options={options} />
+        </Card>
     );
 };
