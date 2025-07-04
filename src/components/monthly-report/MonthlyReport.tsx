@@ -1,8 +1,6 @@
 'use client';
 
-import { DailyBalance } from '@/components/reports/DailyBalance';
-import { Summary } from '@/components/reports/Summary';
-import { ExpensesByCategory } from '@/components/widgets/ExpensesByCategory';
+import { DailyBalance, ExpensesByCategory, Summary } from '@/components/monthly-report';
 import type { MonthlyReport as MonthlyReportType } from '@/type/MonthlyReport';
 
 export const MonthlyReport = ({ initialMonthlyReport }: { initialMonthlyReport: MonthlyReportType }) => {
