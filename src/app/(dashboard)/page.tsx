@@ -1,8 +1,12 @@
-import { Header } from '@/components/Header';
-import { LatestTransactions, MonthlyReport } from '@/components/widgets';
-import { BalanceSkeleton } from '@/components/widgets/BalanceSkeleton';
-import { BalanceWidget } from '@/components/widgets/BalanceWidget';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+
+import { getBalance, getLatestTransactions, getMonthlyReport } from '@/lib/api';
+import { DashboardClient } from './DashboardClient';
+
+import { Header } from '@/components/Header';
+import { DashboardSkeleton } from '@/components/dashboard/DashboardSkeleton';
 
 const breadcrumbs = [
     {
@@ -11,17 +15,30 @@ const breadcrumbs = [
     },
 ];
 
-export default function Home() {
+export default async function DashboardPage() {
+    const session = await auth();
+    if (!session?.accessToken) {
+        redirect('/login');
+    }
+
+    const token = session.accessToken;
+
+    const [balanceResponse, monthlyReport, latestTransactions] = await Promise.all([
+        getBalance(token),
+        getMonthlyReport(token),
+        getLatestTransactions(token),
+    ]);
+
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
-            <section className="flex flex-col gap-12 p-4 pt-0 w-full max-w-7xl mx-auto">
-                <Suspense fallback={<BalanceSkeleton />}>
-                    <BalanceWidget />
-                </Suspense>
-                <MonthlyReport />
-                <LatestTransactions />
-            </section>
+            <Suspense fallback={<DashboardSkeleton />}>
+                <DashboardClient
+                    initialBalance={balanceResponse}
+                    initialMonthlyReport={monthlyReport}
+                    initialLatestTransactions={latestTransactions}
+                />
+            </Suspense>
         </>
     );
 }
