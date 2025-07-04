@@ -1,4 +1,3 @@
-'use client';
 import { Button, Skeleton, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import {
     type ColumnFiltersState,
@@ -16,16 +15,14 @@ import { useState } from 'react';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    isLoading?: boolean;
     pageSize: number;
-    columnFilters: ColumnFiltersState;
-    onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
+    columnFilters?: ColumnFiltersState;
+    onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
 }
 
 export const DataTable = <TData, TValue>({
     columns,
     data,
-    isLoading,
     pageSize,
     columnFilters,
     onColumnFiltersChange,
@@ -37,8 +34,8 @@ export const DataTable = <TData, TValue>({
         columns,
         initialState: {
             pagination: {
-                pageSize: pageSize || 10, // Default page size
-                pageIndex: 0, // Start at the first page
+                pageSize: pageSize || 15,
+                pageIndex: 0,
             },
         },
         getCoreRowModel: getCoreRowModel(),
@@ -73,25 +70,15 @@ export const DataTable = <TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center py-8">
-                                    <Skeleton className="h-6 w-1/2 mx-auto" />
-                                    <Skeleton className="h-6 w-1/3 mx-auto mt-2" />
-                                    <Skeleton className="h-6 w-1/4 mx-auto mt-2" />
-                                </TableCell>
+                        {table.getRowModel().rows.map(row => (
+                            <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                                {row.getVisibleCells().map(cell => (
+                                    <TableCell key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </TableCell>
+                                ))}
                             </TableRow>
-                        ) : (
-                            table.getRowModel().rows.map(row => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                                    {row.getVisibleCells().map(cell => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        )}
+                        ))}
                     </TableBody>
                 </Table>
             </div>
