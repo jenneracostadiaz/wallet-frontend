@@ -21,7 +21,7 @@ const getInitialState = (transaction?: Transaction) => ({
 export const useTransactionForm = (transaction?: Transaction, onSuccess?: () => void) => {
     const [form, setForm] = useState(() => getInitialState(transaction));
     const { accountsList } = useAccountsList();
-    const { mutate, isPending, error } = useTransactionMutation({ transaction, onSuccess });
+    const { mutate, isPending, error } = useTransactionMutation({ transactionId: transaction?.id, onSuccess });
 
     useEffect(() => {
         setForm(getInitialState(transaction));
@@ -83,12 +83,8 @@ export const useTransactionForm = (transaction?: Transaction, onSuccess?: () => 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         mutate({
-            id: transaction?.id || 0,
             ...form,
             date: form.date ? new Date(form.date) : new Date(),
-            account: createEmptyAccount(),
-            category: createEmptyCategory(),
-            currency: createEmptyCurrency(),
         });
     };
 
