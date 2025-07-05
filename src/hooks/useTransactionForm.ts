@@ -1,5 +1,5 @@
 'use client';
-import { useAccountsList } from '@/hooks/useAccounts';
+import { useAccountsData } from '@/hooks/useAccounts';
 import { useTransactionMutation } from '@/hooks/useTransactions';
 import type { Account } from '@/type/Accounts';
 import type { Transaction } from '@/type/Transactions';
@@ -16,9 +16,13 @@ const getInitialState = (transaction?: Transaction) => ({
     type: transaction?.type || 'income',
 });
 
-export const useTransactionForm = (transaction?: Transaction, onSuccess?: () => void) => {
+export const useTransactionForm = (
+    transaction: Transaction | undefined,
+    onSuccess: (() => void) | undefined,
+    initialAccounts: { data: Account[] }
+) => {
     const [form, setForm] = useState(() => getInitialState(transaction));
-    const { accountsList } = useAccountsList();
+    const accounts: { data: Account[] } = useAccountsData({ initialAccounts });
     const { mutate, isPending, error } = useTransactionMutation({ transactionId: transaction?.id, onSuccess });
 
     useEffect(() => {
@@ -26,9 +30,9 @@ export const useTransactionForm = (transaction?: Transaction, onSuccess?: () => 
     }, [transaction]);
 
     const currencySymbol = useMemo(() => {
-        const selectedAccount = accountsList.find((account: Account) => account.id === form.account_id);
+        const selectedAccount = accounts.data.find((account: Account) => account.id === form.account_id);
         return selectedAccount?.currency?.symbol;
-    }, [form.account_id, accountsList]);
+    }, [form.account_id, accounts]);
 
     const handleInputChange = (field: keyof typeof form, value: string | number) => {
         setForm(prev => ({ ...prev, [field]: value }));
