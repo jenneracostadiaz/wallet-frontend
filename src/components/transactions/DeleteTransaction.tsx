@@ -19,7 +19,7 @@ export const DeleteTransaction = ({ transaction }: { transaction: Transaction })
     const [open, setOpen] = useState(false);
     const { mutate, isPending } = useTransactionDelete({
         onSuccess: () => {
-            setOpen(false); // Close the dialog on success
+            setOpen(false);
         },
     });
     return (
