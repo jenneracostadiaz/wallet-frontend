@@ -17,7 +17,11 @@ import { useState } from 'react';
 
 export const DeleteAccount = ({ account }: { account: Account }) => {
     const [open, setOpen] = useState(false);
-    const { mutate, isPending } = useAccountsDelete({ account, setOpen });
+    const { mutate, isPending } = useAccountsDelete({
+        onSuccess: () => {
+            setOpen(false);
+        },
+    });
 
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
@@ -36,7 +40,7 @@ export const DeleteAccount = ({ account }: { account: Account }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => mutate()} disabled={isPending}>
+                    <AlertDialogAction onClick={() => mutate(account.id)} disabled={isPending}>
                         {isPending ? 'Deleting...' : 'Delete'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
