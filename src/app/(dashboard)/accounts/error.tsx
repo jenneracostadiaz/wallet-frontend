@@ -9,8 +9,8 @@ const breadcrumbs = [
         href: '/',
     },
     {
-        title: 'Transactions',
-        href: '/transactions',
+        title: 'Accounts',
+        href: '/accounts',
     },
 ];
 
