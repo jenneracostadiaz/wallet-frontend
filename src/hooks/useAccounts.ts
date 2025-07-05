@@ -1,47 +1,19 @@
+import { deleteAccount, getAccounts, saveAccount } from '@/lib/api';
 import type { Account } from '@/type/Accounts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { useMemo } from 'react';
-import { getAccounts, deleteAccount, saveAccount } from '@/lib/api';
-import { createEmptyCurrency } from '@/hooks/useCurrencies';
 
-export const useGetAccounts = () => {
+export const useAccountsData = ({ initialAccounts }: { initialAccounts: { data: Account[] } }) => {
     const { data: session } = useSession();
     const token = session?.accessToken || '';
-
-    const { data, isLoading, isError } = useQuery({
+    const { data: accounts } = useQuery({
         queryKey: ['accounts', token],
         queryFn: () => getAccounts(token),
+        initialData: initialAccounts,
         enabled: !!token,
-        refetchOnWindowFocus: false,
     });
 
-    return {
-        data,
-        isLoading,
-        isError,
-    };
-};
-
-export const useAccountsTableData = ({ accounts }: { accounts: Account[] }) => {
-    return useMemo(() => {
-        if (!accounts) return [];
-        return accounts.map((account: Account) => {
-            return {
-                ...account,
-            };
-        });
-    }, [accounts]);
-};
-
-export const useAccountsList = () => {
-    const { data, isLoading, isError } = useGetAccounts();
-    const list = Array.isArray(data) ? data : (data?.data ?? []);
-    return {
-        accountsList: list,
-        isLoadingAccounts: isLoading,
-        isErrorAccounts: isError,
-    };
+    return accounts;
 };
 
 interface UseAccountsDeleteProps {
@@ -84,15 +56,3 @@ export const useAccountsMutation = ({ accountId, onSuccess }: UseAccountsMutatio
 
     return { mutate, isPending, error, reset };
 };
-
-export const createEmptyAccount = () => ({
-    id: 0,
-    name: '',
-    type: '',
-    balance: 0,
-    color: '',
-    currency_id: 0,
-    currency: createEmptyCurrency(),
-    description: undefined,
-    order: undefined,
-});
