@@ -8,12 +8,14 @@ import { DataTable } from '@/components/DataTable';
 import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
-import { useTransactionsData } from '@/hooks/useTransactionsData';
-import type { Balance as BalanceType } from '@/type/Balance';
-import type { Transaction } from '@/type/Transactions';
+import { useTransactionsData } from '@/hooks/useTransactions';
+
 import type { Account } from '@/type/Accounts';
+import type { Balance as BalanceType } from '@/type/Balance';
 import type { Category } from '@/type/Categories';
 import type { Currency } from '@/type/Currencies';
+import type { Transaction } from '@/type/Transactions';
+import type { ColumnDef } from '@tanstack/table-core';
 
 interface TransactionsClientProps {
     initialBalance: BalanceType;
@@ -43,6 +45,8 @@ export function TransactionsClient({
     } = useTransactionFilters();
     const isMobile = useIsMobile();
 
+    const columns: ColumnDef<Transaction>[] = TransactionsColum({ initialAccounts, initialCategories });
+
     return (
         <section className="grid gap-12 w-full max-w-7xl mx-auto px-4">
             <Balance initialBalance={balance} />
@@ -50,7 +54,7 @@ export function TransactionsClient({
             <div className="grid gap-4">
                 <div className="flex flex-wrap justify-between items-center gap-4">
                     <h1 className="text-2xl font-bold">Transactions</h1>
-                    <CreateTransaction />
+                    <CreateTransaction initialAccounts={initialAccounts} initialCategories={initialCategories} />
                 </div>
 
                 {!isMobile && (
@@ -67,7 +71,7 @@ export function TransactionsClient({
                 )}
 
                 <DataTable
-                    columns={TransactionsColum}
+                    columns={columns}
                     data={transactions.data}
                     pageSize={22}
                     columnFilters={columnFilters}
