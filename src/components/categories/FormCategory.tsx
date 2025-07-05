@@ -2,8 +2,9 @@ import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { useCategoryMutation } from '@/hooks/useCategories';
-import type { Category } from '@/type/Categories';
 import { CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
+
+import type { Category } from '@/type/Categories';
 import { type FormEvent, useEffect, useState } from 'react';
 
 const getInitialState = (category?: Category) => {
@@ -18,16 +19,20 @@ const getInitialState = (category?: Category) => {
 interface FormCategoryProps {
     category?: Category;
     onSuccess: () => void;
+    initialCategories: { data: Category[] };
 }
 
-export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
+export const FormCategory = ({ category, onSuccess, initialCategories }: FormCategoryProps) => {
     const [form, setForm] = useState(() => getInitialState(category));
 
     useEffect(() => {
         setForm(getInitialState(category));
     }, [category]);
 
-    const { mutate, isPending, error } = useCategoryMutation({ category, onSuccess });
+    const { mutate, isPending, error } = useCategoryMutation({
+        categoryId: category?.id,
+        onSuccess,
+    });
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -99,6 +104,7 @@ export const FormCategory = ({ category, onSuccess }: FormCategoryProps) => {
                     category={category}
                     showSubcategories={false}
                     transactionType={form.type}
+                    initialCategories={initialCategories}
                 />
             </div>
 
