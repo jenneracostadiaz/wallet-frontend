@@ -1,9 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
-import { getAccounts } from '@/lib/api';
+import { useAccountsData } from '@/hooks/useAccounts';
 import type { Account } from '@/type/Accounts';
-import { useQuery } from '@tanstack/react-query';
 import { CircleDashed } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 interface AccountsSelectProps {
     value: string;
@@ -13,29 +11,21 @@ interface AccountsSelectProps {
 }
 
 export const AccountsSelect = ({ value, onChange, excludeAccountId, initialAccounts }: AccountsSelectProps) => {
-    const { data: session } = useSession();
-    const token = session?.accessToken || '';
-
-    const { data: accountsData } = useQuery({
-        queryKey: ['accounts', token],
-        queryFn: () => getAccounts(token),
-        initialData: initialAccounts,
-        enabled: !!token,
-    });
-
-    const accounts = accountsData?.data || [];
+    const accounts: { data: Account[] } = useAccountsData({ initialAccounts });
 
     const numericValue = Number(value);
     const isValidValue = !Number.isNaN(numericValue) && numericValue > 0;
 
     const accountIdExists =
-        accounts.length > 0 ? isValidValue && accounts.some((a: Account) => a.id === numericValue) : isValidValue;
+        accounts.data.length > 0
+            ? isValidValue && accounts.data.some((a: Account) => a.id === numericValue)
+            : isValidValue;
 
-    const selectValue = isValidValue && (accounts.length === 0 || accountIdExists) ? value : '';
+    const selectValue = isValidValue && (accounts.data.length === 0 || accountIdExists) ? value : '';
 
-    const filteredAccounts = excludeAccountId
-        ? accounts.filter((account: Account) => account.id !== excludeAccountId)
-        : accounts;
+    const filteredAccounts: Account[] = excludeAccountId
+        ? accounts.data.filter((account: Account) => account.id !== excludeAccountId)
+        : accounts.data;
 
     return (
         <Select onValueChange={val => onChange(val === 'none' ? '' : val)} value={selectValue}>
