@@ -1,9 +1,41 @@
-import { deleteTransaction, saveTransaction } from '@/lib/api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteTransaction, getBalance, getTransactions, saveTransaction } from '@/lib/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 
+import type { Balance } from '@/type/Balance';
 import type { Transaction } from '@/type/Transactions';
+
+interface UseTransitionsDataProps {
+    initialBalance: Balance;
+    initialTransactions: { data: Transaction[] };
+}
+
+export const useTransactionsData = ({ initialBalance, initialTransactions }: UseTransitionsDataProps) => {
+    const { data: session } = useSession();
+    const token = session?.accessToken || '';
+
+    const balanceQuery = useQuery({
+        queryKey: ['balance', token],
+        queryFn: () => getBalance(token),
+        initialData: initialBalance,
+        enabled: !!token,
+    });
+
+    const transactionsQuery = useQuery({
+        queryKey: ['transactions', token],
+        queryFn: () => getTransactions(token),
+        initialData: initialTransactions,
+        enabled: !!token,
+    });
+
+    return {
+        balance: balanceQuery.data,
+        transactions: transactionsQuery.data,
+        isLoading: balanceQuery.isLoading || transactionsQuery.isLoading,
+        isError: balanceQuery.isError || transactionsQuery.isError,
+    };
+};
 
 interface UseTransactionDeleteProps {
     onSuccess?: () => void;
