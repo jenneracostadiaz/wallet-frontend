@@ -12,7 +12,11 @@ import type { Category } from '@/type/Categories';
 import type { ColumnDef } from '@tanstack/table-core';
 import { MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
 
-export const categoriesColumn: ColumnDef<Category>[] = [
+interface CategoriesColumnProps {
+    initialCategories: { data: Category[] };
+}
+
+export const CategoriesColumn = ({ initialCategories }: CategoriesColumnProps): ColumnDef<Category>[] => [
     {
         accessorKey: 'name',
         header: 'Name',
@@ -59,7 +63,7 @@ export const categoriesColumn: ColumnDef<Category>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
-                        <EditCategory category={category} />
+                        <EditCategory category={category} initialCategories={initialCategories} />
                         <DropdownMenuSeparator />
                         <DeleteCategory category={category} />
                     </DropdownMenuContent>

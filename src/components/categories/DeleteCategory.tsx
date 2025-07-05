@@ -17,7 +17,11 @@ import { useState } from 'react';
 
 export const DeleteCategory = ({ category }: { category: Category }) => {
     const [open, setOpen] = useState(false);
-    const { mutate, isPending } = useCategoriesDelete({ category, setOpen });
+    const { mutate, isPending } = useCategoriesDelete({
+        onSuccess: () => {
+            setOpen(false);
+        },
+    });
 
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
@@ -36,7 +40,7 @@ export const DeleteCategory = ({ category }: { category: Category }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => mutate()} disabled={isPending}>
+                    <AlertDialogAction onClick={() => mutate(category.id)} disabled={isPending}>
                         {isPending ? 'Deleting...' : 'Delete'}
                     </AlertDialogAction>
                 </AlertDialogFooter>

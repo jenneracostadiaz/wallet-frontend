@@ -2,13 +2,16 @@ import { CurrencySelect } from '@/components/commons/CurrencySelect';
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { useAccountsMutation } from '@/hooks/useAccounts';
-import type { Account } from '@/type/Accounts';
 import { useEffect, useState } from 'react';
+
+import type { Account } from '@/type/Accounts';
+import type { Currency } from '@/type/Currencies';
 import type { FormEvent } from 'react';
 
-interface FormSystemProps {
+interface FormAccountProps {
     account?: Account;
     onSuccess?: () => void;
+    initialCurrencies: { data: Currency[] };
 }
 
 function getInitialState(account?: Account) {
@@ -22,7 +25,7 @@ function getInitialState(account?: Account) {
     };
 }
 
-export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
+export const FormAccount = ({ account, onSuccess, initialCurrencies }: FormAccountProps) => {
     const [form, setForm] = useState(() => getInitialState(account));
 
     useEffect(() => {
@@ -30,22 +33,14 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
     }, [account]);
 
     const { mutate, isPending, error } = useAccountsMutation({
-        account,
+        accountId: account?.id,
         onSuccess,
     });
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         mutate({
-            id: account?.id || 0,
             ...form,
-            currency: {
-                id: 0,
-                code: '',
-                name: '',
-                symbol: '',
-                decimal_places: 0,
-            },
         });
     };
 
@@ -98,6 +93,7 @@ export const FormAccount = ({ account, onSuccess }: FormSystemProps) => {
                         <CurrencySelect
                             value={form.currency_id.toString()}
                             onChange={value => setForm(f => ({ ...f, currency_id: Number(value) }))}
+                            initialCurrencies={initialCurrencies}
                         />
                         <Input
                             id="balance"

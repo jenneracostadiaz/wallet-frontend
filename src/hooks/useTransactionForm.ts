@@ -1,11 +1,10 @@
 'use client';
-import { createEmptyAccount, useAccountsList } from '@/hooks/useAccounts';
-import { createEmptyCategory } from '@/hooks/useCategories';
-import { createEmptyCurrency } from '@/hooks/useCurrencies';
+import { useAccountsData } from '@/hooks/useAccounts';
 import { useTransactionMutation } from '@/hooks/useTransactions';
+import { useEffect, useMemo, useState } from 'react';
+
 import type { Account } from '@/type/Accounts';
 import type { Transaction } from '@/type/Transactions';
-import { useEffect, useMemo, useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
 const getInitialState = (transaction?: Transaction) => ({
@@ -18,19 +17,23 @@ const getInitialState = (transaction?: Transaction) => ({
     type: transaction?.type || 'income',
 });
 
-export const useTransactionForm = (transaction?: Transaction, onSuccess?: () => void) => {
+export const useTransactionForm = (
+    transaction: Transaction | undefined,
+    onSuccess: (() => void) | undefined,
+    initialAccounts: { data: Account[] }
+) => {
     const [form, setForm] = useState(() => getInitialState(transaction));
-    const { accountsList } = useAccountsList();
-    const { mutate, isPending, error } = useTransactionMutation({ transaction, onSuccess });
+    const accounts: { data: Account[] } = useAccountsData({ initialAccounts });
+    const { mutate, isPending, error } = useTransactionMutation({ transactionId: transaction?.id, onSuccess });
 
     useEffect(() => {
         setForm(getInitialState(transaction));
     }, [transaction]);
 
     const currencySymbol = useMemo(() => {
-        const selectedAccount = accountsList.find((account: Account) => account.id === form.account_id);
+        const selectedAccount = accounts.data.find((account: Account) => account.id === form.account_id);
         return selectedAccount?.currency?.symbol;
-    }, [form.account_id, accountsList]);
+    }, [form.account_id, accounts]);
 
     const handleInputChange = (field: keyof typeof form, value: string | number) => {
         setForm(prev => ({ ...prev, [field]: value }));
@@ -83,12 +86,8 @@ export const useTransactionForm = (transaction?: Transaction, onSuccess?: () => 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         mutate({
-            id: transaction?.id || 0,
             ...form,
             date: form.date ? new Date(form.date) : new Date(),
-            account: createEmptyAccount(),
-            category: createEmptyCategory(),
-            currency: createEmptyCurrency(),
         });
     };
 

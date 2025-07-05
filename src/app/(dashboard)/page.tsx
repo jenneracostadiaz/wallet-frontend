@@ -1,5 +1,12 @@
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+
+import { DashboardClient } from '@/components/dashboard/DashboardClient';
+import { getAccounts, getBalance, getCategories, getLatestTransactions, getMonthlyReport } from '@/lib/api';
+
 import { Header } from '@/components/Header';
-import { Balance, LatestTransactions, MonthlyReport } from '@/components/widgets';
+import { DashboardSkeleton } from '@/components/dashboard/DashboardSkeleton';
 
 const breadcrumbs = [
     {
@@ -8,15 +15,34 @@ const breadcrumbs = [
     },
 ];
 
-export default function Home() {
+export default async function DashboardPage() {
+    const session = await auth();
+    if (!session?.accessToken) {
+        redirect('/login');
+    }
+
+    const token = session.accessToken;
+
+    const [balanceResponse, monthlyReport, latestTransactions, initialAccounts, initialCategories] = await Promise.all([
+        getBalance(token),
+        getMonthlyReport(token),
+        getLatestTransactions(token),
+        getAccounts(token),
+        getCategories(token),
+    ]);
+
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
-            <section className="flex flex-col gap-12 p-4 pt-0 w-full max-w-7xl mx-auto">
-                <Balance />
-                <MonthlyReport />
-                <LatestTransactions />
-            </section>
+            <Suspense fallback={<DashboardSkeleton />}>
+                <DashboardClient
+                    initialBalance={balanceResponse}
+                    initialMonthlyReport={monthlyReport}
+                    initialLatestTransactions={latestTransactions}
+                    initialAccounts={initialAccounts}
+                    initialCategories={initialCategories}
+                />
+            </Suspense>
         </>
     );
 }

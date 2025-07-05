@@ -16,10 +16,19 @@ import {
     DropdownMenuItem,
 } from '@/components/ui';
 import { useIsMobile } from '@/hooks/use-mobile';
-import type { Transaction } from '@/type/Transactions';
 import { useState } from 'react';
 
-export const EditTransaction = ({ transaction }: { transaction: Transaction }) => {
+import type { Account } from '@/type/Accounts';
+import type { Category } from '@/type/Categories';
+import type { Transaction } from '@/type/Transactions';
+
+interface EditTransactionProps {
+    transaction: Transaction;
+    initialCategories: { data: Category[] };
+    initialAccounts: { data: Account[] };
+}
+
+export const EditTransaction = ({ transaction, initialCategories, initialAccounts }: EditTransactionProps) => {
     const [open, setOpen] = useState(false);
     const isMobile = useIsMobile();
 
@@ -32,7 +41,12 @@ export const EditTransaction = ({ transaction }: { transaction: Transaction }) =
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Edit Transaction</DialogTitle>
-                        <FormTransaction transaction={transaction} onSuccess={() => setOpen(false)} />
+                        <FormTransaction
+                            transaction={transaction}
+                            onSuccess={() => setOpen(false)}
+                            initialCategories={initialCategories}
+                            initialAccounts={initialAccounts}
+                        />
                     </DialogHeader>
                 </DialogContent>
             </Dialog>
@@ -47,7 +61,12 @@ export const EditTransaction = ({ transaction }: { transaction: Transaction }) =
                     <DrawerTitle>Edit Transaction</DrawerTitle>
                 </DrawerHeader>
                 <DrawerFooter>
-                    <FormTransaction transaction={transaction} onSuccess={() => setOpen(false)} />
+                    <FormTransaction
+                        transaction={transaction}
+                        onSuccess={() => setOpen(false)}
+                        initialCategories={initialCategories}
+                        initialAccounts={initialAccounts}
+                    />
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>

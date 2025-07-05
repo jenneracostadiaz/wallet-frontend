@@ -1,49 +1,18 @@
+import { getCurrencies } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 
-const fetchCurrencies = async (token: string) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/currencies`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) {
-        throw new Error('Could not fetch currencies');
-    }
-    return response.json();
-};
+import type { Currency } from '@/type/Currencies';
 
-export const useGetCurrencies = () => {
+export const useCurrenciesData = ({ initialCurrencies }: { initialCurrencies: { data: Currency[] } }) => {
     const { data: session } = useSession();
-
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ['currencies', session?.accessToken],
-        queryFn: () => fetchCurrencies(session?.accessToken || ''),
-        enabled: !!session?.accessToken,
-        refetchOnWindowFocus: false,
+    const token = session?.accessToken || '';
+    const { data: currencies } = useQuery({
+        queryKey: ['currencies', token],
+        queryFn: () => getCurrencies(token),
+        initialData: initialCurrencies,
+        enabled: !!token,
     });
 
-    return {
-        data,
-        isLoading,
-        isError,
-    };
+    return currencies;
 };
-
-export const useCurrencyList = () => {
-    const { data, isLoading, isError } = useGetCurrencies();
-    const list = Array.isArray(data) ? data : (data?.data ?? []);
-    return {
-        currencyList: list,
-        isLoadingCurrency: isLoading,
-        isErrorCurrency: isError,
-    };
-};
-
-export const createEmptyCurrency = () => ({
-    id: 0,
-    code: '',
-    name: '',
-    symbol: '',
-    decimal_places: 0,
-});

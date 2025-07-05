@@ -1,11 +1,14 @@
 import { AccountsSelect } from '@/components/commons/AccountsSelect';
 import { CategoriesSelect } from '@/components/commons/CategoriesSelect';
 import { CurrencySelect } from '@/components/commons/CurrencySelect';
+import { RangeDateFilter } from '@/components/commons/RangeDateFilter';
 import { TypeSelect } from '@/components/commons/TypeSelect';
-import { Button, Calendar, Input, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
+import { Input } from '@/components/ui';
+
 import type { AmountFilter } from '@/hooks/useTransactionFilters';
-import { format } from 'date-fns';
-import { CalendarIcon, X } from 'lucide-react';
+import type { Account } from '@/type/Accounts';
+import type { Category } from '@/type/Categories';
+import type { Currency } from '@/type/Currencies';
 import type { DateRange } from 'react-day-picker';
 
 interface TransactionFiltersProps {
@@ -14,6 +17,9 @@ interface TransactionFiltersProps {
     clearDateRange: () => void;
     getFilterValue: <T>(id: string) => T | undefined;
     dateRange: DateRange | undefined;
+    initialAccounts: { data: Account[] };
+    initialCategories: { data: Category[] };
+    initialCurrencies: { data: Currency[] };
 }
 
 export function TransactionFilters({
@@ -22,17 +28,24 @@ export function TransactionFilters({
     clearDateRange,
     getFilterValue,
     dateRange,
+    initialAccounts,
+    initialCategories,
+    initialCurrencies,
 }: TransactionFiltersProps) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
             <AccountsSelect
                 value={getFilterValue<string>('account') ?? ''}
                 onChange={value => onFilterChange('account', value)}
+                initialAccounts={initialAccounts}
             />
+
             <CategoriesSelect
                 value={getFilterValue<string>('category_date') ?? ''}
                 onChange={value => onFilterChange('category_date', value)}
+                initialCategories={initialCategories}
             />
+
             <CurrencySelect
                 value={getFilterValue<AmountFilter>('amount')?.currency ?? ''}
                 onChange={value =>
@@ -41,7 +54,9 @@ export function TransactionFilters({
                         currency: value,
                     })
                 }
+                initialCurrencies={initialCurrencies}
             />
+
             <TypeSelect
                 value={getFilterValue<AmountFilter>('amount')?.type ?? ''}
                 onChange={value =>
@@ -51,55 +66,19 @@ export function TransactionFilters({
                     })
                 }
             />
+
             <Input
                 placeholder="Filter descriptions..."
                 value={getFilterValue<string>('description') ?? ''}
                 onChange={event => onFilterChange('description', event.target.value)}
                 className="w-full lg:col-span-3"
             />
-            <div className="flex gap-2 relative">
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            data-empty={!dateRange?.from}
-                            className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal w-full"
-                        >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {dateRange?.from ? (
-                                dateRange.to ? (
-                                    <>
-                                        {format(dateRange.from, 'LLL dd, y')} - {format(dateRange.to, 'LLL dd, y')}
-                                    </>
-                                ) : (
-                                    format(dateRange.from, 'LLL dd, y')
-                                )
-                            ) : (
-                                <span>Pick date range</span>
-                            )}
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                            mode="range"
-                            defaultMonth={dateRange?.from}
-                            selected={dateRange}
-                            onSelect={onDateRangeChange}
-                            numberOfMonths={2}
-                        />
-                    </PopoverContent>
-                </Popover>
-                {dateRange?.from && (
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={clearDateRange}
-                        className="absolute right-0 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-muted-foreground"
-                    >
-                        <X className="size-4" />
-                    </Button>
-                )}
-            </div>
+
+            <RangeDateFilter
+                dateRange={dateRange}
+                onDateRangeChange={onDateRangeChange}
+                clearDateRange={clearDateRange}
+            />
         </div>
     );
 }

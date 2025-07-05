@@ -1,42 +1,29 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
-import { useCurrencyList } from '@/hooks/useCurrencies';
+import { useCurrenciesData } from '@/hooks/useCurrencies';
 import type { Currency } from '@/type/Currencies';
 
 interface CurrencySelectProps {
     value: string;
     onChange: (value: string) => void;
+    initialCurrencies: { data: Currency[] };
 }
 
-export const CurrencySelect = ({ value, onChange }: CurrencySelectProps) => {
-    const { currencyList, isLoadingCurrency, isErrorCurrency } = useCurrencyList();
-    const currencyIdExists = currencyList.some((c: Currency) => String(c.id) === String(value));
+export const CurrencySelect = ({ value, onChange, initialCurrencies }: CurrencySelectProps) => {
+    const currencies = useCurrenciesData({ initialCurrencies });
+    const currencyIdExists = currencies.data.some((c: Currency) => String(c.id) === String(value));
 
     return (
-        <Select
-            onValueChange={val => onChange(val === 'none' ? '' : val)}
-            value={currencyIdExists ? value : ''}
-            disabled={isLoadingCurrency || isErrorCurrency}
-        >
+        <Select onValueChange={val => onChange(val === 'none' ? '' : val)} value={currencyIdExists ? value : ''}>
             <SelectTrigger className="w-full">
-                <SelectValue
-                    placeholder={
-                        isLoadingCurrency
-                            ? 'Loading...'
-                            : isErrorCurrency
-                              ? 'Error loading currencies'
-                              : 'Select currency'
-                    }
-                />
+                <SelectValue placeholder="Select currency" />
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="none">No Currencies</SelectItem>
-                {!isLoadingCurrency &&
-                    !isErrorCurrency &&
-                    currencyList.map((currency: Currency) => (
-                        <SelectItem key={currency.id} value={String(currency.id)}>
-                            {currency.symbol}
-                        </SelectItem>
-                    ))}
+                {currencies.data.map((currency: Currency) => (
+                    <SelectItem key={currency.id} value={String(currency.id)}>
+                        {currency.symbol}
+                    </SelectItem>
+                ))}
             </SelectContent>
         </Select>
     );

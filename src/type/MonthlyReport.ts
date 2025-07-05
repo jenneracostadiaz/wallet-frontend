@@ -29,7 +29,7 @@ export type Summary = {
     transactions_count: number;
 };
 
-export type monthlyReport = {
+export type MonthlyReport = {
     currency: Currency;
     daily_balance: DailyBalance[];
     expenses_by_category: ExpenseByCategory[];
