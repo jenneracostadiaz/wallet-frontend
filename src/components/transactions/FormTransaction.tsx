@@ -12,17 +12,27 @@ import {
     RadioGroupItem,
 } from '@/components/ui';
 import { ErrorMessage } from '@/components/ui/error-message';
-import { useTransactionForm } from '@/hooks/use-transaction-form';
-import type { Transaction } from '@/type/Transactions';
+import { useTransactionForm } from '@/hooks/useTransactionForm';
 import { format } from 'date-fns';
 import { CalendarIcon, CircleDashed, TrendingDown, TrendingUp } from 'lucide-react';
+
+import type { Account } from '@/type/Accounts';
+import type { Category } from '@/type/Categories';
+import type { Transaction } from '@/type/Transactions';
 
 interface FormTransactionProps {
     transaction?: Transaction;
     onSuccess?: () => void;
+    initialAccounts: { data: Account[] };
+    initialCategories: { data: Category[] };
 }
 
-export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps) => {
+export const FormTransaction = ({
+    transaction,
+    onSuccess,
+    initialAccounts,
+    initialCategories,
+}: FormTransactionProps) => {
     const {
         form,
         isPending,
@@ -35,7 +45,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
         handleDateChange,
         handleTimeChange,
         handleSubmit,
-    } = useTransactionForm(transaction, onSuccess);
+    } = useTransactionForm(transaction, onSuccess, initialAccounts);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4">
@@ -89,7 +99,11 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
             <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex-1 grid gap-3">
                     <Label htmlFor="accountId">Account</Label>
-                    <AccountsSelect value={form.account_id.toString()} onChange={handleAccountChange} />
+                    <AccountsSelect
+                        value={form.account_id.toString()}
+                        onChange={handleAccountChange}
+                        initialAccounts={initialAccounts}
+                    />
                 </div>
                 {form.type === 'transfer' && (
                     <>
@@ -100,6 +114,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                                 value={form.to_account_id.toString()}
                                 onChange={value => handleInputChange('to_account_id', Number.parseInt(value))}
                                 excludeAccountId={form.account_id || undefined}
+                                initialAccounts={initialAccounts}
                             />
                         </div>
                     </>
@@ -125,6 +140,7 @@ export const FormTransaction = ({ transaction, onSuccess }: FormTransactionProps
                     value={form.category_id.toString()}
                     onChange={handleCategoryChange}
                     transactionType={form.type}
+                    initialCategories={initialCategories}
                 />
             </div>
 
