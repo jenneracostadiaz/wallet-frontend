@@ -1,6 +1,7 @@
 'use client';
-import type { ColumnFiltersState } from '@tanstack/react-table';
 import { useCallback, useState } from 'react';
+
+import type { ColumnFiltersState } from '@tanstack/react-table';
 import type { DateRange } from 'react-day-picker';
 
 export type AmountFilter = {
