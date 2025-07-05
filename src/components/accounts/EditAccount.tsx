@@ -1,9 +1,11 @@
 'use client';
+
 import { FormAccount } from '@/components/accounts/FormAccount';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DropdownMenuItem } from '@/components/ui';
+import { useState } from 'react';
+
 import type { Account } from '@/type/Accounts';
 import type { Currency } from '@/type/Currencies';
-import { useState } from 'react';
 
 interface EditAccountProps {
     account: Account;
