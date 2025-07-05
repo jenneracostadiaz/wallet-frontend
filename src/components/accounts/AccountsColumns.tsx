@@ -7,7 +7,11 @@ import type { Currency } from '@/type/Currencies';
 import type { ColumnDef } from '@tanstack/table-core';
 import { CircleDashed, MoreVertical } from 'lucide-react';
 
-export const AccountsColumns: ColumnDef<Account>[] = [
+interface AccountsColumnsProps {
+    initialCurrencies: { data: Currency[] };
+}
+
+export const AccountsColumns = ({ initialCurrencies }: AccountsColumnsProps): ColumnDef<Account>[] => [
     {
         accessorKey: 'name',
         header: 'Account Name',
@@ -60,7 +64,7 @@ export const AccountsColumns: ColumnDef<Account>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
-                        <EditAccount account={account} />
+                        <EditAccount account={account} initialCurrencies={initialCurrencies} />
                         <DropdownMenuSeparator />
                         <DeleteAccount account={account} />
                     </DropdownMenuContent>
