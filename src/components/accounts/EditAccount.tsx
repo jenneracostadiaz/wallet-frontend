@@ -2,9 +2,15 @@
 import { FormAccount } from '@/components/accounts/FormAccount';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DropdownMenuItem } from '@/components/ui';
 import type { Account } from '@/type/Accounts';
+import type { Currency } from '@/type/Currencies';
 import { useState } from 'react';
 
-export const EditAccount = ({ account }: { account: Account }) => {
+interface EditAccountProps {
+    account: Account;
+    initialCurrencies: { data: Currency[] };
+}
+
+export const EditAccount = ({ account, initialCurrencies }: EditAccountProps) => {
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     return (
         <Dialog open={isEditModalOpen} onOpenChange={setEditModalOpen}>
@@ -14,7 +20,11 @@ export const EditAccount = ({ account }: { account: Account }) => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle className="mb-4">Edit Account</DialogTitle>
-                    <FormAccount account={account} onSuccess={() => setEditModalOpen(false)} />
+                    <FormAccount
+                        account={account}
+                        onSuccess={() => setEditModalOpen(false)}
+                        initialCurrencies={initialCurrencies}
+                    />
                 </DialogHeader>
             </DialogContent>
         </Dialog>
