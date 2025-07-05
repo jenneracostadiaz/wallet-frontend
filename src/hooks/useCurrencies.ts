@@ -1,39 +1,18 @@
+import { getCurrencies } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { getCurrencies } from '@/lib/api';
 
-export const useGetCurrencies = () => {
+import type { Currency } from '@/type/Currencies';
+
+export const useCurrenciesData = ({ initialCurrencies }: { initialCurrencies: { data: Currency[] } }) => {
     const { data: session } = useSession();
     const token = session?.accessToken || '';
-
-    const { data, isLoading, isError } = useQuery({
+    const { data: currencies } = useQuery({
         queryKey: ['currencies', token],
         queryFn: () => getCurrencies(token),
+        initialData: initialCurrencies,
         enabled: !!token,
-        refetchOnWindowFocus: false,
     });
 
-    return {
-        data,
-        isLoading,
-        isError,
-    };
+    return currencies;
 };
-
-export const useCurrencyList = () => {
-    const { data, isLoading, isError } = useGetCurrencies();
-    const list = Array.isArray(data) ? data : (data?.data ?? []);
-    return {
-        currencyList: list,
-        isLoadingCurrency: isLoading,
-        isErrorCurrency: isError,
-    };
-};
-
-export const createEmptyCurrency = () => ({
-    id: 0,
-    code: '',
-    name: '',
-    symbol: '',
-    decimal_places: 0,
-});
