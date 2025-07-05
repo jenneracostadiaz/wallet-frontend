@@ -3,7 +3,15 @@ import { FormTransaction } from '@/components/transactions/FormTransaction';
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui';
 import { useState } from 'react';
 
-export const CreateTransaction = () => {
+import type { Account } from '@/type/Accounts';
+import type { Category } from '@/type/Categories';
+
+interface CreateTransactionProps {
+    initialAccounts: { data: Account[] };
+    initialCategories: { data: Category[] };
+}
+
+export const CreateTransaction = ({ initialAccounts, initialCategories }: CreateTransactionProps) => {
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
     return (
@@ -14,7 +22,11 @@ export const CreateTransaction = () => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Add New Transaction</DialogTitle>
-                    <FormTransaction onSuccess={() => setCreateModalOpen(false)} />
+                    <FormTransaction
+                        onSuccess={() => setCreateModalOpen(false)}
+                        initialAccounts={initialAccounts}
+                        initialCategories={initialCategories}
+                    />
                 </DialogHeader>
             </DialogContent>
         </Dialog>
