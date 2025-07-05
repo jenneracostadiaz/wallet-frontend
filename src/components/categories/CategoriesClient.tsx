@@ -1,16 +1,16 @@
 'use client';
 
 import { DataTable } from '@/components/DataTable';
-import { categoriesColumn } from '@/components/categories/CategoriesColumn';
+import { CategoriesColumn } from '@/components/categories/CategoriesColumn';
 import { CreateCategory } from '@/components/categories/CreateCategory';
-import { useCategoriesFilters } from '@/hooks/useCategoriesFilters';
 
 import { useCategoriesData } from '@/hooks/useCategories';
 import type { Category } from '@/type/Categories';
+import type { ColumnDef } from '@tanstack/table-core';
 
 export function CategoriesClient({ initialCategories }: { initialCategories: { data: Category[] } }) {
     const subcategories: Category[] = useCategoriesData({ initialCategories });
-    const { columnFilters, setColumnFilters } = useCategoriesFilters();
+    const columns: ColumnDef<Category>[] = CategoriesColumn({ initialCategories });
 
     return (
         <section className="px-4 w-full max-w-7xl mx-auto">
@@ -19,13 +19,7 @@ export function CategoriesClient({ initialCategories }: { initialCategories: { d
                 <CreateCategory initialCategories={initialCategories} />
             </div>
 
-            <DataTable
-                columns={categoriesColumn}
-                data={subcategories}
-                pageSize={50}
-                columnFilters={columnFilters}
-                onColumnFiltersChange={setColumnFilters}
-            />
+            <DataTable columns={columns} data={subcategories} pageSize={50} />
         </section>
     );
 }
