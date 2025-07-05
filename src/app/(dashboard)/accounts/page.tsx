@@ -3,9 +3,9 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { Header } from '@/components/Header';
+import { AccountsClient } from '@/components/accounts/AccountsClient';
 import { AccountsSkeleton } from '@/components/accounts/AccountsSkeleton';
-import { getAccounts } from '@/lib/api';
-import { AccountsClient } from './AccountsClient';
+import { getAccounts, getCurrencies } from '@/lib/api';
 
 const breadcrumbs = [
     {
@@ -26,13 +26,13 @@ export default async function AccountsPage() {
 
     const token = session.accessToken;
 
-    const initialAccounts = await getAccounts(token);
+    const [initialAccounts, initialCurrencies] = await Promise.all([getAccounts(token), getCurrencies(token)]);
 
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
             <Suspense fallback={<AccountsSkeleton />}>
-                <AccountsClient initialAccounts={initialAccounts} />
+                <AccountsClient initialAccounts={initialAccounts} initialCurrencies={initialCurrencies} />
             </Suspense>
         </>
     );
