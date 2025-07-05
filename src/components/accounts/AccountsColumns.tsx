@@ -1,11 +1,13 @@
 'use client';
+
 import { DeleteAccount } from '@/components/accounts/DeleteAccount';
 import { EditAccount } from '@/components/accounts/EditAccount';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
+import { CircleDashed, MoreVertical } from 'lucide-react';
+
 import type { Account } from '@/type/Accounts';
 import type { Currency } from '@/type/Currencies';
 import type { ColumnDef } from '@tanstack/table-core';
-import { CircleDashed, MoreVertical } from 'lucide-react';
 
 interface AccountsColumnsProps {
     initialCurrencies: { data: Currency[] };
