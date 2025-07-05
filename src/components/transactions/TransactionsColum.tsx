@@ -36,7 +36,15 @@ const amountFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
     return currencyMatch && typeMatch;
 };
 
-export const TransactionsColum: ColumnDef<Transaction>[] = [
+interface TransactionsColumProps {
+    initialCategories: { data: Category[] };
+    initialAccounts: { data: Account[] };
+}
+
+export const TransactionsColum = ({
+    initialCategories,
+    initialAccounts,
+}: TransactionsColumProps): ColumnDef<Transaction>[] => [
     {
         accessorKey: 'category',
         id: 'category_date',
@@ -156,7 +164,11 @@ export const TransactionsColum: ColumnDef<Transaction>[] = [
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
-                        <EditTransaction transaction={transaction} />
+                        <EditTransaction
+                            transaction={transaction}
+                            initialCategories={initialCategories}
+                            initialAccounts={initialAccounts}
+                        />
                         <DropdownMenuSeparator />
                         <DeleteTransaction transaction={transaction} />
                     </DropdownMenuContent>
