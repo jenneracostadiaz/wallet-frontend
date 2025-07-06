@@ -7,8 +7,8 @@ import type { Currency } from '@/type/Currencies';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef, FilterFn, SortingFn } from '@tanstack/table-core';
 import { ArrowUpDown, CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
 
-// Helper functions for filterFn and sortingFn
 const categoryFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
     if (!filterValue) return true;
     const category: Category = row.original.category;
@@ -36,6 +36,24 @@ const amountFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
     return currencyMatch && typeMatch;
 };
 
+const dateRangeFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
+    const dateRange = filterValue as DateRange;
+    const transactionDate = new Date(row.original.date);
+
+    if (dateRange?.from && dateRange?.to) {
+        const endOfDay = new Date(dateRange.to);
+        endOfDay.setHours(23, 59, 59, 999);
+        return transactionDate >= dateRange.from && transactionDate <= endOfDay;
+    }
+    if (dateRange?.from) {
+        return transactionDate >= dateRange.from;
+    }
+    if (dateRange?.to) {
+        return transactionDate <= dateRange.to;
+    }
+    return true;
+};
+
 interface TransactionsColumProps {
     initialCategories: { data: Category[] };
     initialAccounts: { data: Account[] };
@@ -46,19 +64,39 @@ export const TransactionsColum = ({
     initialAccounts,
 }: TransactionsColumProps): ColumnDef<Transaction>[] => [
     {
-        accessorKey: 'category',
-        id: 'category_date',
+        accessorKey: 'date',
+        id: 'date',
         header: ({ column }) => {
             return (
                 <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                    Category & Date
+                    Date
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            const date = new Date(row.original.date);
+            return (
+                <span className="text-xs text-muted-foreground">
+                    {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+            );
+        },
+        filterFn: dateRangeFilterFn,
+    },
+    {
+        accessorKey: 'category',
+        id: 'category',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Category
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
         cell: ({ row }) => {
             const category: Category = row.original.category;
-            const date = new Date(row.original.date);
             return (
                 <div className="flex flex-col gap-1">
                     <span className="font-semibold capitalize">
@@ -71,10 +109,6 @@ export const TransactionsColum = ({
                                 {category.icon} {category.name}
                             </>
                         )}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                        {date.toLocaleDateString()}{' '}
-                        {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                 </div>
             );
