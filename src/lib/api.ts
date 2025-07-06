@@ -38,6 +38,11 @@ async function fetchWithAuth(endpoint: string, token: string, options: RequestIn
         return null;
     }
 
+    const contentType = response.headers.get('Content-Type');
+    if (contentType && contentType.includes('application/pdf')) {
+        return response.blob();
+    }
+
     return response.json();
 }
 
@@ -78,6 +83,15 @@ export const saveTransaction = (
 export const getAccounts = (token: string): Promise<{ data: Account[] }> => {
     return fetchWithAuth('accounts', token);
 };
+
+export const getAccountPdf = (token: string, accountId: number) => {
+    return fetchWithAuth(`accounts/${accountId}/export-pdf`, token, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/pdf',
+        },
+    });
+}
 
 export const getCategories = (token: string): Promise<{ data: Category[] }> => {
     return fetchWithAuth('categories', token);
