@@ -41,8 +41,8 @@ export function TransactionFilters({
             />
 
             <CategoriesSelect
-                value={getFilterValue<string>('category_date') ?? ''}
-                onChange={value => onFilterChange('category_date', value)}
+                value={getFilterValue<string>('category') ?? ''}
+                onChange={value => onFilterChange('category', value)}
                 initialCategories={initialCategories}
             />
 
