@@ -1,4 +1,3 @@
-'use client';
 import { useCallback, useState } from 'react';
 
 import type { ColumnFiltersState } from '@tanstack/react-table';
@@ -37,9 +36,9 @@ export function useTransactionFilters() {
     const onDateRangeChange = useCallback((range: DateRange | undefined) => {
         setDateRange(range);
         setColumnFilters(prev => {
-            const newFilters = prev.filter(f => f.id !== 'category_date');
+            const newFilters = prev.filter(f => f.id !== 'date');
             if (range?.from || range?.to) {
-                newFilters.push({ id: 'category_date', value: range });
+                newFilters.push({ id: 'date', value: range });
             }
             return newFilters;
         });
