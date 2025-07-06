@@ -38,6 +38,11 @@ async function fetchWithAuth(endpoint: string, token: string, options: RequestIn
         return null;
     }
 
+    const contentType = response.headers.get('Content-Type');
+    if (contentType && (contentType.includes('application/pdf') || contentType.includes('text/csv'))) {
+        return response.blob();
+    }
+
     return response.json();
 }
 
@@ -55,6 +60,10 @@ export const getLatestTransactions = (token: string): Promise<Transaction[]> => 
 
 export const getTransactions = (token: string): Promise<{ data: Transaction[] }> => {
     return fetchWithAuth('transactions', token);
+};
+
+export const getTransactionsCsv = (token: string) => {
+    return fetchWithAuth('transactions/export-csv', token);
 };
 
 export const deleteTransaction = (token: string, transactionId: number): Promise<null> => {
@@ -77,6 +86,14 @@ export const saveTransaction = (
 
 export const getAccounts = (token: string): Promise<{ data: Account[] }> => {
     return fetchWithAuth('accounts', token);
+};
+
+export const getAccountPdf = (token: string, accountId: number) => {
+    return fetchWithAuth(`accounts/${accountId}/export-pdf`, token);
+};
+
+export const getAccountCsv = (token: string, accountId: number) => {
+    return fetchWithAuth(`accounts/${accountId}/export-csv`, token);
 };
 
 export const getCategories = (token: string): Promise<{ data: Category[] }> => {

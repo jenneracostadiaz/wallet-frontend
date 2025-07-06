@@ -5,6 +5,8 @@ import { EditAccount } from '@/components/accounts/EditAccount';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui';
 import { CircleDashed, MoreVertical } from 'lucide-react';
 
+import { AccountsCsvReport } from '@/components/accounts/AccountsCsvReport';
+import { AccountsPdfReport } from '@/components/accounts/AccountsPdfReport';
 import type { Account } from '@/type/Accounts';
 import type { Currency } from '@/type/Currencies';
 import type { ColumnDef } from '@tanstack/table-core';
@@ -67,6 +69,8 @@ export const AccountsColumns = ({ initialCurrencies }: AccountsColumnsProps): Co
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
                         <EditAccount account={account} initialCurrencies={initialCurrencies} />
+                        <AccountsPdfReport account={account} />
+                        <AccountsCsvReport account={account} />
                         <DropdownMenuSeparator />
                         <DeleteAccount account={account} />
                     </DropdownMenuContent>

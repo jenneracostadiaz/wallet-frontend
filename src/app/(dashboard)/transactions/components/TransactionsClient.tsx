@@ -8,6 +8,7 @@ import { DataTable } from '@/components/DataTable';
 import { CreateTransaction } from '@/components/transactions/CreateTransaction';
 import { TransactionFilters } from '@/components/transactions/TransactionFilters';
 import { TransactionsColum } from '@/components/transactions/TransactionsColum';
+import { TransactionsCsvExport } from '@/components/transactions/TransactionsCsvExport';
 import { useTransactionsData } from '@/hooks/useTransactions';
 
 import type { Account } from '@/type/Accounts';
@@ -54,7 +55,10 @@ export function TransactionsClient({
             <div className="grid gap-4">
                 <div className="flex flex-wrap justify-between items-center gap-4">
                     <h1 className="text-2xl font-bold">Transactions</h1>
-                    <CreateTransaction initialAccounts={initialAccounts} initialCategories={initialCategories} />
+                    <div className="flex items-center gap-4">
+                        <TransactionsCsvExport />
+                        <CreateTransaction initialAccounts={initialAccounts} initialCategories={initialCategories} />
+                    </div>
                 </div>
 
                 {!isMobile && (

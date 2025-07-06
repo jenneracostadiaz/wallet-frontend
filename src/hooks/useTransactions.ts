@@ -1,4 +1,4 @@
-import { deleteTransaction, getBalance, getTransactions, saveTransaction } from '@/lib/api';
+import { deleteTransaction, getBalance, getTransactions, getTransactionsCsv, saveTransaction } from '@/lib/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
@@ -88,4 +88,16 @@ export const useTransactionMutation = ({ transactionId, onSuccess }: UseTransact
     });
 
     return { mutate, isPending, error };
+};
+
+export const useTransactionsCsv = () => {
+    const { data: session } = useSession();
+    const token = session?.accessToken || '';
+
+    return useQuery({
+        queryKey: ['transactions', 'csv', token],
+        queryFn: () => getTransactionsCsv(token),
+        enabled: !!token,
+        refetchOnWindowFocus: false,
+    });
 };
