@@ -1,4 +1,4 @@
-import { deleteAccount, getAccounts, saveAccount } from '@/lib/api';
+import {deleteAccount, getAccountPdf, getAccounts, saveAccount} from '@/lib/api';
 import type { Account } from '@/type/Accounts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -15,6 +15,18 @@ export const useAccountsData = ({ initialAccounts }: { initialAccounts: { data: 
 
     return accounts;
 };
+
+export const useAccountsPdf = (accountId: number) => {
+    const { data: session } = useSession();
+    const token = session?.accessToken || '';
+
+    return useQuery({
+        queryKey: ['accounts', accountId, 'pdf', token],
+        queryFn: () => getAccountPdf(token, accountId),
+        enabled: !!token && !!accountId,
+        refetchOnWindowFocus: false,
+    });
+}
 
 interface UseAccountsDeleteProps {
     onSuccess?: () => void;
