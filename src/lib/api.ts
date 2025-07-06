@@ -90,11 +90,11 @@ export const getAccounts = (token: string): Promise<{ data: Account[] }> => {
 
 export const getAccountPdf = (token: string, accountId: number) => {
     return fetchWithAuth(`accounts/${accountId}/export-pdf`, token);
-}
+};
 
 export const getAccountCsv = (token: string, accountId: number) => {
     return fetchWithAuth(`accounts/${accountId}/export-csv`, token);
-}
+};
 
 export const getCategories = (token: string): Promise<{ data: Category[] }> => {
     return fetchWithAuth('categories', token);

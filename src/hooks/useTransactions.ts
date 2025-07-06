@@ -100,4 +100,4 @@ export const useTransactionsCsv = () => {
         enabled: !!token,
         refetchOnWindowFocus: false,
     });
-}
+};

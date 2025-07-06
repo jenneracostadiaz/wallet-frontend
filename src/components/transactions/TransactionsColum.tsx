@@ -7,7 +7,7 @@ import type { Currency } from '@/type/Currencies';
 import type { Transaction } from '@/type/Transactions';
 import type { ColumnDef, FilterFn, SortingFn } from '@tanstack/table-core';
 import { ArrowUpDown, CircleDashed, MoreVertical, TrendingDown, TrendingUp } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 
 const categoryFilterFn: FilterFn<Transaction> = (row, _columnId, filterValue) => {
     if (!filterValue) return true;
