@@ -62,6 +62,10 @@ export const getTransactions = (token: string): Promise<{ data: Transaction[] }>
     return fetchWithAuth('transactions', token);
 };
 
+export const getTransactionsCsv = (token: string) => {
+    return fetchWithAuth('transactions/export-csv', token);
+};
+
 export const deleteTransaction = (token: string, transactionId: number): Promise<null> => {
     return fetchWithAuth(`transactions/${transactionId}`, token, { method: 'DELETE' });
 };
