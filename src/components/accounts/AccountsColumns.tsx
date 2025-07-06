@@ -8,6 +8,7 @@ import { CircleDashed, MoreVertical } from 'lucide-react';
 import type { Account } from '@/type/Accounts';
 import type { Currency } from '@/type/Currencies';
 import type { ColumnDef } from '@tanstack/table-core';
+import {AccountsPdfReport} from "@/components/accounts/AccountsPdfReport";
 
 interface AccountsColumnsProps {
     initialCurrencies: { data: Currency[] };
@@ -67,6 +68,7 @@ export const AccountsColumns = ({ initialCurrencies }: AccountsColumnsProps): Co
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-32">
                         <EditAccount account={account} initialCurrencies={initialCurrencies} />
+                        <AccountsPdfReport account={account} />
                         <DropdownMenuSeparator />
                         <DeleteAccount account={account} />
                     </DropdownMenuContent>
