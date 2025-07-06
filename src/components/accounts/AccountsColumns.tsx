@@ -8,6 +8,7 @@ import { CircleDashed, MoreVertical } from 'lucide-react';
 import type { Account } from '@/type/Accounts';
 import type { Currency } from '@/type/Currencies';
 import type { ColumnDef } from '@tanstack/table-core';
+import {AccountsCsvReport} from "@/components/accounts/AccountsCsvReport";
 import {AccountsPdfReport} from "@/components/accounts/AccountsPdfReport";
 
 interface AccountsColumnsProps {
@@ -69,6 +70,7 @@ export const AccountsColumns = ({ initialCurrencies }: AccountsColumnsProps): Co
                     <DropdownMenuContent align="end" className="w-32">
                         <EditAccount account={account} initialCurrencies={initialCurrencies} />
                         <AccountsPdfReport account={account} />
+                        <AccountsCsvReport account={account} />
                         <DropdownMenuSeparator />
                         <DeleteAccount account={account} />
                     </DropdownMenuContent>
