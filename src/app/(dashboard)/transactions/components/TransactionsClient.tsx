@@ -74,13 +74,15 @@ export function TransactionsClient({
                     />
                 )}
 
-                <DataTable
-                    columns={columns}
-                    data={transactions.data}
-                    pageSize={22}
-                    columnFilters={columnFilters}
-                    onColumnFiltersChange={setColumnFilters}
-                />
+                <div className="overflow-x-auto">
+                    <DataTable
+                        columns={columns}
+                        data={transactions.data}
+                        pageSize={22}
+                        columnFilters={columnFilters}
+                        onColumnFiltersChange={setColumnFilters}
+                    />
+                </div>
             </div>
         </section>
     );
