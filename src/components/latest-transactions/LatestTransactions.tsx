@@ -19,5 +19,9 @@ export const LatestTransactions = ({
     initialCategories,
 }: LatestTransactionsProps) => {
     const columns: ColumnDef<Transaction>[] = TransactionsColum({ initialAccounts, initialCategories });
-    return <DataTable columns={columns} data={initialTransactions} pageSize={10} />;
+    return (
+        <div className="overflow-x-auto">
+            <DataTable columns={columns} data={initialTransactions} pageSize={10} />
+        </div>
+    );
 };

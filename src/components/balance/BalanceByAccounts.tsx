@@ -7,10 +7,12 @@ interface BalanceByAccountsProps {
 }
 
 export const BalanceByAccounts = ({ accounts }: BalanceByAccountsProps) => {
+    const filteredAccounts = accounts?.filter(account => account.balance !== 0).sort((a, b) => b.balance - a.balance);
+
     return (
         <ScrollArea className="lg:col-span-3 md:h-[202px] w-full">
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-4">
-                {accounts?.map((account: Account) => (
+                {filteredAccounts?.map((account: Account) => (
                     <Card key={account.id} className="@container/card py-2">
                         <CardHeader className="px-4">
                             <CardDescription>

@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import type { Account } from '@/type/Accounts';
 import type { Category } from '@/type/Categories';
+import { Coins, PlusSquare } from 'lucide-react';
 
 interface CreateTransactionProps {
     initialAccounts: { data: Account[] };
@@ -17,7 +18,13 @@ export const CreateTransaction = ({ initialAccounts, initialCategories }: Create
     return (
         <Dialog open={isCreateModalOpen} onOpenChange={setCreateModalOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Create Transaction</Button>
+                <Button variant="ghost" className="justify-between cursor-pointer">
+                    <span className="flex gap-1 items-center">
+                        <Coins />
+                        Create Transaction
+                    </span>
+                    <PlusSquare />
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

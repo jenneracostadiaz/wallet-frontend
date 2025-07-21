@@ -78,7 +78,12 @@ export const TransactionsColum = ({
             const date = new Date(row.original.date);
             return (
                 <span className="text-xs text-muted-foreground">
-                    {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    })}{' '}
+                    <span className="text-xs text-muted-foreground">{date.toLocaleTimeString('en-US')}</span>
                 </span>
             );
         },
@@ -161,9 +166,7 @@ export const TransactionsColum = ({
                     {type === 'income' && <TrendingUp className="size-4 text-green-400" />}
                     {type === 'expense' && <TrendingDown className="size-4 text-red-400" />}
                     {type === 'transfer' && <CircleDashed className="size-4 text-blue-400" />}
-                    {new Intl.NumberFormat(navigator.language, { style: 'currency', currency: currency.code }).format(
-                        amount
-                    )}
+                    {currency.symbol} {amount}
                 </span>
             );
         },

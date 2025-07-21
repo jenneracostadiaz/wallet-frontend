@@ -40,10 +40,11 @@ export const AccountsColumns = ({ initialCurrencies }: AccountsColumnsProps): Co
         cell: ({ row, getValue }) => {
             const value = getValue() as number;
             const currency: Currency = row.original.currency;
-            return new Intl.NumberFormat(navigator.language, {
-                style: 'currency',
-                currency: currency.code,
-            }).format(value);
+            return (
+                <span>
+                    {currency.symbol} {value}
+                </span>
+            );
         },
     },
     {
