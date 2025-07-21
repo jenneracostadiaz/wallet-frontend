@@ -13,7 +13,6 @@ import {
     SidebarMenuItem,
 } from '@/components/ui';
 
-import { NavSecondary } from '@/components/NavSecondary';
 import { NavUser } from '@/components/NavUser';
 import { auth } from '@/lib/auth';
 import type { User } from '@/type/User';
@@ -77,7 +76,6 @@ export async function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                {/*<NavSecondary items={navItems} />*/}
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
