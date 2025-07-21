@@ -17,9 +17,9 @@ export const Summary = ({ summary, currency }: SummaryProps) => {
                     {currency.symbol}
                     {summary.net_income} <span className="text-muted-foreground text-xs">{currency.code}</span>
                     {summary.net_income > 0 ? (
-                        <TrendingUp className="size-4 text-green-400" />
-                    ) : (
                         <TrendingDown className="size-4 text-red-400" />
+                    ) : (
+                        <TrendingUp className="size-4 text-green-400" />
                     )}
                 </CardTitle>
             </CardHeader>
@@ -29,13 +29,13 @@ export const Summary = ({ summary, currency }: SummaryProps) => {
                     <div className="flex items-baseline gap-1">
                         {currency.symbol}
                         {summary.total_income}
-                        <TrendingDown className="size-4 text-red-400" />
+                        <TrendingUp className="size-4 text-green-400" />
                     </div>
                     <Separator orientation="vertical" />
                     <div className="flex items-baseline gap-1">
                         {currency.symbol}
-                        {summary.total_income}
-                        <TrendingUp className="size-4 text-green-400" />
+                        {summary.total_expenses}
+                        <TrendingDown className="size-4 text-red-400" />
                     </div>
                 </div>
             </CardContent>
