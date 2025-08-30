@@ -1,3 +1,4 @@
+import { PaymentsClient } from '@/app/(dashboard)/payments/_components/PaymentsClient';
 import { getPayments } from '@/app/(dashboard)/payments/_lib/fetch';
 import { Header } from '@/components/Header';
 import { auth } from '@/lib/auth';
@@ -23,11 +24,11 @@ export default async function PaymentsPage() {
     const token = session.accessToken;
 
     const [initialPayments] = await Promise.all([getPayments(token)]);
-    console.log(initialPayments);
 
     return (
         <>
             <Header breadcrumbs={breadcrumbs} />
+            <PaymentsClient initialPayments={initialPayments} />
         </>
     );
 }
