@@ -1,3 +1,4 @@
+import { getPayments } from '@/app/(dashboard)/payments/_lib/fetch';
 import { Header } from '@/components/Header';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
@@ -18,6 +19,11 @@ export default async function PaymentsPage() {
     if (!session?.accessToken) {
         redirect('/login');
     }
+
+    const token = session.accessToken;
+
+    const [initialPayments] = await Promise.all([getPayments(token)]);
+    console.log(initialPayments);
 
     return (
         <>
