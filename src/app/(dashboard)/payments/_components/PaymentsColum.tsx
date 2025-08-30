@@ -44,9 +44,9 @@ export const PaymentsColum = (): ColumnDef<Payment>[] => [
         cell: ({ row }) => {
             const { amount, account, payment_type } = row.original;
             const symbol = account?.currency?.symbol || '';
-            let color = 'text-green-400';
-            if (payment_type === 'debt') color = 'text-red-400';
-            if (payment_type === 'recurring') color = 'text-blue-400';
+            let color = 'text-yellow-300';
+            if (payment_type === 'debt') color = 'text-pink-400';
+            if (payment_type === 'recurring') color = 'text-cyan-300';
             return (
                 <span className={`flex items-center gap-2 ${color}`}>
                     <BadgeDollarSign className="size-4" /> {symbol} {amount}
