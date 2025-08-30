@@ -17,7 +17,6 @@ interface FormPaymentProps {
 export const FormPayment = ({ payment, onSuccess, initialAccounts, initialCategories }: FormPaymentProps) => {
     const {
         form,
-        setForm,
         isPending,
         error,
         currencySymbol,
