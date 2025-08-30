@@ -17,9 +17,9 @@ export const Summary = ({ summary, currency }: SummaryProps) => {
                     {currency.symbol}
                     {summary.net_income} <span className="text-muted-foreground text-xs">{currency.code}</span>
                     {summary.net_income > 0 ? (
-                        <TrendingDown className="size-4 text-red-400" />
-                    ) : (
                         <TrendingUp className="size-4 text-green-400" />
+                    ) : (
+                        <TrendingDown className="size-4 text-red-400" />
                     )}
                 </CardTitle>
             </CardHeader>
