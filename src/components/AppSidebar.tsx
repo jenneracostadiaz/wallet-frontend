@@ -51,6 +51,11 @@ export async function AppSidebar() {
             icon: Coins,
         },
         {
+            title: 'Payments',
+            url: '/payments',
+            icon: HandCoins,
+        },
+        {
             title: 'Accounts',
             url: '/accounts',
             icon: PiggyBank,
@@ -59,11 +64,6 @@ export async function AppSidebar() {
             title: 'Categories',
             url: '/categories',
             icon: WalletCards,
-        },
-        {
-            title: 'Payments',
-            url: '/payments',
-            icon: HandCoins,
         },
     ];
 
