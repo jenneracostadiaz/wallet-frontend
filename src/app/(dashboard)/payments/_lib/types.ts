@@ -18,7 +18,9 @@ export type Payment = {
     created_at: string;
     updated_at: string;
     account: Account;
+    account_id: number;
     category: Category;
+    category_id: number;
     payment_schedule: PaymentSchedule;
     debt_detail: DebtDetail;
 };
