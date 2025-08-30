@@ -4,8 +4,8 @@ import { Suspense } from 'react';
 
 import { Header } from '@/components/Header';
 import { getAccounts, getBalance, getCategories, getCurrencies, getTransactions } from '@/lib/api';
-import { TransactionsClient } from './components/TransactionsClient';
-import { TransactionsSkeleton } from './components/TransactionsSkeleton';
+import { TransactionsClient } from './_components/TransactionsClient';
+import { TransactionsSkeleton } from './_components/TransactionsSkeleton';
 
 const breadcrumbs = [
     {
