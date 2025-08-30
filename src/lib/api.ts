@@ -7,7 +7,7 @@ import type { Transaction } from '@/type/Transactions';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-async function fetchWithAuth(endpoint: string, token: string, options: RequestInit = {}) {
+export async function fetchWithAuth(endpoint: string, token: string, options: RequestInit = {}) {
     const response = await fetch(`${API_URL}/${endpoint}`, {
         ...options,
         headers: {
