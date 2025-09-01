@@ -4,6 +4,7 @@ import type { Category } from '@/type/Categories';
 import type { Currency } from '@/type/Currencies';
 import type { MonthlyReport } from '@/type/MonthlyReport';
 import type { Transaction } from '@/type/Transactions';
+import {signOut} from "next-auth/react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,6 +17,11 @@ async function fetchWithAuth(endpoint: string, token: string, options: RequestIn
             'Content-Type': 'application/json',
         },
     });
+
+    if (response.status === 401 || response.status === 500) {
+        await signOut({ redirect: true });
+        return;
+    }
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
