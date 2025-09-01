@@ -5,6 +5,7 @@ import type { Currency } from '@/type/Currencies';
 import type { MonthlyReport } from '@/type/MonthlyReport';
 import type { Transaction } from '@/type/Transactions';
 import {signOut} from "next-auth/react";
+import {redirect} from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -19,8 +20,7 @@ async function fetchWithAuth(endpoint: string, token: string, options: RequestIn
     });
 
     if (response.status === 401 || response.status === 500) {
-        await signOut({ redirect: true });
-        return;
+        redirect('/api/auth/signout');
     }
 
     if (!response.ok) {
