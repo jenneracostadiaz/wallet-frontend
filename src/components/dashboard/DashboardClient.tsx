@@ -8,7 +8,6 @@ import type { Account } from '@/type/Accounts';
 import type { Balance as BalanceType } from '@/type/Balance';
 import type { Category } from '@/type/Categories';
 import type { MonthlyReport as MonthlyReportType } from '@/type/MonthlyReport';
-import type { Transaction } from '@/type/Transactions';
 
 interface DashboardClientProps {
     initialBalance: BalanceType;

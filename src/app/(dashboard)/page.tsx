@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { DashboardClient } from '@/components/dashboard/DashboardClient';
-import { getAccounts, getBalance, getCategories, getLatestTransactions, getMonthlyReport } from '@/lib/api';
+import { getAccounts, getBalance, getCategories, getMonthlyReport } from '@/lib/api';
 
 import { Header } from '@/components/Header';
 import { DashboardSkeleton } from '@/components/dashboard/DashboardSkeleton';
