@@ -1,4 +1,5 @@
 import type { Currency } from '@/type/Currencies';
+import type { Transaction } from '@/type/Transactions';
 
 export type DailyBalance = {
     date: string;
@@ -32,6 +33,7 @@ export type Summary = {
 export type MonthlyReport = {
     currency: Currency;
     daily_balance: DailyBalance[];
+    transactions: Transaction[];
     expenses_by_category: ExpenseByCategory[];
     period: Period;
     summary: Summary;

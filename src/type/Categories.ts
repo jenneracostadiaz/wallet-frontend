@@ -6,4 +6,5 @@ export type Category = {
     subcategories?: Category[];
     parent?: Category | null;
     parent_id?: number | null;
+    user_id: number;
 };

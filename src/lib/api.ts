@@ -9,7 +9,7 @@ import {redirect} from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-async function fetchWithAuth(endpoint: string, token: string, options: RequestInit = {}) {
+export async function fetchWithAuth(endpoint: string, token: string, options: RequestInit = {}) {
     const response = await fetch(`${API_URL}/${endpoint}`, {
         ...options,
         headers: {
@@ -56,8 +56,9 @@ export const getBalance = (token: string): Promise<Balance> => {
     return fetchWithAuth('dashboard/balance', token);
 };
 
-export const getMonthlyReport = (token: string): Promise<MonthlyReport> => {
-    return fetchWithAuth('dashboard/monthly-report', token);
+export const getMonthlyReport = (token: string, month?: string): Promise<MonthlyReport> => {
+    const params = month ? `?month=${month}` : '';
+    return fetchWithAuth(`dashboard/monthly-report${params}`, token);
 };
 
 export const getLatestTransactions = (token: string): Promise<Transaction[]> => {

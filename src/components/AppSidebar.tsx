@@ -1,4 +1,4 @@
-import { Coins, LucideLayoutDashboard, PiggyBank, Wallet, WalletCards } from 'lucide-react';
+import { Coins, HandCoins, LucideLayoutDashboard, PiggyBank, Wallet, WalletCards } from 'lucide-react';
 
 import {
     Sidebar,
@@ -51,6 +51,11 @@ export async function AppSidebar() {
             icon: Coins,
         },
         {
+            title: 'Payments',
+            url: '/payments',
+            icon: HandCoins,
+        },
+        {
             title: 'Accounts',
             url: '/accounts',
             icon: PiggyBank,
@@ -72,7 +77,7 @@ export async function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/public">
+                            <Link href="/">
                                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                                     <Wallet className="size-4" />
                                 </div>
