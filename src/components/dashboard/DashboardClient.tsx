@@ -1,7 +1,6 @@
 'use client';
 
 import { Balance } from '@/components/balance';
-import { LatestTransactions } from '@/components/latest-transactions/LatestTransactions';
 import { MonthlyReport } from '@/components/monthly-report';
 
 import type { Account } from '@/type/Accounts';
@@ -27,11 +26,10 @@ export function DashboardClient({
     return (
         <section className="grid gap-12 w-full max-w-7xl mx-auto px-4">
             <Balance initialBalance={initialBalance} />
-            <MonthlyReport initialMonthlyReport={initialMonthlyReport} />
-            <LatestTransactions
-                initialTransactions={initialMonthlyReport.transactions}
+            <MonthlyReport
                 initialAccounts={initialAccounts}
                 initialCategories={initialCategories}
+                initialMonthlyReport={initialMonthlyReport}
             />
         </section>
     );
