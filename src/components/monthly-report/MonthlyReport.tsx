@@ -90,7 +90,7 @@ export const MonthlyReport = ({ initialMonthlyReport, initialAccounts, initialCa
                     </Button>
                 </div>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div className="flex flex-col gap-4">
                     <Summary summary={monthlyReport.summary} currency={monthlyReport.currency} />
                 </div>

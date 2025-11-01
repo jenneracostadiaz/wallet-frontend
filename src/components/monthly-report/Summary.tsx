@@ -9,7 +9,6 @@ interface SummaryProps {
 }
 
 export const Summary = ({ summary, currency }: SummaryProps) => {
-    // Helper function to parse numbers that come as strings with comma separators
     const parseNumber = (value: string | number): number => {
         if (typeof value === 'number') return value;
         return Number(String(value).replace(/,/g, '')) || 0;
