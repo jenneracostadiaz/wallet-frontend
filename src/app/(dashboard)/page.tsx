@@ -23,10 +23,9 @@ export default async function DashboardPage() {
 
     const token = session.accessToken;
 
-    const [balanceResponse, monthlyReport, latestTransactions, initialAccounts, initialCategories] = await Promise.all([
+    const [balanceResponse, monthlyReport, initialAccounts, initialCategories] = await Promise.all([
         getBalance(token),
         getMonthlyReport(token),
-        getLatestTransactions(token),
         getAccounts(token),
         getCategories(token),
     ]);
@@ -38,7 +37,6 @@ export default async function DashboardPage() {
                 <DashboardClient
                     initialBalance={balanceResponse}
                     initialMonthlyReport={monthlyReport}
-                    initialLatestTransactions={latestTransactions}
                     initialAccounts={initialAccounts}
                     initialCategories={initialCategories}
                 />

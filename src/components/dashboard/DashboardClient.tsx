@@ -13,7 +13,6 @@ import type { Transaction } from '@/type/Transactions';
 interface DashboardClientProps {
     initialBalance: BalanceType;
     initialMonthlyReport: MonthlyReportType;
-    initialLatestTransactions: Transaction[];
     initialAccounts: { data: Account[] };
     initialCategories: { data: Category[] };
 }
@@ -21,16 +20,17 @@ interface DashboardClientProps {
 export function DashboardClient({
     initialBalance,
     initialMonthlyReport,
-    initialLatestTransactions,
     initialAccounts,
     initialCategories,
 }: DashboardClientProps) {
+    console.log('Initial Balance:', initialBalance);
+    console.log('Initial Monthly Report:', initialMonthlyReport);
     return (
         <section className="grid gap-12 w-full max-w-7xl mx-auto px-4">
             <Balance initialBalance={initialBalance} />
             <MonthlyReport initialMonthlyReport={initialMonthlyReport} />
             <LatestTransactions
-                initialTransactions={initialLatestTransactions}
+                initialTransactions={initialMonthlyReport.transactions}
                 initialAccounts={initialAccounts}
                 initialCategories={initialCategories}
             />
