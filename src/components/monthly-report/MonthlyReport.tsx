@@ -36,17 +36,31 @@ export const MonthlyReport = ({ initialMonthlyReport, initialAccounts, initialCa
     };
 
     const handlePrevMonth = () => {
-        const currentDate = new Date(monthlyReport.period.month);
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        const newMonth = currentDate.toISOString().slice(0, 7);
-        fetchMonthlyReport(newMonth);
+        const [year, month] = monthlyReport.period.month.split('-').map(Number);
+        let newYear = year;
+        let newMonth = month - 1;
+
+        if (newMonth === 0) {
+            newMonth = 12;
+            newYear -= 1;
+        }
+
+        const formattedMonth = `${newYear}-${String(newMonth).padStart(2, '0')}`;
+        fetchMonthlyReport(formattedMonth);
     };
 
     const handleNextMonth = () => {
-        const currentDate = new Date(monthlyReport.period.month);
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        const newMonth = currentDate.toISOString().slice(0, 7);
-        fetchMonthlyReport(newMonth);
+        const [year, month] = monthlyReport.period.month.split('-').map(Number);
+        let newYear = year;
+        let newMonth = month + 1;
+
+        if (newMonth === 13) {
+            newMonth = 1;
+            newYear += 1;
+        }
+
+        const formattedMonth = `${newYear}-${String(newMonth).padStart(2, '0')}`;
+        fetchMonthlyReport(formattedMonth);
     };
 
     return (
